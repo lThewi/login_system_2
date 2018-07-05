@@ -29,7 +29,7 @@
                 $config['smtp_host'] = 'smtp.gmail.com';
                 $config['smtp_port'] = 465;
                 $config['smtp_user'] = 'vftestadresse@gmail.com';
-                $config['smtp_pass'] = '1a2b3c4d1!';
+                $config['smtp_pass'] = 'xxx';
                 $config['smtp_crypto'] = 'ssl';
                 $config['crlf'] = "\r\n";
                 $config['newline'] = "\r\n";
