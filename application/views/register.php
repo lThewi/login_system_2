@@ -2,9 +2,9 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="/login_registration_system/assets/css/normalize.css">
-    <link rel="stylesheet/less" type="text/css" href="/login_registration_system/assets/css/stylesheet.less" />
-    <script src="/login_registration_system/assets/js/less.min.js"></script>
+    <link rel="stylesheet" href="<?php echo base_url();?>assets/css/normalize.css">
+    <link rel="stylesheet/less" type="text/css" href="<?php echo base_url();?>assets/css/stylesheet.less" />
+    <script src="<?php echo base_url();?>assets/js/less.min.js"></script>
 </head>
 <body>
 <div class="form-container">
@@ -44,8 +44,8 @@
 </div>
 
 
-<script src="/login_registration_system/assets/js/jquery-3.3.1.min.js"></script>
-<script src="/login_registration_system/assets/js/parsley.min.js"></script>
-<script src="/login_registration_system/assets/js/javascript.js"></script>
+<script src="<?php echo base_url();?>assets/js/jquery-3.3.1.min.js"></script>
+<script src="<?php echo base_url();?>assets/js/parsley.min.js"></script>
+<script src="<?php echo base_url();?>assets/js/javascript.js"></script>
 </body>
 </html>
