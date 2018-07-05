@@ -1,5 +1,9 @@
 <?php
     class Users extends CI_Controller{
+        function index(){
+            $this->load->view('login');
+        }
+
         /**
          * validating the form data, register a user, adding the data to the temp_user table and sending the validation mail
          */
