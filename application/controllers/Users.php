@@ -8,8 +8,6 @@
          * validating the form data, register a user, adding the data to the temp_user table and sending the validation mail
          */
         public function register(){
-            $data['title'] = 'Sign up';
-
             $this->form_validation->set_rules('name', 'Name', 'required|trim');
             $this->form_validation->set_rules('lastname', 'Lastname', 'required|trim');
             $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[users.email]');
@@ -19,13 +17,12 @@
             $this->form_validation->set_message('is_unique', 'That email is already used');
 
             if ($this->form_validation->run() === FALSE) {
-                $this->load->view('register', $data);
+                $this->load->view('register');
             } else {
                 $enc_password = md5($this->input->post('password'));
-
-                //generate the email token/key
-                $unique_id = md5(uniqid());
-                $key = md5($unique_id . md5($this->input->post('email')));
+                $mail = $this->input->post('email');
+                $name = $this->input->post('name');
+                $lastname = $this->input->post('lastname');
 
                 //setting up the mail system
                 $this->load->library('email', array('mailtype'=>'html'));
@@ -39,17 +36,25 @@
                 $config['newline'] = "\r\n";
                 $this->email->initialize($config);
 
+                $admin_mail = 'yyy';
+
                 //preparing the mailcontent
                 $this->email->from('vftestadresse@gmail.com', 'MyName');
-                $this->email->to($this->input->post('email'));
-                $this->email->subject('Aktivieren Sie Ihren Account');
+                $this->email->to('$admin_mail');
+                $this->email->subject('Ihr Account bei uns');
                 $message = '<p>Vielen Dank für Ihre Registrierung</p>';
-                $message .= '<p><a href="'.base_url().'users/validate_user/'.$key.'">Klicken Sie hier um den Account zu aktivieren</a></p>';
+                $message .= '<p>Name: '. $name . ' ' . $lastname . ', Email: '. $mail .'</p>';
 
                 $this->email->message($message);
-
                 //adding user to temp_user table and sending the mail
-                if($this->user_model->add_temp_user($unique_id, $enc_password)){
+                if($this->user_model->add_temp_user()){
+
+
+                    /**
+                     * TODO: sending second mail to user
+                     */
+
+
                     if($this->email->send()){
                         redirect('users/login');
                     } else {
@@ -61,28 +66,20 @@
             }
         }
 
-        /**
-         * called when user opens the validation link. Calls the add user function from the User_model.
-         * if this function returns data the user is logged in, if it returns false the user has not been add
-         * to the db.
-         * @param $key is the token from the validation link
-         */
-        public function validate_user($key){
-            if($data = $this->user_model->add_user($key)){
-                $data = array(
-                    'is_logged_in' => 1
-                );
-                $this->session->set_userdata($data);
-                redirect('users/home');
-            } else {
-                echo 'failed to add user';
-            }
+        public function add_multiple_users(){
+            //loop over all rows and add them to the DB (with add_user)
+            if($this->input->post('row')){
+                foreach($this->input->post('row') as $row => $value){
+                    echo $value.'<br/>';
+                    $type = $this->input->post($value);
+                    $this->user_model->add_user($value, $type);
+                }
+            };
+
+            //refresh page
+            redirect('users/users_view');
         }
 
-        /**
-         * destroys the session to assure there is no userdata
-         * sets rules for the login form
-         */
         public function login(){
             $this->form_validation->set_rules('mail', 'Email', 'required');
             $this->form_validation->set_rules('password', 'Password', 'required');
@@ -103,12 +100,18 @@
                             'mail' => $mail,
                             'name' => $user->name,
                             'lastname' => $user->lastname,
+                            'user_type' => $user->acc_type_id,
                             'logged_in' => TRUE
                         );
                         $this->session->set_userdata($user_data);
-
-                        $this->session->set_flashdata('user_logged_in', 'You are now logged in');
-                        redirect('users/home');
+                        switch($user->acc_type_id){
+                            case 1:
+                                redirect('users/users_view');
+                                break;
+                            case 2:
+                                redirect('users/home');
+                                break;
+                        }
                     }
                 } else {
                     $this->session->set_flashdata('wrong_email', 'Die angegebene Email ist falsch.');
@@ -125,6 +128,24 @@
         public function home(){
             if($this->session->userdata('logged_in') === TRUE){
                 $this->load->view('home');
+            } else {
+                redirect('users/login');
+            }
+        }
+
+        public function users_view(){
+            if($this->session->userdata('logged_in') === TRUE){
+                if($this->session->userdata('user_type') === '1'){
+                    $temp_users = $this->user_model->get_all_temp_users();
+                    $user_types = $this->user_model->get_user_types();
+                    $users = $this->user_model->get_users();
+                    $data['temp_users'] = $temp_users;
+                    $data['user_types'] = $user_types;
+                    $data['users'] = $users;
+                    $this->load->view('users_view', $data);
+                } else {
+                    redirect('users/home');
+                }
             } else {
                 redirect('users/login');
             }
