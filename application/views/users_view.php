@@ -18,14 +18,15 @@
 </div>
 <div>
     <div>
+        <h2>Nicht aktivierte Accounts</h2>
         <?php echo form_open('users/add_multiple_users') ?>
         <table>
             <tr>
                 <td></td>
-                <td>Name</td>
-                <td>Nachname</td>
-                <td>Email</td>
-                <td>Accounttyp</td>
+                <td><strong>Name</strong></td>
+                <td><strong>Nachname</strong></td>
+                <td><strong>Email</strong></td>
+                <td><strong>Accounttyp</strong></td>
             </tr>
         <?php
         foreach ($user_types as $user_type) {
@@ -43,17 +44,18 @@
         }
         ?>
         </table>
-        <input type="submit" value="Abschicken">
+        <input type="submit" value="Abschicken" class="button">
         <?php echo form_close() ?>
     </div>
     <hr>
     <div>
+        <h2>Aktive Accounts</h2>
         <table>
             <tr>
-                <td>Name</td>
-                <td>Nachname</td>
-                <td>Email</td>
-                <td>Accounttyp</td>
+                <td><strong>Name</strong></td>
+                <td><strong>Nachname</strong></td>
+                <td><strong>Email</strong></td>
+                <td><strong>Accounttyp</strong></td>
             </tr>
             <?php
             foreach ($users as $user) {
