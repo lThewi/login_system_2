@@ -16,17 +16,17 @@
         <li><a href="<?php echo base_url(); ?>users/logout">Abmelden</a></li>
     </ul>
 </div>
-<div>
+<div class="content-container">
     <div>
         <h2>Nicht aktivierte Accounts</h2>
         <?php echo form_open('users/add_multiple_users') ?>
         <table>
             <tr>
-                <td></td>
-                <td><strong>Name</strong></td>
-                <td><strong>Nachname</strong></td>
-                <td><strong>Email</strong></td>
-                <td><strong>Accounttyp</strong></td>
+                <th></th>
+                <th><strong>Name</strong></th>
+                <th><strong>Nachname</strong></th>
+                <th><strong>Email</strong></th>
+                <th><strong>Accounttyp</strong></th>
             </tr>
         <?php
         foreach ($user_types as $user_type) {
@@ -52,10 +52,10 @@
         <h2>Aktive Accounts</h2>
         <table>
             <tr>
-                <td><strong>Name</strong></td>
-                <td><strong>Nachname</strong></td>
-                <td><strong>Email</strong></td>
-                <td><strong>Accounttyp</strong></td>
+                <th><strong>Name</strong></th>
+                <th><strong>Nachname</strong></th>
+                <th><strong>Email</strong></th>
+                <th><strong>Accounttyp</strong></th>
             </tr>
             <?php
             foreach ($users as $user) {

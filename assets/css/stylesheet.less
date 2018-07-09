@@ -1,6 +1,9 @@
 @border-color: #c8c8c8;
 @active-bg: #f5f8fc;
 @active-color: #52a6e1;
+@table-bg-a:#90d1ff;
+@table-bg-b:#FFFFFF;
+@table-hover:#d2ecff;
 @anim: cubic-bezier(0.215, 0.610, 0.355, 1.00);
 @error-bg: #feeeee;
 @error-color: darken(@error-bg, 35);
@@ -113,6 +116,9 @@
   border: 1px solid @border-color;
   padding: 10px;
 }
+.content-container{
+  text-align: center;
+}
 .nav-side{
   max-width: 25%;
   min-width: 100px;
@@ -143,11 +149,17 @@
   }
 }
 table, tr, td{
-  border: 1px solid #D0D0D0;
+  border: 1px solid @border-color;
   border-collapse: collapse;
   margin: auto;
   text-align: center;
   padding: 5px;
+}
+tr:hover {
+  background-color: @table-hover;
+}
+th{
+  background-color: @table-bg-a;
 }
 .form-container{
   border-width: 0;

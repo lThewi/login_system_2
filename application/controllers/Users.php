@@ -48,9 +48,6 @@
                 $this->email->message($message);
                 //adding user to temp_user table and sending the mail
                 if($this->user_model->add_temp_user()){
-                    /**
-                     * TODO: sending second mail to user
-                     */
                     if($this->email->send()){
                         redirect('users/login');
                     } else {
