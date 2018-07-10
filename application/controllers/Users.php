@@ -40,15 +40,17 @@
 
                 //preparing the mailcontent
                 $this->email->from('vftestadresse@gmail.com', 'MyName');
-                $this->email->to($admin_mail);
+                $this->email->to($mail);
                 $this->email->subject('Ihr Account bei uns');
-                $message = '<p>Vielen Dank für Ihre Registrierung</p>';
-                $message .= '<p>Name: '. $name . ' ' . $lastname . ', Email: '. $mail .'</p>';
+                $message = '<p>Vielen Dank für Ihre Registrierung.</p>';
+                $message .= '<p>Ein Administartor wird sich in Kürze um Ihre Anfrage kümmern.</p>';
 
                 $this->email->message($message);
                 //adding user to temp_user table and sending the mail
                 if($this->user_model->add_temp_user()){
-                    if($this->email->send()){
+                    if($this->email->send(FALSE)){
+                        $this->email->to($admin_mail);
+                        $this->email->send();
                         redirect('users/login');
                     } else {
                         $this->email->print_debugger();

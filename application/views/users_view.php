@@ -1,78 +1,98 @@
+<!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="<?php echo base_url();?>assets/css/normalize.css">
-    <link rel="stylesheet/less" type="text/css" href="<?php echo base_url();?>assets/css/stylesheet.less" />
-    <script src="<?php echo base_url();?>assets/js/less.min.js"></script>
+    <!--<link rel="stylesheet/less" type="text/css" href="<?php //echo base_url();?>assets/css/stylesheet.less" />-->
+    <link rel="stylesheet" href="<?php echo base_url();?>assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo base_url();?>assets/css/coreui.min.css">
 </head>
-<body>
+<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show sidebar-show">
+<header class="app-header navbar">
+    <h2>Admin Dashboard</h2>
+</header>
 
+<div class="app-body">
+    <div class="sidebar">
+        <nav class="sidebar-nav ps ps--active-y">
+            <ul class="nav">
+                <li class="nav-item"><a href="<?php echo base_url(); ?>users/users_view" class="nav-link active">Benutzerverwaltung</a></li>
+                <li class="nav-item"><a href="<?php echo base_url(); ?>users/logout" class="nav-link">Abmelden</a></li>
+            </ul>
+        </nav>
+        <button class="sidebar-minimizer brand-minimizer" type="button"></button>
+    </div>
 
-<div class="nav-side">
-    <h2>Navigationsleiste</h2>
-    <ul>
-        <li class="active"><a href="<?php echo base_url(); ?>users/users_view">Benutzer</a></li>
-        <li><a href="<?php echo base_url(); ?>users/logout">Abmelden</a></li>
-    </ul>
+    <main class="main">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Nicht aktivierte Accounts</h2>
+                </div>
+                <div class="card-body">
+                    <?php echo form_open('users/add_multiple_users') ?>
+                    <table class="table table-responsive-sm">
+                        <tr>
+                            <th></th>
+                            <th><strong>Name</strong></th>
+                            <th><strong>Nachname</strong></th>
+                            <th><strong>Email</strong></th>
+                            <th><strong>Accounttyp</strong></th>
+                        </tr>
+                        <?php
+                        foreach ($user_types as $user_type) {
+                            $types[$user_type->id] = $user_type->name;
+                        }
+                        foreach ($temp_users as $temp_user) {
+                            $dropdown_name = $temp_user->id;
+                            echo '<tr>
+                                <td>'. form_checkbox('row[]', $temp_user->id, FALSE) .'</td>
+                                <td>'. $temp_user->name .'</td>
+                                <td>'. $temp_user->lastname .'</td>
+                                <td>'. $temp_user->email .'</td>
+                                <td>'. form_dropdown($dropdown_name, $types, 2, array('class' => 'form-control')) .'</td>
+                                </tr>';
+                        }?>
+                    </table>
+                    <input type="submit" value="Abschicken" class="btn btn-sm btn-primary">
+                    <?php echo form_close() ?>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h2>Aktivierte Accounts</h2>
+                </div>
+                <div class="card-body">
+                    <table class="table table-responsive-sm">
+                        <tr>
+                            <th><strong>Name</strong></th>
+                            <th><strong>Nachname</strong></th>
+                            <th><strong>Email</strong></th>
+                            <th><strong>Accounttyp</strong></th>
+                        </tr>
+                        <?php
+                        foreach ($users as $user) {
+                            echo '<tr>
+                                <td>'. $user->name .'</td>
+                                <td>'. $user->lastname .'</td>
+                                <td>'. $user->email .'</td>
+                                <td>'. $user->acc_type_id .'</td>
+                                </tr>';
+                        }?>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
 </div>
-<div class="content-container">
-    <div>
-        <h2>Nicht aktivierte Accounts</h2>
-        <?php echo form_open('users/add_multiple_users') ?>
-        <table>
-            <tr>
-                <th></th>
-                <th><strong>Name</strong></th>
-                <th><strong>Nachname</strong></th>
-                <th><strong>Email</strong></th>
-                <th><strong>Accounttyp</strong></th>
-            </tr>
-        <?php
-        foreach ($user_types as $user_type) {
-            $types[$user_type->id] = $user_type->name;
-        }
-        foreach ($temp_users as $temp_user) {
-            $dropdown_name = $temp_user->id;
-            echo '<tr>
-                    <td>'. form_checkbox('row[]', $temp_user->id, FALSE) .'</td>
-                    <td>'. $temp_user->name .'</td>
-                    <td>'. $temp_user->lastname .'</td>
-                    <td>'. $temp_user->email .'</td>
-                    <td>'. form_dropdown($dropdown_name, $types) .'</td>
-                </tr>';
-        }
-        ?>
-        </table>
-        <input type="submit" value="Abschicken" class="button">
-        <?php echo form_close() ?>
-    </div>
-    <hr>
-    <div>
-        <h2>Aktive Accounts</h2>
-        <table>
-            <tr>
-                <th><strong>Name</strong></th>
-                <th><strong>Nachname</strong></th>
-                <th><strong>Email</strong></th>
-                <th><strong>Accounttyp</strong></th>
-            </tr>
-            <?php
-            foreach ($users as $user) {
-                echo '<tr>
-                    <td>'. $user->name .'</td>
-                    <td>'. $user->lastname .'</td>
-                    <td>'. $user->email .'</td>
-                    <td>'. $user->acc_type_id .'</td>
-                </tr>';
-            }
-            ?>
-        </table>
-    </div>
-</div>
+
 
 <script src="<?php echo base_url();?>assets/js/jquery-3.3.1.min.js"></script>
+<script src="<?php echo base_url();?>assets/js/popper.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/parsley.min.js"></script>
+<script src="<?php echo base_url();?>assets/js/less.min.js"></script>
+<script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/javascript.js"></script>
 </body>
 </html>
