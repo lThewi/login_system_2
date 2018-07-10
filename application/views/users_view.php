@@ -10,45 +10,64 @@
 </head>
 <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show sidebar-show">
 <header class="app-header navbar">
-    <h2>Admin Dashboard</h2>
+    <a href="#" class="navbar-brand">
+        <div class="navbar-brand-full">Admin Dashboard</div>
+        <div class="navbar-brand-minimized">Admin</div>
+    </a>
+
 
     <ul class="nav navbar-nav d-md-down-none">
         <li class="nav-item px-3">
             <a class="nav-link" href="#">Dashboard</a>
-        </li>
-        <li class="nav-item px-3">
-            <a class="nav-link" href="#">Einstellungen</a>
         </li>
     </ul>
 </header>
 
 <div class="app-body">
     <div class="sidebar">
-        <nav class="sidebar-nav ps ps--active-y">
+        <nav class="sidebar-nav">
             <ul class="nav">
-                <li class="nav-item"><a href="<?php echo base_url(); ?>users/users_view" class="nav-link active">Benutzerverwaltung</a></li>
-                <li class="nav-item"><a href="<?php echo base_url(); ?>users/logout" class="nav-link">Abmelden</a></li>
+                <li class="nav-title">Allgemein</li>
+                <li class="nav-item">
+                    <a href="<?php echo base_url(); ?>users/users_view" class="nav-link active">
+                        <div class="nav-icon icon-people"></div>
+                        Benutzerverwaltung
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?php echo base_url(); ?>users/logout" class="nav-link">
+                        <div class="nav-icon icon-people"></div>
+                        Abmelden
+                    </a>
+                </li>
             </ul>
         </nav>
-        <button class="sidebar-minimizer brand-minimizer" type="button"></button>
+        <!--<button class="sidebar-minimizer brand-minimizer" type="button"></button>-->
     </div>
 
     <main class="main">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Admin</li>
+            <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
         <div class="container-fluid">
-            <div class="card">
+            <div class="card card-accent-primary">
                 <div class="card-header">
-                    <h2>Nicht aktivierte Accounts</h2>
+                    Nicht aktivierte Accounts
                 </div>
-                <div class="card-body">
+                <div class="card-body" id="pending-users">
                     <?php echo form_open('users/add_multiple_users') ?>
-                    <table class="table table-responsive-sm">
+                    <table class="table table-responsive-sm table-hover table-outline">
+                        <thead class="thead-light">
                         <tr>
-                            <th></th>
+                            <th><!--<label><input type="checkbox" id="check-all"></label>--></th>
                             <th><strong>Name</strong></th>
                             <th><strong>Nachname</strong></th>
                             <th><strong>Email</strong></th>
                             <th><strong>Accounttyp</strong></th>
                         </tr>
+                        </thead>
+
                         <?php
                         foreach ($user_types as $user_type) {
                             $types[$user_type->id] = $user_type->name;
@@ -64,22 +83,25 @@
                                 </tr>';
                         }?>
                     </table>
-                    <input type="submit" value="Abschicken" class="btn btn-sm btn-primary">
+                    <input type="submit" value="Hinzufügen" class="btn btn-lg btn-primary">
                     <?php echo form_close() ?>
                 </div>
             </div>
-            <div class="card">
+            <div class="card card-accent-primary">
                 <div class="card-header">
-                    <h2>Aktivierte Accounts</h2>
+                    Aktivierte Accounts
                 </div>
-                <div class="card-body">
-                    <table class="table table-responsive-sm">
+                <div class="card-body" id="users">
+                    <table class="table table-responsive-sm table-hover table-outline">
+                        <thead class="thead-light">
                         <tr>
                             <th><strong>Name</strong></th>
                             <th><strong>Nachname</strong></th>
                             <th><strong>Email</strong></th>
                             <th><strong>Accounttyp</strong></th>
                         </tr>
+                        </thead>
+
                         <?php
                         foreach ($users as $user) {
                             echo '<tr>
