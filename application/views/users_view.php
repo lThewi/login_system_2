@@ -11,6 +11,15 @@
 <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show sidebar-show">
 <header class="app-header navbar">
     <h2>Admin Dashboard</h2>
+
+    <ul class="nav navbar-nav d-md-down-none">
+        <li class="nav-item px-3">
+            <a class="nav-link" href="#">Dashboard</a>
+        </li>
+        <li class="nav-item px-3">
+            <a class="nav-link" href="#">Einstellungen</a>
+        </li>
+    </ul>
 </header>
 
 <div class="app-body">
@@ -93,6 +102,7 @@
 <script src="<?php echo base_url();?>assets/js/parsley.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/less.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script>
+<script src="<?php echo base_url();?>assets/js/coreui.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/javascript.js"></script>
 </body>
 </html>
