@@ -3,48 +3,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="<?php echo base_url();?>assets/css/normalize.css">
+    <link rel="stylesheet" href="<?php echo base_url();?>assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo base_url();?>assets/css/coreui.min.css">
     <link rel="stylesheet/less" type="text/css" href="<?php echo base_url();?>assets/css/stylesheet.less" />
     <script src="<?php echo base_url();?>assets/js/less.min.js"></script>
 </head>
-<body>
-<div class="form-container">
-    <div class="bt-form__wrapper">
-        <h2>Registrierung</h2>
-        <?php echo form_open('users/register', array('id' => 'register-form', 'class' => 'bt-flabels js-flabels', 'data-parsley-validate' => '', 'data-parsley-errors-messages-disabled' => '')); ?>
-        <?php echo validation_errors(); ?>
-        <div class="bt-flabels__wrapper">
-            <label>Name</label>
-            <input type="text" name="name" placeholder="Name" autocomplete="off" data-parsley-required>
-            <span class="bt-flabels__error-desc">Required</span>
-        </div>
-        <div class="bt-flabels__wrapper">
-            <label class="">Nachname</label>
-            <input type="text" name="lastname" placeholder="Nachname" autocomplete="off" data-parsley-required>
-            <span class="bt-flabels__error-desc">Required</span>
-        </div>
-        <div class="bt-flabels__wrapper">
-            <label class="">Email</label>
-            <input type="text" name="email" placeholder="Email" data-parsley-required data-parsley-type="email">
-            <span class="bt-flabels__error-desc">Required/Invalid Email</span>
-        </div>
-        <div class="bt-flabels__wrapper">
-            <label class="">Password</label>
-            <input type="password" name="password" id="password" placeholder="Password" data-parsley-required>
-            <span class="bt-flabels__error-desc">Required</span>
-        </div>
-        <div class="bt-flabels__wrapper">
-            <label class="">Confirm Password</label>
-            <input type="password" name="password2" placeholder="Comfirm Password" data-parsley-required data-parsley-equalto="#password">
-            <span class="bt-flabels__error-desc">Required</span>
-        </div>
+<body class="app flex-row align-items-center">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card ms-4">
+                <div class="card-body p-4">
+                    <h1>Registrierung</h1>
+                    <p class="text-muted">Erstellen Sie Ihren Account</p>
+                    <?php echo form_open('users/register'); ?>
+                    <?php echo validation_errors(); ?>
+                    <div class="input-group mb-3">
+                        <input type="text" name="name" placeholder="Name" autocomplete="off" required class="form-control">
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" name="lastname" placeholder="Nachname" autocomplete="off" required class="form-control">
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" name="email" placeholder="Email" required class="form-control">
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="password" name="password" id="password" placeholder="Password" required class="form-control">
+                    </div>
+                    <div class="input-group mb-4">
+                        <input type="password" name="password2" placeholder="Comfirm Password" required class="form-control">
+                    </div>
 
-        <input type="submit" value="REGISTRIEREN">
-        <?php echo form_close(); ?>
+                    <input type="submit" value="REGISTRIEREN" class="btn btn-block btn-success">
+                    <?php echo form_close(); ?>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-
 <script src="<?php echo base_url();?>assets/js/jquery-3.3.1.min.js"></script>
+<script src="<?php echo base_url();?>assets/js/popper.min.js"></script>
+<script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script>
+<script src="<?php echo base_url();?>assets/js/coreui.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/parsley.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/javascript.js"></script>
 </body>

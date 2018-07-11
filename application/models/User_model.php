@@ -11,8 +11,10 @@
                 'lastname' => $this->input->post('lastname'),
                 'password' => $enc_password
             );
-            echo $data;
-            return $this->db->insert('users', $data);
+            $this->db->insert('users', $data);
+            $this->db->where('email', $this->input->post('email'));
+            $result = $this->db->get('users');
+            return json_encode($result->result());
         }
 
         public function add_temp_user(){
@@ -27,10 +29,12 @@
             if($is_already_registered->num_rows() > 0){
                 return false;
             } else {
-                return $this->db->insert('temp_users', $data);
+                $this->db->insert('temp_users', $data);
+                $this->db->where('email', $this->input->post('email'));
+                $result = $this->db->get('temp_users');
+                return json_encode($result->result());
             }
         }
-
 
         public function add_user($temp_id, $user_type){
             $this->db->where('id', $temp_id);
@@ -51,7 +55,10 @@
                     if ($did_add_user) {
                         $this->db->where('id', $temp_id);
                         $this->db->delete('temp_users');
-                        return true;
+
+                        $this->db->where('email', $row->email);
+                        $result = $this->db->get('users');
+                        return json_encode($result->result());
                     } else {
                         return false;
                     }
@@ -65,7 +72,7 @@
 
             if($user->num_rows() == 1){
                 if($user->row(0)->password == $password){
-                    return $user->row(0);
+                    return json_encode($user->row(0));
                 } else {
                     return 'wrong password' ;
                 }
@@ -76,22 +83,22 @@
 
         public function get_user_types(){
             $result = $this->db->get('user_types');
-            return $result->result();
+            return json_encode($result->result());
         }
 
         public function get_all_temp_users(){
             $result = $this->db->get('temp_users');
-            return $result->result();
+            return json_encode($result->result());
         }
 
         public function get_temp_user($temp_id){
             $this->db->where('id', $temp_id);
             $result = $this->db->get('temp_users');
-            return $result;
+            return json_encode($result->result());
         }
 
         public function get_users(){
             $result = $this->db->get('users');
-            return $result->result();
+            return json_encode($result->result());
         }
     }

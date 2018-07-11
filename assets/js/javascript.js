@@ -46,10 +46,3 @@
     });
 
 })(jQuery);
-
-$(document).ready(function(){
-    $('[name="ALL"]:checkbox').change(function () {
-        if($(this).attr("checked")) $('input:checkbox').attr('checked','checked');
-        else $('input:checkbox').removeAttr('checked');
-    });
-});

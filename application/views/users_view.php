@@ -4,12 +4,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="<?php echo base_url();?>assets/css/normalize.css">
-    <!--<link rel="stylesheet/less" type="text/css" href="<?php //echo base_url();?>assets/css/stylesheet.less" />-->
     <link rel="stylesheet" href="<?php echo base_url();?>assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo base_url();?>assets/css/coreui.min.css">
 </head>
 <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show sidebar-show">
-<header class="app-header navbar">
+<!--<header class="app-header navbar">
     <a href="#" class="navbar-brand">
         <div class="navbar-brand-full">Admin Dashboard</div>
         <div class="navbar-brand-minimized">Admin</div>
@@ -21,9 +20,9 @@
             <a class="nav-link" href="#">Dashboard</a>
         </li>
     </ul>
-</header>
+</header>-->
 
-<div class="app-body">
+<div ><!--class="app-body"-->
     <div class="sidebar">
         <nav class="sidebar-nav">
             <ul class="nav">
@@ -34,6 +33,26 @@
                         Benutzerverwaltung
                     </a>
                 </li>
+                <li class="nav-item nav-dropdown">
+                    <a href="#" class="nav-link nav-dropdown-toggle">
+                        <div class="nav-icon icon-people"></div>
+                        Dokumente
+                    </a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a href="<?php echo base_url();?>documents/create_document" class="nav-link">
+                                <div class="nav-icon icon-people"></div>
+                                Dokument erstellen
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo base_url();?>documents/show_documents" class="nav-link">
+                                <div class="nav-icon icon-people"></div>
+                                Dokumente anzeigen
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-item">
                     <a href="<?php echo base_url(); ?>users/logout" class="nav-link">
                         <div class="nav-icon icon-people"></div>
@@ -42,7 +61,6 @@
                 </li>
             </ul>
         </nav>
-        <!--<button class="sidebar-minimizer brand-minimizer" type="button"></button>-->
     </div>
 
     <main class="main">
@@ -69,6 +87,8 @@
                         </thead>
 
                         <?php
+                        $user_types = json_decode($user_types_json);
+                        $temp_users = json_decode($temp_users_json);
                         foreach ($user_types as $user_type) {
                             $types[$user_type->id] = $user_type->name;
                         }
@@ -81,7 +101,8 @@
                                 <td>'. $temp_user->email .'</td>
                                 <td>'. form_dropdown($dropdown_name, $types, 2, array('class' => 'form-control')) .'</td>
                                 </tr>';
-                        }?>
+                        }
+                        ?>
                     </table>
                     <input type="submit" value="Hinzufügen" class="btn btn-lg btn-primary">
                     <?php echo form_close() ?>
@@ -103,6 +124,7 @@
                         </thead>
 
                         <?php
+                        $users = json_decode($users_json);
                         foreach ($users as $user) {
                             echo '<tr>
                                 <td>'. $user->name .'</td>
@@ -121,10 +143,7 @@
 
 <script src="<?php echo base_url();?>assets/js/jquery-3.3.1.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/popper.min.js"></script>
-<script src="<?php echo base_url();?>assets/js/parsley.min.js"></script>
-<script src="<?php echo base_url();?>assets/js/less.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/coreui.min.js"></script>
-<script src="<?php echo base_url();?>assets/js/javascript.js"></script>
 </body>
 </html>

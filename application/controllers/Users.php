@@ -23,18 +23,8 @@
                 $mail = $this->input->post('email');
                 $name = $this->input->post('name');
                 $lastname = $this->input->post('lastname');
-
-                //setting up the mail system
-                $this->load->library('email', array('mailtype'=>'html'));
-                $config['protocol'] = 'smtp';
-                $config['smtp_host'] = 'smtp.gmail.com';
-                $config['smtp_port'] = 465;
-                $config['smtp_user'] = 'vftestadresse@gmail.com';
-                $config['smtp_pass'] = 'xxx';
-                $config['smtp_crypto'] = 'ssl';
-                $config['crlf'] = "\r\n";
-                $config['newline'] = "\r\n";
-                $this->email->initialize($config);
+                $data['name'] = $name;
+                $data['lastname'] = $lastname;
 
                 $admin_mail = 'yyy';
 
@@ -42,18 +32,20 @@
                 $this->email->from('vftestadresse@gmail.com', 'MyName');
                 $this->email->to($mail);
                 $this->email->subject('Ihr Account bei uns');
-                $message = '<p>Vielen Dank für Ihre Registrierung.</p>';
-                $message .= '<p>Ein Administartor wird sich in Kürze um Ihre Anfrage kümmern.</p>';
+                $message = 'placeholder';
+
 
                 $this->email->message($message);
                 //adding user to temp_user table and sending the mail
-                if($this->user_model->add_temp_user()){
+                $temp_user = $this->user_model->add_temp_user();
+                if($temp_user != FALSE){
                     if($this->email->send(FALSE)){
                         $this->email->to($admin_mail);
                         $this->email->send();
-                        redirect('users/login');
+                        //redirect to login screen and posting data of the temp_user
+                        $data['json_data'] = $temp_user;
+                        redirect('users/login', $data);
                     } else {
-                        $this->email->print_debugger();
                         redirect('users/register');
                     }
                 } else {
@@ -65,14 +57,17 @@
         public function add_multiple_users(){
             //loop over all rows and add them to the DB (with add_user)
             if($this->input->post('row')){
+                $array_idx = 0;
                 foreach($this->input->post('row') as $row => $value){
-                    echo $value.'<br/>';
                     $type = $this->input->post($value);
-                    $this->user_model->add_user($value, $type);
+                    $user = $this->user_model->add_user($value, $type);
+                    $results[$array_idx] = $user;
+                    $array_idx++;
                 }
+                $data['added_users'] = $results;
+                //refresh page
+                redirect('users/users_view', $data);
             };
-
-            //refresh page
             redirect('users/users_view');
         }
 
@@ -85,7 +80,8 @@
             if($this->form_validation->run()){
                 $mail = $_POST['mail'];
                 $password = md5($_POST['password']);
-                $user = $this->user_model->login($mail, $password);
+                $user_data = $this->user_model->login($mail, $password);
+                $user = json_decode($user_data);
                 if ($user) {
                     if($user == 'wrong password'){
                         $this->session->set_flashdata('wrong_password', 'Das angegebene Passwort ist falsch.');
@@ -135,9 +131,9 @@
                     $temp_users = $this->user_model->get_all_temp_users();
                     $user_types = $this->user_model->get_user_types();
                     $users = $this->user_model->get_users();
-                    $data['temp_users'] = $temp_users;
-                    $data['user_types'] = $user_types;
-                    $data['users'] = $users;
+                    $data['temp_users_json'] = $temp_users;
+                    $data['user_types_json'] = $user_types;
+                    $data['users_json'] = $users;
                     $this->load->view('users_view', $data);
                 } else {
                     redirect('users/home');
