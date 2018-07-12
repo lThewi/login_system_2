@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="<?php echo base_url();?>assets/css/coreui.min.css">
     <link rel="stylesheet/less" type="text/css" href="<?php echo base_url();?>assets/css/stylesheet.less" />
     <script src="<?php echo base_url();?>assets/js/less.min.js"></script>
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/styles.css">
 </head>
 <body class="app flex-row align-items-center">
 <div class="container">

@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="<?php echo base_url();?>assets/css/normalize.css">
     <link rel="stylesheet" href="<?php echo base_url();?>assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo base_url();?>assets/css/coreui.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/styles.css">
 </head>
 <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show sidebar-show">
 <!--<header class="app-header navbar">
@@ -70,16 +71,49 @@
             <li class="breadcrumb-item active">Dokumente anzeigen</li>
         </ol>
         <div class="container-fluid">
-            <div class="card card-accent-primary">
-                <div class="card-header">
-                    Dokumente
-                </div>
-                <div class="card-body" id="pending-users">
+        <?php
+            $categories = json_decode($categories_json);
+            $documents = json_decode($documents_json);
 
-                    PLACEHOLDER
+            foreach ($categories as $cat){
+                $print_table = FALSE;
+                foreach ($documents as $doc){
+                    if($doc->category === $cat->id){
+                        $print_table = TRUE;
+                        break;
+                    }
+                }
+                echo '<div class="card card-accent-primary">';
+                    echo '<div class="card-header">'.$cat->name.'</div>';
+                    echo '<div class="card-body" id="'.$cat->name.'">';
+                    if($print_table) {
+                        echo '<table class="table table-responsive-sm table-hover table-outline">';
+                            echo '<thead class="thead-light">';
+                                echo '<tr>';
+                                    echo '<th>Technische Kennung</th>';
+                                    echo '<th>Name</th>';
+                                    echo '<th>Optionen</th>';
+                                echo '<tr>';
+                            echo '</thead>';
+                            echo '<tbody>';
+                            foreach ($documents as $doc) {
+                                if ($doc->category === $cat->id) {
+                                    echo '<tr>';
+                                        echo '<td>' . $doc->technische_kennung . '</td>';
+                                        echo '<td>' . $doc->name . '</td>';
+                                        echo '<td><a href="'.base_url().'documents/modify_document/'.$doc->id.'" class="btn btn-md btn-primary">Bearbeiten</a></td>';
+                                    echo '</tr>';
+                                }
+                            }
+                            echo '</tbody>';
+                        echo '</table>';
+                    } else echo 'Keine Einträge in dieser Kategorie';
+                    echo '</div>';
+                echo '</div>';
+            }
+        ?>
 
-                </div>
-            </div>
+
         </div>
     </main>
 </div>
