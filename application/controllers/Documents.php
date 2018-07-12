@@ -12,6 +12,8 @@ class Documents extends CI_Controller{
         if($this->session->userdata('logged_in') == TRUE){
             $data['documents_json'] = $this->get_all_documents();
             $data['categories_json'] = $this->get_categories();
+
+            $this->load->view('header');
             $this->load->view('show_documents', $data);
         } else {
             redirect('users/login');
@@ -21,6 +23,8 @@ class Documents extends CI_Controller{
     public function create_document(){
         if($this->session->userdata('logged_in') == TRUE){
             $data['categories_json'] = $this->get_categories();
+
+            $this->load->view('header');
             $this->load->view('create_document', $data);
         } else {
             redirect('users/login');
@@ -31,6 +35,8 @@ class Documents extends CI_Controller{
         if($this->session->userdata('logged_in') == TRUE){
             $data['document_json'] = $this->get_document($doc_id);
             $data['categories_json'] = $this->get_categories();
+
+            $this->load->view('header');
             $this->load->view('modify_document', $data);
         } else {
             redirect('users/login');
@@ -120,9 +126,6 @@ class Documents extends CI_Controller{
         if($result){
             redirect('documents/show_documents');
         } else {
-            //unlink($img_path_1);
-            //unlink($img_path_2);
-            //unlink($img_path_3);
             $this->session->set_flashdata('database_error', 'Adding document to Database failed');
             redirect('documents/create_document');
         }
@@ -139,6 +142,26 @@ class Documents extends CI_Controller{
             $this->session->set_flashdata('upload_success', $data);
         }
         return $img_path;
+    }
+
+    // $path needs to be changed if project is not in root!!
+    public function delete_image($name){
+        $path = 'assets/uploaded_images/'.$name;
+        unlink($path);
+    }
+
+    public function delete_Document($doc_id){
+        $document = json_decode($this->document_model->get_document($doc_id));
+        $img_1 = $document[0]->img_1;
+        $img_2 = $document[0]->img_2;
+        $img_3 = $document[0]->img_3;
+
+        $this->delete_image($img_1);
+        $this->delete_image($img_2);
+        $this->delete_image($img_3);
+
+        $result = $this->document_model->delete_document($doc_id);
+        redirect('documents/show_documents');
     }
 
     public function get_categories(){

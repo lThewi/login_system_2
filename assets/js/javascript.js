@@ -1,48 +1,45 @@
-(function($) {
-    'use strict';
-
-    var floatingLabel;
-
-    floatingLabel = function(onload) {
-        var $input;
-        $input = $(this);
-        if (onload) {
-            $.each($('.bt-flabels__wrapper input'), function(index, value) {
-                var $current_input;
-                $current_input = $(value);
-                if ($current_input.val()) {
-                    $current_input.closest('.bt-flabels__wrapper').addClass('bt-flabel__float');
+$(document).ready(function() {
+    $(".delete_row").on('click', function (e) {
+        var id = e.relatedTarget.data('id');
+        console.log(id);
+        if(confirm('Sind Sie sicher?')){
+            $.ajax({
+                url: 'http://localhost/login_system_2/documents/delete_document/'+id,
+                method: 'post',
+                success: function(){
+                    console.log('success');
+                },
+                error: function(){
+                    console.log('error');
                 }
-            });
-        }
-
-        setTimeout((function() {
-            if ($input.val()) {
-                $input.closest('.bt-flabels__wrapper').addClass('bt-flabel__float');
-            } else {
-                $input.closest('.bt-flabels__wrapper').removeClass('bt-flabel__float');
-            }
-        }), 1);
-    };
-
-    $('.bt-flabels__wrapper input').keydown(floatingLabel);
-    $('.bt-flabels__wrapper input').change(floatingLabel);
-
-    window.addEventListener('load', floatingLabel(true), false);
-    $('.js-flabels').parsley().on('form:error', function() {
-        $.each(this.fields, function(key, field) {
-            if (field.validationResult !== true) {
-                field.$element.closest('.bt-flabels__wrapper').addClass('bt-flabels__error');
-            }
-        });
-    });
-
-    $('.js-flabels').parsley().on('field:validated', function() {
-        if (this.validationResult === true) {
-            this.$element.closest('.bt-flabels__wrapper').removeClass('bt-flabels__error');
-        } else {
-            this.$element.closest('.bt-flabels__wrapper').addClass('bt-flabels__error');
+            })
         }
     });
 
-})(jQuery);
+    tinymce.init({
+        selector: 'textarea',
+        branding: false
+    });
+    $(".flatpickr").flatpickr({dateFormat: "Y-m-d"});
+
+    function readURL(input, img_pv) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $(img_pv).attr('src', e.target.result);
+                $(img_pv).attr('class', 'img-thumbnail mt-2');
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#img_1").on('change',function() {
+        readURL(this, '#img_pv_1');
+    });
+    $("#img_2").on('change',function() {
+        readURL(this, '#img_pv_2');
+    });
+    $("#img_3").on('change',function() {
+        readURL(this, '#img_pv_3');
+    });
+});

@@ -30,4 +30,10 @@ class Document_model extends CI_Model{
         $result = $this->db->update('documents', $data);
         return json_encode($result);
     }
+
+    public function delete_document($doc_id){
+        $this->db->where('id', $doc_id);
+        $result = $this->db->delete('documents');
+        return json_encode($result);
+    }
 }

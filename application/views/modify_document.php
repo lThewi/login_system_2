@@ -1,70 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/normalize.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/coreui.min.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/flatpickr.min.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/styles.css">
-
-</head>
-<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show sidebar-show">
-<!--<header class="app-header navbar">
-    <a href="#" class="navbar-brand">
-        <div class="navbar-brand-full">Admin Dashboard</div>
-        <div class="navbar-brand-minimized">Admin</div>
-    </a>
-
-    <ul class="nav navbar-nav d-md-down-none">
-        <li class="nav-item px-3">
-            <a class="nav-link" href="#">Dashboard</a>
-        </li>
-    </ul>
-</header>-->
-
-<div><!--class="app-body"-->
-    <div class="sidebar">
-        <nav class="sidebar-nav">
-            <ul class="nav">
-                <li class="nav-title">Allgemein</li>
-                <li class="nav-item">
-                    <a href="<?php echo base_url(); ?>users/users_view" class="nav-link">
-                        <div class="nav-icon icon-people"></div>
-                        Benutzerverwaltung
-                    </a>
-                </li>
-                <li class="nav-item nav-dropdown">
-                    <a href="#" class="nav-link nav-dropdown-toggle">
-                        <div class="nav-icon icon-people"></div>
-                        Dokumente
-                    </a>
-                    <ul class="nav-dropdown-items">
-                        <li class="nav-item">
-                            <a href="<?php echo base_url(); ?>documents/create_document" class="nav-link active">
-                                <div class="nav-icon icon-people"></div>
-                                Dokument erstellen
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?php echo base_url(); ?>documents/show_documents" class="nav-link">
-                                <div class="nav-icon icon-people"></div>
-                                Dokumente anzeigen
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="<?php echo base_url(); ?>users/logout" class="nav-link">
-                        <div class="nav-icon icon-people"></div>
-                        Abmelden
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-
     <main class="main">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">Admin</li>
@@ -133,10 +66,11 @@
                                    accept="image/tif, image/tiff, image/png, image/jpg, image/jpeg">
                             <input type="hidden" name="img_1_old" value="<?php echo $doc[0]->img_1?>">
                             <?php
-                                if($doc[0]->img_1 != null){
-                                    echo '<img class="img-thumbnail mt-2" src="'.base_url().'assets/uploaded_images/'.$doc[0]->img_1.'"/>';
-                                }
-                            ?>
+                            if($doc[0]->img_1 != null){
+                                $src_1 = 'class="img-thumbnail mt-2" src="'.base_url().'assets/uploaded_images/'.$doc[0]->img_1.'"';
+                            } else $src_1 = '';?>
+                            <img id="img_pv_1" <?php echo $src_1;?>/>
+
                         </div>
                         <div class="form-group col-md-4">
                             <input type="file" name="img_2" id="img_2"
@@ -144,9 +78,10 @@
                             <input type="hidden" name="img_2_old" value="<?php echo $doc[0]->img_2?>">
                             <?php
                             if($doc[0]->img_2 != null){
-                                echo '<img class="img-thumbnail mt-2" src="'.base_url().'assets/uploaded_images/'.$doc[0]->img_2.'"/>';
-                            }
-                            ?>
+                                $src_2 = 'class="img-thumbnail mt-2" src="'.base_url().'assets/uploaded_images/'.$doc[0]->img_2.'"';
+                            } else $src_2 = '';?>
+                                <img id="img_pv_2" <?php echo $src_2;?>/>
+
                         </div>
                         <div class="form-group col-md-4">
                             <input type="file" name="img_3" id="img_3"
@@ -154,9 +89,9 @@
                             <input type="hidden" name="img_3_old" value="<?php echo $doc[0]->img_3?>">
                             <?php
                             if($doc[0]->img_3 != null){
-                                echo '<img class="img-thumbnail mt-2" src="'.base_url().'assets/uploaded_images/'.$doc[0]->img_3.'"/>';
-                            }
-                            ?>
+                                $src_3 = 'class="img-thumbnail mt-2" src="'.base_url().'assets/uploaded_images/'.$doc[0]->img_3.'"';
+                            } else $src_3 = '';?>
+                            <img id="img_pv_3" <?php echo $src_3;?>/>
                         </div>
                     </div>
                     <input type="submit" class="btn btn-lg btn-primary" value="Speichern">
@@ -176,16 +111,7 @@
 <script src="<?php echo base_url(); ?>assets/js/coreui.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/tinymce.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/flatpickr.min.js"></script>
-
-<script>
-    $(document).ready(function() {
-        tinymce.init({
-            selector: 'textarea',
-            branding: false
-        });
-        $(".flatpickr").flatpickr({dateFormat: "Y-m-d"});
-    });
-</script>
+<script src="<?php echo base_url(); ?>assets/js/javascript.js"></script>
 
 </body>
 </html>

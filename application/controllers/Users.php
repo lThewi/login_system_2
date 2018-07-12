@@ -27,12 +27,13 @@
                 $data['lastname'] = $lastname;
 
                 $admin_mail = 'yyy';
+                $lang_strings = json_decode($this->language_model->get_lang_strings_de());
 
                 //preparing the mailcontent
                 $this->email->from('vftestadresse@gmail.com', 'MyName');
                 $this->email->to($mail);
-                $this->email->subject('Ihr Account bei uns');
-                $message = 'placeholder';
+                $this->email->subject($lang_strings->email_subject);
+                $message = $lang_strings->email_body;
 
 
                 $this->email->message($message);
@@ -134,6 +135,8 @@
                     $data['temp_users_json'] = $temp_users;
                     $data['user_types_json'] = $user_types;
                     $data['users_json'] = $users;
+
+                    $this->load->view('header');
                     $this->load->view('users_view', $data);
                 } else {
                     redirect('users/home');
