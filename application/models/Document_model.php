@@ -36,4 +36,14 @@ class Document_model extends CI_Model{
         $result = $this->db->delete('documents');
         return json_encode($result);
     }
+
+    public function create_category($data){
+        $result = $this->db->insert('doc_categories', $data);
+        return json_encode($result);
+    }
+
+    public function create_contactperson($data){
+        $result = $this->db->insert('contact_persons', $data);
+        return json_encode($result);
+    }
 }

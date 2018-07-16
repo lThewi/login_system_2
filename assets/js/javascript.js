@@ -42,4 +42,7 @@ $(document).ready(function() {
     $("#img_3").on('change',function() {
         readURL(this, '#img_pv_3');
     });
+    $("#img").on('change',function() {
+        readURL(this, '#img_pv');
+    });
 });

@@ -11,6 +11,7 @@
                 </div>
                 <?php echo form_open_multipart('documents/create'); ?>
                 <div class="card-body">
+                    <?php echo validation_errors(); ?>
                     <?php if ($this->session->flashdata('database_error')) : ?>
                         <?php echo '<p class="alert">' . $this->session->flashdata('database_error') . '</p>'; ?>
                     <?php endif; ?>

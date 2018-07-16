@@ -9,7 +9,7 @@
                 <div class="card-header">
                     Dokument erstellen
                 </div>
-                <?php echo form_open_multipart('documents/create'); ?>
+                <?php echo form_open_multipart('documents/create_category'); ?>
                 <div class="card-body">
                     <?php if ($this->session->flashdata('database_error')) : ?>
                         <?php echo '<p class="alert">' . $this->session->flashdata('database_error') . '</p>'; ?>

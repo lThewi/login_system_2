@@ -58,6 +58,12 @@
                                 Dokumente anzeigen
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="<?php echo base_url(); ?>documents/create_contactperson" class="nav-link">
+                                <div class="nav-icon icon-people"></div>
+                                Kontakt erstellen
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item">

@@ -43,6 +43,49 @@ class Documents extends CI_Controller{
         }
     }
 
+    public function create_category(){
+        if($this->session->userdata('logged_in') == TRUE){
+            $this->load->view('header');
+            $this->load->view('create_category');
+
+            $this->form_validation->set_rules('name', 'Name', 'required|trim|is_unique[doc_categories.name]');
+
+            if($this->form_validation->run()){
+                $db_array = array(
+                    'name' => $this->input->post('name')
+                );
+                $result = $this->document_model->create_category($db_array);
+            }
+
+        }else{
+            redirect('users/login');
+        }
+    }
+
+    public function create_contactperson(){
+        if($this->session->userdata('logged_in') == TRUE){
+            $this->load->view('header');
+            $this->load->view('create_contactperson');
+
+            $this->form_validation->set_rules('name', 'Name', 'required|trim');
+            $this->form_validation->set_rules('position', 'Position', 'required|trim');
+
+            if($this->form_validation->run()){
+                $image_name = $this->upload_contact_image('img');
+
+                $db_array = array(
+                    'name' => $this->input->post('name'),
+                    'position' => $this->input->post('position'),
+                    'img' => $image_name
+                );
+
+                $this->document_model->create_contactperson($db_array);
+            }
+        } else {
+            redirect('users/login');
+        }
+    }
+
     public function create(){
         //image upload config
         $config['upload_path'] = 'assets/uploaded_images';
@@ -85,14 +128,6 @@ class Documents extends CI_Controller{
     }
 
     public function modify(){
-        //image upload config
-        $config['upload_path'] = 'assets/uploaded_images';
-        $config['allowed_types'] = 'tif|tiff|jpeg|jpg|png';
-        $config['max_size'] = '';
-        $config['max_width'] = '';
-        $config['max_height'] = '';
-        $this->load->library('upload', $config);
-
         //preparing DB array
         $db_array = array(
             'category' => $this->input->post('categories'),
@@ -134,14 +169,37 @@ class Documents extends CI_Controller{
     public function upload_image($field){
         if(!$this->upload->do_upload($field)){
             $error = $this->upload->display_errors();
-            $img_path = null;
+            $img_name = null;
             $this->session->set_flashdata('upload_error', $error);
         } else {
             $data = $this->upload->data();
-            $img_path = $this->upload->data('file_name');
+            $img_name = $this->upload->data('file_name');
             $this->session->set_flashdata('upload_success', $data);
         }
-        return $img_path;
+        return $img_name;
+    }
+
+    public function upload_contact_image($img){
+        if(!$this->upload->do_upload($img)){
+            $error = $this->upload->display_errors();
+            $img_name = null;
+            $this->session->set_flashdata('upload_error', $error);
+        } else {
+            $img_name = $this->upload->data('file_name');
+
+            $config['image_library'] = 'gd2';
+            $config['source_image'] = $this->upload->data('full_path');
+            $config['maintain_ratio'] = TRUE;
+            $config['width']     = 400;
+            $config['height']   = 400;
+
+            $this->load->library('image_lib', $config);
+
+            $this->image_lib->resize();
+            $this->image_lib->clear();
+        }
+
+        return $img_name;
     }
 
     // $path needs to be changed if project is not in root!!
