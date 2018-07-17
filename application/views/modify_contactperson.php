@@ -10,7 +10,7 @@
                 Ansprechpartner erstellen
             </div>
             <div class="card-body">
-                <?php echo form_open_multipart('documents/create_contactperson'); ?>
+                <?php echo form_open_multipart('documents/modify_con'); ?>
                 <?php echo validation_errors(); ?>
                 <?php if ($this->session->flashdata('database_error')) : ?>
                     <?php echo '<p class="alert">' . $this->session->flashdata('database_error') . '</p>'; ?>
@@ -22,15 +22,18 @@
                     <?php echo '<p class="alert alert-success">Kontakt erfolgreich erstellt</p>'; ?>
                 <?php endif; ?>
 
-
+                <?php
+                    $contact = json_decode($contact_json);
+                ?>
                 <div class="row">
                     <div class="form-group col-md-8">
                         <label for="name">Name</label>
-                        <input type="text" id="name" name="name" class="form-control" required>
+                        <input type="text" id="name" name="name" class="form-control" required value="<?php echo set_value('name', $contact[0]->name)?>">
+                        <input type="hidden" id="con_id" name="con_id" value="<?php echo $contact[0]->id; ?>">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="position">Position</label>
-                        <input type="text" id="position" name="position" class="form-control" required>
+                        <input type="text" id="position" name="position" class="form-control" required value="<?php echo set_value('name', $contact[0]->position)?>">
                     </div>
                 </div>
                 <div class="form-group">
@@ -38,7 +41,13 @@
                     <div class="form-control col-md-4 mb-3">
                         <input type="file" name="img" id="img"
                                accept="image/tif, image/tiff, image/png, image/jpg, image/jpeg">
-                        <img id="img_pv"/>
+                        <input type="hidden" name="img_old" value="<?php echo $contact[0]->img?>">
+                        <?php
+                        if($contact[0]->img != null){
+                            $path = json_decode($img_path);
+                            $src = 'class="img-thumbnail mt-2" src="'.base_url().$path.$contact[0]->img.'"';
+                        } else $src = 'class="img-thumbnail mt-2"';?>
+                        <img id="img_pv" <?php echo $src;?>/>
                     </div>
                 </div>
                 <input type="submit" class="btn btn-lg btn-primary" value="Speichern">

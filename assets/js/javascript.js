@@ -1,13 +1,13 @@
 $(document).ready(function() {
-    $(".delete_row").on('click', function (e) {
-        var id = e.relatedTarget.data('id');
-        console.log(id);
-        if(confirm('Sind Sie sicher?')){
+    $(".delete_row").on('click', function () {
+        var id = $(this).attr('data-id');
+        if(confirm('Sind Sie sicher, dass Sie dieses Dokument löschen wollen?')){
             $.ajax({
                 url: 'http://localhost/login_system_2/documents/delete_document/'+id,
                 method: 'post',
                 success: function(){
                     console.log('success');
+                    location.reload();
                 },
                 error: function(){
                     console.log('error');
@@ -16,11 +16,39 @@ $(document).ready(function() {
         }
     });
 
-    tinymce.init({
-        selector: 'textarea',
-        branding: false
+    $(".decline-user").on('click', function () {
+        var id = $(this).attr('data-id');
+        if(confirm('Sind Sie sicher, dass Sie diesen Nutzer ablehnen wollen?')){
+            $.ajax({
+                url: 'http://localhost/login_system_2/users/decline_user/'+id,
+                method: 'post',
+                dataType: 'json',
+                success: function(data){
+                    console.log(data);
+                        location.reload();
+                },
+                error: function(){
+                    console.log('error');
+                }
+            })
+        }
     });
-    $(".flatpickr").flatpickr({dateFormat: "Y-m-d"});
+
+    $(".delete-contact").on('click', function () {
+        var id = $(this).attr('data-id');
+        if(confirm('Sind Sie sicher, dass Sie diese Kontaktperson entfernen wollen?')){
+            $.ajax({
+                url: 'http://localhost/login_system_2/documents/delete_contact/'+id,
+                method: 'post',
+                success: function(){
+                    location.reload();
+                },
+                error: function(){
+                    console.log('error');
+                }
+            })
+        }
+    });
 
     function readURL(input, img_pv) {
         if (input.files && input.files[0]) {

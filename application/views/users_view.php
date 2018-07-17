@@ -18,6 +18,7 @@
                             <th><strong>Nachname</strong></th>
                             <th><strong>Email</strong></th>
                             <th><strong>Accounttyp</strong></th>
+                            <th><strong>Optionen</strong></th>
                         </tr>
                         </thead>
 
@@ -28,14 +29,17 @@
                             $types[$user_type->id] = $user_type->name;
                         }
                         foreach ($temp_users as $temp_user) {
-                            $dropdown_name = $temp_user->id;
-                            echo '<tr>
+                            if($temp_user->declined == FALSE){
+                                $dropdown_name = $temp_user->id;
+                                echo '<tr>
                                 <td>'. form_checkbox('row[]', $temp_user->id, FALSE) .'</td>
                                 <td>'. $temp_user->name .'</td>
                                 <td>'. $temp_user->lastname .'</td>
                                 <td>'. $temp_user->email .'</td>
                                 <td>'. form_dropdown($dropdown_name, $types, 2, array('class' => 'form-control')) .'</td>
+                                <td><a href="#" class="btn btn-md btn-danger mx-1 decline-user" data-id="'.$temp_user->id.'">Ablehnen</a></td>
                                 </tr>';
+                            }
                         }
                         ?>
                     </table>
@@ -71,6 +75,37 @@
                     </table>
                 </div>
             </div>
+
+            <div class="card card-accent-primary">
+                <div class="card-header">
+                    Abgelehnte Accounts
+                </div>
+                <div class="card-body" id="declined-users">
+                    <table class="table table-responsive-sm table-hover table-outline">
+                        <thead class="thead-light">
+                        <tr>
+                            <th><strong>Name</strong></th>
+                            <th><strong>Nachname</strong></th>
+                            <th><strong>Email</strong></th>
+                            <th><strong>Optionen</strong></th>
+                        </tr>
+                        </thead>
+
+                        <?php
+                        foreach ($temp_users as $temp_user) {
+                            if($temp_user->declined == TRUE){
+                                echo '<tr>
+                                <td>'. $temp_user->name .'</td>
+                                <td>'. $temp_user->lastname .'</td>
+                                <td>'. $temp_user->email .'</td>
+                                <td>PLACEHOLDER</td>
+                                </tr>';
+                            }
+
+                        }?>
+                    </table>
+                </div>
+            </div>
         </div>
     </main>
 </div>
@@ -80,5 +115,6 @@
 <script src="<?php echo base_url();?>assets/js/popper.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/coreui.min.js"></script>
+<script src="<?php echo base_url();?>assets/js/javascript.js"></script>
 </body>
 </html>

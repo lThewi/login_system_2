@@ -31,9 +31,21 @@ class Document_model extends CI_Model{
         return json_encode($result);
     }
 
+    public function modify_contactperson($con_id, $data){
+        $this->db->where('id', $con_id);
+        $result = $this->db->update('contact_persons', $data);
+        return json_encode($result);
+    }
+
     public function delete_document($doc_id){
         $this->db->where('id', $doc_id);
         $result = $this->db->delete('documents');
+        return json_encode($result);
+    }
+
+    public function delete_contactperson($con_id){
+        $this->db->where('id', $con_id);
+        $result = $this->db->delete('contact_persons');
         return json_encode($result);
     }
 
@@ -45,5 +57,16 @@ class Document_model extends CI_Model{
     public function create_contactperson($data){
         $result = $this->db->insert('contact_persons', $data);
         return json_encode($result);
+    }
+
+    public function get_all_contactpersons(){
+        $result = $this->db->get('contact_persons');
+        return json_encode($result->result());
+    }
+
+    public function get_contact($id){
+        $this->db->where('id', $id);
+        $result = $this->db->get('contact_persons');
+        return json_encode($result->result());
     }
 }

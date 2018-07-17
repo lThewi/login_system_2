@@ -11,12 +11,10 @@
                 </div>
                 <?php echo form_open_multipart('documents/create_category'); ?>
                 <div class="card-body">
-                    <?php if ($this->session->flashdata('database_error')) : ?>
-                        <?php echo '<p class="alert">' . $this->session->flashdata('database_error') . '</p>'; ?>
+                    <?php if ($this->session->flashdata('created_category')) : ?>
+                        <?php echo '<p class="alert alert-success">Kategorie erfolgreich erstellt</p>'; ?>
                     <?php endif; ?>
-                    <?php if ($this->session->flashdata('upload_error')) : ?>
-                        <?php echo '<p class="alert">' . $this->session->flashdata('upload_error_1') . '</p>'; ?>
-                    <?php endif; ?>
+
 
                     <div class="form-group col-md-8">
                         <label for="name">Name</label>

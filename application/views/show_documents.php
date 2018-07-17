@@ -5,6 +5,9 @@
             <li class="breadcrumb-item active">Dokumente anzeigen</li>
         </ol>
         <div class="container-fluid">
+            <?php if ($this->session->flashdata('documents_created')) : ?>
+                <?php echo '<p class="alert alert-success">Dokument erfolgreich erstellt.</p>'; ?>
+            <?php endif; ?>
         <?php
             $categories = json_decode($categories_json);
             $documents = json_decode($documents_json);
@@ -17,16 +20,16 @@
                         break;
                     }
                 }
-                echo '<div class="card card-accent-primary">';
+                echo '<div class="card card-accent-primary" id="'.$cat->name.'">';
                     echo '<div class="card-header">'.$cat->name.'</div>';
                     echo '<div class="card-body" id="'.$cat->name.'">';
                     if($print_table) {
-                        echo '<table class="table table-responsive-sm table-hover table-outline">';
+                        echo '<table class="table table-responsive-sm table-hover table-outline sorted_table" id="'.$cat->name.'">';
                             echo '<thead class="thead-light">';
                                 echo '<tr>';
                                     echo '<th>Technische Kennung</th>';
                                     echo '<th>Name</th>';
-                                    echo '<th>Optionen</th>';
+                                    echo '<th class="no-sort">Optionen</th>';
                                 echo '<tr>';
                             echo '</thead>';
                             echo '<tbody>';
@@ -49,24 +52,6 @@
                 echo '</div>';
             }
         ?>
-        <div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog modal-danger" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4>Achtung</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">x</span></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Sind Sie sicher, dass Sie dieses Dokument löschen wollen?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Nein</button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Ja, löschen</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         </div>
     </main>
 </div>
@@ -76,7 +61,22 @@
 <script src="<?php echo base_url();?>assets/js/popper.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/coreui.min.js"></script>
+<script src="<?php echo base_url();?>assets/js/sortable.min.js"></script>
+<script src="<?php echo base_url();?>assets/js/jquery.tablesort.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/javascript.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('.sorted_table').sortable({
+                containerSelector: 'table',
+                itemPath: '> tbody',
+                itemSelector: 'tr',
+                placeholder: '<tr class="placeholder"/>'
+            });
+
+            $('table').tablesort();
+        });
+    </script>
 
 </body>
 </html>

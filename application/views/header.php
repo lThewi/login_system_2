@@ -58,10 +58,41 @@
                                 Dokumente anzeigen
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="<?php echo base_url(); ?>documents/create_contactperson" class="nav-link">
+                        <li class="nav-item nav-dropdown">
+                            <a href="#" class="nav-link nav-dropdown-toggle">
                                 <div class="nav-icon icon-people"></div>
-                                Kontakt erstellen
+                                Kontaktpersonen
+                            </a>
+                            <ul class="nav-dropdown-items">
+                                <a href="<?php echo base_url(); ?>documents/create_contactperson" class="nav-link">
+                                    <div class="nav-icon icon-people"></div>
+                                    Kontakt erstellen
+                                </a>
+                                <a href="<?php echo base_url(); ?>documents/show_contactpersons" class="nav-link">
+                                    <div class="nav-icon icon-people"></div>
+                                    Kontakte anzeigen
+                                </a>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="nav-item nav-dropdown">
+                    <a href="#" class="nav-link nav-dropdown-toggle">
+                        <div class="nav-icon icon-people"></div>
+                        Seiten
+                    </a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a href="<?php echo base_url(); ?>sites/create_site" class="nav-link">
+                                <div class="nav-icon icon-people"></div>
+                                Seite erstellen
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo base_url(); ?>sites/show_sites" class="nav-link">
+                                <div class="nav-icon icon-people"></div>
+                                Seiten anzeigen
                             </a>
                         </li>
                     </ul>

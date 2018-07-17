@@ -1,11 +1,18 @@
 <?php
 class Documents extends CI_Controller{
+    public $image_path = 'assets/uploaded_images/';
+
+
     public function index(){
         if($this->session->userdata('logged_in') == TRUE){
             $this->load->view('show_documents');
         } else {
             redirect('users/login');
         }
+    }
+
+    public function get_image_path(){
+        return json_encode($this->image_path);
     }
 
     public function show_documents(){
@@ -23,6 +30,7 @@ class Documents extends CI_Controller{
     public function create_document(){
         if($this->session->userdata('logged_in') == TRUE){
             $data['categories_json'] = $this->get_categories();
+            $data['contact_persons'] = $this->get_all_contactpersons();
 
             $this->load->view('header');
             $this->load->view('create_document', $data);
@@ -43,17 +51,32 @@ class Documents extends CI_Controller{
         }
     }
 
+    public function modify_contact($con_id){
+        if($this->session->userdata('logged_in') == TRUE){
+            $data['img_path'] = $this->get_image_path();
+            $data['contact_json'] = $this->get_contact($con_id);
+
+            $this->load->view('header');
+            $this->load->view('modify_contactperson', $data);
+        } else {
+            redirect('users/login');
+        }
+    }
+
     public function create_category(){
         if($this->session->userdata('logged_in') == TRUE){
-            $this->load->view('header');
-            $this->load->view('create_category');
-
             $this->form_validation->set_rules('name', 'Name', 'required|trim|is_unique[doc_categories.name]');
 
-            if($this->form_validation->run()){
+            if(!$this->form_validation->run()){
+                $this->load->view('header');
+                $this->load->view('create_category');
+            } else {
+                $this->load->view('header');
+                $this->load->view('create_category');
                 $db_array = array(
                     'name' => $this->input->post('name')
                 );
+                $this->session->set_flashdata('created_category', 'Category created');
                 $result = $this->document_model->create_category($db_array);
             }
 
@@ -64,13 +87,15 @@ class Documents extends CI_Controller{
 
     public function create_contactperson(){
         if($this->session->userdata('logged_in') == TRUE){
-            $this->load->view('header');
-            $this->load->view('create_contactperson');
-
             $this->form_validation->set_rules('name', 'Name', 'required|trim');
             $this->form_validation->set_rules('position', 'Position', 'required|trim');
 
-            if($this->form_validation->run()){
+            if(!$this->form_validation->run()){
+                $this->load->view('header');
+                $this->load->view('create_contactperson');
+            } else {
+                $this->load->view('header');
+                $this->load->view('create_contactperson');
                 $image_name = $this->upload_contact_image('img');
 
                 $db_array = array(
@@ -79,6 +104,7 @@ class Documents extends CI_Controller{
                     'img' => $image_name
                 );
 
+                $this->session->set_flashdata('contact_created', 'Conctact person created');
                 $this->document_model->create_contactperson($db_array);
             }
         } else {
@@ -86,9 +112,20 @@ class Documents extends CI_Controller{
         }
     }
 
+    public function show_contactpersons(){
+        if($this->session->userdata('logged_in') == TRUE){
+            $data['contact_persons_json'] = $this->get_all_contactpersons();
+
+            $this->load->view('header');
+            $this->load->view('show_contactpersons', $data);
+        } else {
+            redirect('users/login');
+        }
+    }
+
     public function create(){
         //image upload config
-        $config['upload_path'] = 'assets/uploaded_images';
+        $config['upload_path'] = 'assets/uploaded_images/';
         $config['allowed_types'] = 'tif|tiff|jpeg|jpg|png';
         $config['max_size'] = '';
         $config['max_width'] = '';
@@ -111,12 +148,13 @@ class Documents extends CI_Controller{
             'img_1' => $img_path_1,
             'img_2' => $img_path_2,
             'img_3' => $img_path_3,
-            'contact_person' => null
+            'contact_person' => $this->input->post('contacts')
         );
 
         //model call to insert array into DB
         $result = $this->document_model->create_document($db_array);
         if($result){
+            $this->session->set_flashdata('document_created', 'Document created');
             redirect('documents/show_documents');
         } else {
             unlink($img_path_1);
@@ -127,7 +165,27 @@ class Documents extends CI_Controller{
         }
     }
 
-    public function modify(){
+    public function modify_con(){
+        $db_array = array(
+            'name' => $this->input->post('name'),
+            'position' => $this->input->post('position')
+        );
+
+        $img_name = $this->upload_contact_image('img');
+        if($img_name != null){
+            $db_array['img'] = $img_name;
+            unlink($this->image_path.$this->input->post('img_old'));
+        }
+
+        $result = $this->document_model->modify_contactperson($this->input->post('con_id'), $db_array);
+        if($result){
+            redirect('documents/show_contactpersons');
+        } else {
+            redirect('documents/modify_contactperson');
+        }
+    }
+
+    public function modify_doc(){
         //preparing DB array
         $db_array = array(
             'category' => $this->input->post('categories'),
@@ -202,9 +260,8 @@ class Documents extends CI_Controller{
         return $img_name;
     }
 
-    // $path needs to be changed if project is not in root!!
     public function delete_image($name){
-        $path = 'assets/uploaded_images/'.$name;
+        $path = $this->image_path.$name;
         unlink($path);
     }
 
@@ -214,12 +271,30 @@ class Documents extends CI_Controller{
         $img_2 = $document[0]->img_2;
         $img_3 = $document[0]->img_3;
 
-        $this->delete_image($img_1);
-        $this->delete_image($img_2);
-        $this->delete_image($img_3);
+        if($img_1 != null){
+            $this->delete_image($img_1);
+        }
+        if($img_2 != null){
+            $this->delete_image($img_2);
+        }
+        if($img_3 != null){
+            $this->delete_image($img_3);
+        }
 
         $result = $this->document_model->delete_document($doc_id);
-        redirect('documents/show_documents');
+        redirect('documents/show_documents', 'refresh');
+    }
+
+    public function delete_contact($id){
+        $contact = json_decode($this->get_contact($id));
+        $img = $contact[0]->img;
+
+        if($img != null){
+            $this->delete_image($img);
+        }
+
+        $result = $this->document_model->delete_contactperson($id);
+        return $result;
     }
 
     public function get_categories(){
@@ -235,5 +310,15 @@ class Documents extends CI_Controller{
     public function get_document($doc_id){
         $doc_json = $this->document_model->get_document($doc_id);
         return $doc_json;
+    }
+
+    public function get_all_contactpersons(){
+        $contacts_json = $this->document_model->get_all_contactpersons();
+        return $contacts_json;
+    }
+
+    public function get_contact($id){
+        $contact_json = $this->document_model->get_contact($id);
+        return $contact_json;
     }
 }

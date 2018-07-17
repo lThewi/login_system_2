@@ -9,7 +9,7 @@
                 <div class="card-header">
                     Dokument erstellen
                 </div>
-                <?php echo form_open_multipart('documents/modify'); ?>
+                <?php echo form_open_multipart('documents/modify_doc'); ?>
                 <div class="card-body">
                     <?php if ($this->session->flashdata('database_error')) : ?>
                         <?php echo '<p class="alert">' . $this->session->flashdata('database_error') . '</p>'; ?>
@@ -112,6 +112,18 @@
 <script src="<?php echo base_url(); ?>assets/js/tinymce.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/flatpickr.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/javascript.js"></script>
+
+    <script>
+        $(document).ready( function(){
+            tinymce.init({
+                selector: 'textarea',
+                branding: false
+            });
+
+            $(".flatpickr").flatpickr({dateFormat: "Y-m-d"});
+
+        });
+    </script>
 
 </body>
 </html>

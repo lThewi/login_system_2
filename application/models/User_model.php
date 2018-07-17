@@ -101,4 +101,17 @@
             $result = $this->db->get('users');
             return json_encode($result->result());
         }
+
+        public function get_temp_user_email($id){
+            $this->db->select('email');
+            $this->db->where('id', $id);
+            $result = $this->db->get('temp_users');
+            return json_encode($result->result());
+        }
+
+        public function update_temp_user($id, $data){
+            $this->db->where('id', $id);
+            $result = $this->db->update('temp_users', $data);
+            return $result;
+        }
     }

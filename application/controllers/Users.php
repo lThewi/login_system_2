@@ -27,13 +27,13 @@
                 $data['lastname'] = $lastname;
 
                 $admin_mail = 'yyy';
-                $lang_strings = json_decode($this->language_model->get_lang_strings_de());
+                $lang_strings = json_decode($this->language_model->get_lang_strings_email());
 
                 //preparing the mailcontent
                 $this->email->from('vftestadresse@gmail.com', 'MyName');
                 $this->email->to($mail);
-                $this->email->subject($lang_strings->email_subject);
-                $message = $lang_strings->email_body;
+                $this->email->subject($lang_strings->email_register_subject);
+                $message = $lang_strings->email_register_body;
 
 
                 $this->email->message($message);
@@ -143,6 +143,34 @@
                 }
             } else {
                 redirect('users/login');
+            }
+        }
+
+        public function decline_user($id){
+            $db_array = array(
+                'declined' => TRUE
+            );
+
+            $email = json_decode($this->user_model->get_temp_user_email($id));
+
+            if($this->user_model->update_temp_user($id, $db_array)){
+                $lang_strings = json_decode($this->language_model->get_lang_strings_email());
+
+                //preparing the mailcontent
+                $this->email->from('vftestadresse@gmail.com', 'MyName');
+                $this->email->to($email[0]->email);
+                $this->email->subject($lang_strings->email_declined_subject);
+                $this->email->message($lang_strings->email_declined_body);
+
+                //sending mail
+                if($this->email->send()){
+                    echo json_encode(TRUE);
+                } else {
+                    echo json_encode(FALSE);
+                }
+            } else {
+                echo json_encode(FALSE);
+                return json_encode(FALSE);
             }
         }
     }
