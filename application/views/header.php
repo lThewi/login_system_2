@@ -80,19 +80,59 @@
                 <li class="nav-item nav-dropdown">
                     <a href="#" class="nav-link nav-dropdown-toggle">
                         <div class="nav-icon icon-people"></div>
+                        News
+                    </a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a href="<?php echo base_url(); ?>news/create_news" class="nav-link">
+                                <div class="nav-icon icon-people"></div>
+                                Beitrag erstellen
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo base_url(); ?>news/show_news" class="nav-link">
+                                <div class="nav-icon icon-people"></div>
+                                News anzeigen
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item nav-dropdown">
+                    <a href="#" class="nav-link nav-dropdown-toggle">
+                        <div class="nav-icon icon-people"></div>
                         Seiten
                     </a>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item">
-                            <a href="<?php echo base_url(); ?>sites/create_site" class="nav-link">
+                            <a href="<?php echo base_url(); ?>pages/create_page" class="nav-link">
                                 <div class="nav-icon icon-people"></div>
                                 Seite erstellen
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?php echo base_url(); ?>sites/show_sites" class="nav-link">
+                            <a href="<?php echo base_url(); ?>pages/show_pages" class="nav-link">
                                 <div class="nav-icon icon-people"></div>
                                 Seiten anzeigen
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item nav-dropdown">
+                    <a href="#" class="nav-link nav-dropdown-toggle">
+                        <div class="nav-icon icon-people"></div>
+                        FAQ
+                    </a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a href="<?php echo base_url(); ?>faq/create_faq" class="nav-link">
+                                <div class="nav-icon icon-people"></div>
+                                Frage erstellen
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo base_url(); ?>faq/show_faq" class="nav-link">
+                                <div class="nav-icon icon-people"></div>
+                                FAQ anzeigen
                             </a>
                         </li>
                     </ul>

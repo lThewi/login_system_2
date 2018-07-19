@@ -10,7 +10,7 @@
                 Ansprechpartner erstellen
             </div>
             <div class="card-body">
-                <?php echo form_open_multipart('documents/create_contactperson'); ?>
+                <?php echo form_open_multipart('documents/create_new_contact'); ?>
                 <?php echo validation_errors(); ?>
                 <?php if ($this->session->flashdata('database_error')) : ?>
                     <?php echo '<p class="alert">' . $this->session->flashdata('database_error') . '</p>'; ?>
@@ -22,6 +22,14 @@
                     <?php echo '<p class="alert alert-success">Kontakt erfolgreich erstellt</p>'; ?>
                 <?php endif; ?>
 
+                <?php
+                    $placeholder_list = array(
+                            1 => 'Platzhalter 1',
+                            2 => 'Platzhalter 2',
+                            3 => 'Platzhalter 3',
+                    );
+                ?>
+
 
                 <div class="row">
                     <div class="form-group col-md-8">
@@ -31,6 +39,16 @@
                     <div class="form-group col-md-4">
                         <label for="position">Position</label>
                         <input type="text" id="position" name="position" class="form-control" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-8">
+                        <label for="tel">Telefon / Mobil</label>
+                        <input type="text" id="tel" name="tel" class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="category">Kontaktbereich</label>
+                        <?php echo form_dropdown('category', $placeholder_list, 0, array('class' => 'form-control', 'id' => 'category')); ?>
                     </div>
                 </div>
                 <div class="form-group">

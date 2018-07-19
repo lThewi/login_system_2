@@ -87,25 +87,44 @@ class Documents extends CI_Controller{
 
     public function create_contactperson(){
         if($this->session->userdata('logged_in') == TRUE){
+
+                $this->load->view('header');
+                $this->load->view('create_contactperson');
+
+        } else {
+            redirect('users/login');
+        }
+    }
+
+    public function create_new_contact(){
+        if($this->session->userdata('logged_in') == TRUE){
             $this->form_validation->set_rules('name', 'Name', 'required|trim');
             $this->form_validation->set_rules('position', 'Position', 'required|trim');
 
-            if(!$this->form_validation->run()){
-                $this->load->view('header');
-                $this->load->view('create_contactperson');
-            } else {
-                $this->load->view('header');
-                $this->load->view('create_contactperson');
+            if($this->form_validation->run()){
                 $image_name = $this->upload_contact_image('img');
 
                 $db_array = array(
                     'name' => $this->input->post('name'),
                     'position' => $this->input->post('position'),
+                    'tel' => $this->input->post('tel'),
+                    'category_id' => $this->input->post('category'),
                     'img' => $image_name
                 );
 
                 $this->session->set_flashdata('contact_created', 'Conctact person created');
-                $this->document_model->create_contactperson($db_array);
+                $result = $this->document_model->create_contactperson($db_array);
+
+                if($result){
+                    $this->session->set_flashdata('contact_created', 'Die Kontaktperson wurde erfolgreich erstellt');
+                    redirect('documents/create_contactperson');
+                } else {
+                    $this->session->set_flashdata('site_error', 'Beim Eintragen der Kontaktperson in die Datenbank ist ein Fehler aufgetreten');
+                    if($image_name != null){
+                        $path = $this->image_path . $image_name;
+                        unlink($path);
+                    }
+                }
             }
         } else {
             redirect('users/login');
@@ -115,6 +134,7 @@ class Documents extends CI_Controller{
     public function show_contactpersons(){
         if($this->session->userdata('logged_in') == TRUE){
             $data['contact_persons_json'] = $this->get_all_contactpersons();
+            $data['img_path'] = $this->image_path;
 
             $this->load->view('header');
             $this->load->view('show_contactpersons', $data);
@@ -125,12 +145,8 @@ class Documents extends CI_Controller{
 
     public function create(){
         //image upload config
-        $config['upload_path'] = 'assets/uploaded_images/';
-        $config['allowed_types'] = 'tif|tiff|jpeg|jpg|png';
-        $config['max_size'] = '';
-        $config['max_width'] = '';
-        $config['max_height'] = '';
-        $this->load->library('upload', $config);
+        $config['upload_path'] = $this->image_path;
+        $this->upload->initialize($config);
 
         //uploading images to server
         $img_path_1 = $this->upload_image('img_1');
@@ -248,8 +264,8 @@ class Documents extends CI_Controller{
             $config['image_library'] = 'gd2';
             $config['source_image'] = $this->upload->data('full_path');
             $config['maintain_ratio'] = TRUE;
-            $config['width']     = 400;
-            $config['height']   = 400;
+            $config['width']     = 40;
+            $config['height']   = 40;
 
             $this->load->library('image_lib', $config);
 

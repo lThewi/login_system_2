@@ -25,7 +25,55 @@ $(document).ready(function() {
                 dataType: 'json',
                 success: function(data){
                     console.log(data);
-                        location.reload();
+                    location.reload();
+                },
+                error: function(){
+                    console.log('error');
+                }
+            })
+        }
+    });
+
+    $(".delete-page").on('click', function () {
+        var id = $(this).attr('data-id');
+        if(confirm('Sind Sie sicher, dass Sie diese Seite löschen wollen?')){
+            $.ajax({
+                url: 'http://localhost/login_system_2/pages/delete_page/'+id,
+                method: 'post',
+                success: function(){
+                    location.reload();
+                },
+                error: function(){
+                    console.log('error');
+                }
+            })
+        }
+    });
+
+    $(".delete-faq").on('click', function () {
+        var id = $(this).attr('data-id');
+        if(confirm('Sind Sie sicher, dass Sie diese Seite löschen wollen?')){
+            $.ajax({
+                url: 'http://localhost/login_system_2/faq/delete_faq/'+id,
+                method: 'post',
+                success: function(){
+                    location.reload();
+                },
+                error: function(){
+                    console.log('error');
+                }
+            })
+        }
+    });
+
+    $(".delete-news").on('click', function () {
+        var id = $(this).attr('data-id');
+        if(confirm('Sind Sie sicher, dass Sie diese Seite löschen wollen?')){
+            $.ajax({
+                url: 'http://localhost/login_system_2/news/delete_news/'+id,
+                method: 'post',
+                success: function(){
+                    location.reload();
                 },
                 error: function(){
                     console.log('error');
