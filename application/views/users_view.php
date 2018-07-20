@@ -10,15 +10,15 @@
                 </div>
                 <div class="card-body" id="pending-users">
                     <?php echo form_open('users/add_multiple_users') ?>
-                    <table class="table table-responsive-sm table-hover table-outline">
+                    <table class="table table-responsive-sm table-hover table-outline sorted_table" id="pending-users-table">
                         <thead class="thead-light">
                         <tr>
                             <th><!--<label><input type="checkbox" id="check-all"></label>--></th>
                             <th><strong>Name</strong></th>
                             <th><strong>Nachname</strong></th>
                             <th><strong>Email</strong></th>
-                            <th><strong>Accounttyp</strong></th>
-                            <th><strong>Optionen</strong></th>
+                            <th class="no-sort"><strong>Accounttyp</strong></th>
+                            <th class="no-sort"><strong>Optionen</strong></th>
                         </tr>
                         </thead>
 
@@ -31,7 +31,7 @@
                         foreach ($temp_users as $temp_user) {
                             if($temp_user->declined == FALSE){
                                 $dropdown_name = $temp_user->id;
-                                echo '<tr>
+                                echo '<tr id="'.$temp_user->id.'">
                                 <td>'. form_checkbox('row[]', $temp_user->id, FALSE) .'</td>
                                 <td>'. $temp_user->name .'</td>
                                 <td>'. $temp_user->lastname .'</td>
@@ -52,7 +52,7 @@
                     Aktivierte Accounts
                 </div>
                 <div class="card-body" id="users">
-                    <table class="table table-responsive-sm table-hover table-outline">
+                    <table class="table table-responsive-sm table-hover table-outline sorted_table" id="active-users-table">
                         <thead class="thead-light">
                         <tr>
                             <th><strong>Name</strong></th>
@@ -65,7 +65,7 @@
                         <?php
                         $users = json_decode($users_json);
                         foreach ($users as $user) {
-                            echo '<tr>
+                            echo '<tr id="'.$user->id.'">
                                 <td>'. $user->name .'</td>
                                 <td>'. $user->lastname .'</td>
                                 <td>'. $user->email .'</td>
@@ -81,27 +81,26 @@
                     Abgelehnte Accounts
                 </div>
                 <div class="card-body" id="declined-users">
-                    <table class="table table-responsive-sm table-hover table-outline">
+                    <table class="table table-responsive-sm table-hover table-outline sorted_table" id="declined-users-table">
                         <thead class="thead-light">
                         <tr>
                             <th><strong>Name</strong></th>
                             <th><strong>Nachname</strong></th>
                             <th><strong>Email</strong></th>
-                            <th><strong>Optionen</strong></th>
+                            <th class="no-sort"><strong>Optionen</strong></th>
                         </tr>
                         </thead>
 
                         <?php
                         foreach ($temp_users as $temp_user) {
                             if($temp_user->declined == TRUE){
-                                echo '<tr>
+                                echo '<tr id="'.$temp_user->id.'">
                                 <td>'. $temp_user->name .'</td>
                                 <td>'. $temp_user->lastname .'</td>
                                 <td>'. $temp_user->email .'</td>
                                 <td>PLACEHOLDER</td>
                                 </tr>';
                             }
-
                         }?>
                     </table>
                 </div>
@@ -115,6 +114,15 @@
 <script src="<?php echo base_url();?>assets/js/popper.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/coreui.min.js"></script>
+<script src="<?php echo base_url();?>assets/js/sortable.min.js"></script>
+<script src="<?php echo base_url();?>assets/js/jquery.tablesort.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/javascript.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('table').tablesort();
+        });
+    </script>
+
 </body>
 </html>

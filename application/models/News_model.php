@@ -11,6 +11,7 @@ class News_model extends CI_Model{
     }
 
     public function get_all_news(){
+        $this->db->order_by('table_order', 'ASC');
         $result = $this->db->get('news');
         return json_encode($result->result());
     }
@@ -28,7 +29,7 @@ class News_model extends CI_Model{
 
     public function update_news($id, $data){
         $this->db->where('id', $id);
-        $result = $this->db->get('news', $data);
+        $result = $this->db->update('news', $data);
         return json_encode($result);
     }
 

@@ -27,7 +27,7 @@
 
                 <div class="form-group">
                     <label for="content">Inhalt</label>
-                    <textarea id="textarea-input" name="content" class="form-control" required></textarea>
+                    <textarea id="textarea-input" name="content" class="form-control"></textarea>
                 </div>
 
                 <input type="submit" class="btn btn-lg btn-primary" value="Speichern">

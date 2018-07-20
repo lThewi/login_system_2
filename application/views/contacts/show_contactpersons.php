@@ -24,7 +24,7 @@
                 echo '</thead>';
                 echo '<tbody>';
                 foreach ($contacts as $contact) {
-                        echo '<tr>';
+                        echo '<tr id="'.$contact->id.'">';
                         echo '<td><img src="'.base_url().$img_path . $contact->img.'"></td>';
                         echo '<td>' . $contact->name . '</td>';
                         echo '<td>' . $contact->position . '</td>';
@@ -57,13 +57,6 @@
 
 <script>
     $(document).ready(function(){
-        $('.sorted_table').sortable({
-            containerSelector: 'table',
-            itemPath: '> tbody',
-            itemSelector: 'tr',
-            placeholder: '<tr class="placeholder"/>'
-        });
-
         $('table').tablesort();
     });
 </script>

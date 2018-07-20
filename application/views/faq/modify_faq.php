@@ -32,7 +32,7 @@
 
                 <div class="form-group">
                     <label for="content">Inhalt</label>
-                    <textarea id="content" name="content" class="form-control" required novalidation><?php echo $faq[0]->answer;?></textarea>
+                    <textarea id="content" name="content" class="form-control" required><?php echo $faq[0]->answer;?></textarea>
                 </div>
 
                 <input type="submit" class="btn btn-lg btn-primary" value="Speichern">

@@ -1,13 +1,13 @@
 <main class="main">
     <ol class="breadcrumb">
         <li class="breadcrumb-item">Admin</li>
-        <li class="breadcrumb-item">Dokumente</li>
-        <li class="breadcrumb-item active">Dokument erstellen</li>
+        <li class="breadcrumb-item">Seiten</li>
+        <li class="breadcrumb-item active">Seite bearbeiten</li>
     </ol>
     <div class="container-fluid">
         <div class="card card-accent-primary">
             <div class="card-header">
-                Dokument erstellen
+                Seite bearbeiten
             </div>
             <?php echo form_open_multipart('pages/mod_page'); ?>
             <div class="card-body">

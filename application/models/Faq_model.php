@@ -11,6 +11,7 @@ class Faq_model extends CI_Model{
     }
 
     public function get_all_questions(){
+        $this->db->order_by('table_order', 'ASC');
         $result = $this->db->get('faq');
         return json_encode($result->result());
     }

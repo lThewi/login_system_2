@@ -5,7 +5,8 @@ class Documents extends CI_Controller{
 
     public function index(){
         if($this->session->userdata('logged_in') == TRUE){
-            $this->load->view('show_documents');
+            $this->load->view('header');
+            $this->load->view('documents/show_documents');
         } else {
             redirect('users/login');
         }
@@ -21,7 +22,7 @@ class Documents extends CI_Controller{
             $data['categories_json'] = $this->get_categories();
 
             $this->load->view('header');
-            $this->load->view('show_documents', $data);
+            $this->load->view('documents/show_documents', $data);
         } else {
             redirect('users/login');
         }
@@ -33,7 +34,7 @@ class Documents extends CI_Controller{
             $data['contact_persons'] = $this->get_all_contactpersons();
 
             $this->load->view('header');
-            $this->load->view('create_document', $data);
+            $this->load->view('documents/create_document', $data);
         } else {
             redirect('users/login');
         }
@@ -43,9 +44,10 @@ class Documents extends CI_Controller{
         if($this->session->userdata('logged_in') == TRUE){
             $data['document_json'] = $this->get_document($doc_id);
             $data['categories_json'] = $this->get_categories();
+            $data['contact_persons'] = $this->get_all_contactpersons();
 
             $this->load->view('header');
-            $this->load->view('modify_document', $data);
+            $this->load->view('documents/modify_document', $data);
         } else {
             redirect('users/login');
         }
@@ -57,7 +59,7 @@ class Documents extends CI_Controller{
             $data['contact_json'] = $this->get_contact($con_id);
 
             $this->load->view('header');
-            $this->load->view('modify_contactperson', $data);
+            $this->load->view('contacts/modify_contactperson', $data);
         } else {
             redirect('users/login');
         }
@@ -69,10 +71,10 @@ class Documents extends CI_Controller{
 
             if(!$this->form_validation->run()){
                 $this->load->view('header');
-                $this->load->view('create_category');
+                $this->load->view('documents/create_category');
             } else {
                 $this->load->view('header');
-                $this->load->view('create_category');
+                $this->load->view('documents/create_category');
                 $db_array = array(
                     'name' => $this->input->post('name')
                 );
@@ -89,7 +91,7 @@ class Documents extends CI_Controller{
         if($this->session->userdata('logged_in') == TRUE){
 
                 $this->load->view('header');
-                $this->load->view('create_contactperson');
+                $this->load->view('contacts/create_contactperson');
 
         } else {
             redirect('users/login');
@@ -117,7 +119,7 @@ class Documents extends CI_Controller{
 
                 if($result){
                     $this->session->set_flashdata('contact_created', 'Die Kontaktperson wurde erfolgreich erstellt');
-                    redirect('documents/create_contactperson');
+                    redirect('contacts/create_contactperson');
                 } else {
                     $this->session->set_flashdata('site_error', 'Beim Eintragen der Kontaktperson in die Datenbank ist ein Fehler aufgetreten');
                     if($image_name != null){
@@ -137,7 +139,7 @@ class Documents extends CI_Controller{
             $data['img_path'] = $this->image_path;
 
             $this->load->view('header');
-            $this->load->view('show_contactpersons', $data);
+            $this->load->view('contacts/show_contactpersons', $data);
         } else {
             redirect('users/login');
         }
@@ -195,9 +197,9 @@ class Documents extends CI_Controller{
 
         $result = $this->document_model->modify_contactperson($this->input->post('con_id'), $db_array);
         if($result){
-            redirect('documents/show_contactpersons');
+            redirect('contacts/show_contactpersons');
         } else {
-            redirect('documents/modify_contactperson');
+            redirect('contacts/modify_contactperson');
         }
     }
 
@@ -210,7 +212,7 @@ class Documents extends CI_Controller{
             'checked_by' => $this->input->post('checked_by'),
             'created_date' =>  $this->input->post('date'),
             'text' => $this->input->post('content'),
-            'contact_person' => null
+            'contact_person' => $this->input->post()
         );
 
         //uploading images to server
@@ -336,5 +338,29 @@ class Documents extends CI_Controller{
     public function get_contact($id){
         $contact_json = $this->document_model->get_contact($id);
         return $contact_json;
+    }
+
+    public function update_documents_order(){
+        $order_array = json_decode($this->input->post('string'));
+        $order = 10;
+        foreach($order_array as $item){
+            $db_array = array(
+                'table_order' => $order
+            );
+            $this->document_model->modify_document($item, $db_array);
+            $order += 10;
+        }
+    }
+
+    public function update_contactperson_order(){
+        $order_array = json_decode($this->input->post('string'));
+        $order = 10;
+        foreach($order_array as $item){
+            $db_array = array(
+                'table_order' => $order
+            );
+            $this->document_model->modify_contactperson($item, $db_array);
+            $order += 10;
+        }
     }
 }

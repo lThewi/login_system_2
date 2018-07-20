@@ -1,8 +1,8 @@
 <main class="main">
     <ol class="breadcrumb">
         <li class="breadcrumb-item">Admin</li>
-        <li class="breadcrumb-item">Dokumente</li>
-        <li class="breadcrumb-item active">Dokumente anzeigen</li>
+        <li class="breadcrumb-item">Seiten</li>
+        <li class="breadcrumb-item active">Seiten anzeigen</li>
     </ol>
     <div class="container-fluid">
         <?php
@@ -32,12 +32,12 @@
             echo '<th class="no-sort">Bild</th>';
             echo '<th>Name</th>';
             echo '<th>Erstelldatum</th>';
-            echo '<th>Optionen</th>';
+            echo '<th class="no-sort">Optionen</th>';
             echo '<tr>';
             echo '</thead>';
             echo '<tbody>';
             foreach ($all_pages as $page){
-                    echo '<tr>';
+                    echo '<tr id="'.$page->id.'">';
                     echo '<td><img src="'.base_url().$path.$page->graphic.'"></td>';
                     echo '<td>' . $page->name . '</td>';
                     echo '<td>'. $page->created_at .'</td>';

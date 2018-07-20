@@ -1,6 +1,6 @@
 <?php
 class Pages extends CI_Controller{
-    public $graphics_path = 'assets/uploaded_graphics/';
+    public $graphics_path = 'assets/uploaded_images/';
 
     public function __construct()
     {
@@ -111,8 +111,6 @@ class Pages extends CI_Controller{
     }
 
     public function upload_graphic($field){
-        $config['upload_path'] = $this->graphics_path;
-        $this->upload->initialize($config);
 
         if(!$this->upload->do_upload($field)){
             $error = $this->upload->display_errors();
@@ -148,5 +146,17 @@ class Pages extends CI_Controller{
     public function delete_image($name){
         $path = $this->graphics_path.$name;
         unlink($path);
+    }
+
+    public function update_page_order(){
+        $order_array = json_decode($this->input->post('string'));
+        $order = 10;
+        foreach($order_array as $item){
+            $db_array = array(
+                'table_order' => $order
+            );
+            $result = $this->Page_model->modify_page($item, $db_array);
+            $order += 10;
+        }
     }
 }

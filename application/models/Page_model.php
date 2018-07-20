@@ -11,6 +11,7 @@ class Page_model extends CI_Model{
     }
 
     public function get_all_pages(){
+        $this->db->order_by('table_order', 'ASC');
         $result = $this->db->get('Pages');
         return json_encode($result->result());
     }

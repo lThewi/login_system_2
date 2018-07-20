@@ -15,6 +15,7 @@ class Document_model extends CI_Model{
     }
 
     public function get_all_documents(){
+        $this->db->order_by('table_order', 'ASC');
         $result = $this->db->get('documents');
         return json_encode($result->result());
     }
@@ -60,6 +61,7 @@ class Document_model extends CI_Model{
     }
 
     public function get_all_contactpersons(){
+        $this->db->order_by('table_order', 'ASC');
         $result = $this->db->get('contact_persons');
         return json_encode($result->result());
     }

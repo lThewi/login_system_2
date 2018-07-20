@@ -25,7 +25,7 @@
                     $category_list[$cat->id] = $cat->name;
                 }
                 foreach ($contacts as $contact) {
-                    $contact_list[$contact->name] = $contact->name;
+                    $contact_list[$contact->id] = $contact->name;
                 }
                 ?>
 

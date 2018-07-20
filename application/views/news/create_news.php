@@ -44,19 +44,19 @@
                     <label class="col-md-3 col-form-label">Berechtigungsstufen</label>
                     <div class="col-md-9 col-form-label">
                         <div class="form-check checkbox">
-                            <input class="form-check-input" type="checkbox" value="1" id="check1">
+                            <input class="form-check-input" type="checkbox" value="1" id="check1" name="check1">
                             <label class="form-check-label">Berechtigungsstufe 1</label>
                         </div>
                         <div class="form-check checkbox">
-                            <input class="form-check-input" type="checkbox" value="2" id="check2">
+                            <input class="form-check-input" type="checkbox" value="2" id="check2" name="check2">
                             <label class="form-check-label">Berechtigungsstufe 2</label>
                         </div>
                         <div class="form-check checkbox">
-                            <input class="form-check-input" type="checkbox" value="3" id="check3">
+                            <input class="form-check-input" type="checkbox" value="3" id="check3" name="check3">
                             <label class="form-check-label">Berechtigungsstufe 3</label>
                         </div>
                         <div class="form-check checkbox">
-                            <input class="form-check-input" type="checkbox" value="4" id="check4">
+                            <input class="form-check-input" type="checkbox" value="4" id="check4" name="check4">
                             <label class="form-check-label">Berechtigungsstufe 4</label>
                         </div>
                     </div>

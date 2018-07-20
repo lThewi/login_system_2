@@ -175,4 +175,34 @@
                 return json_encode(FALSE);
             }
         }
+
+        public function update_pending_order(){
+            $order_array = json_decode($this->input->post('string'));
+            $order = 10;
+            foreach ($order_array as $item) {
+                $db_array = array('table_order' => $order);
+                $this->user_model->update_temp_user($item, $db_array);
+                $order += 10;
+            }
+        }
+
+        public function update_user_order(){
+            $order_array = json_decode($this->input->post('string'));
+            $order = 10;
+            foreach ($order_array as $item) {
+                $db_array = array('table_order' => $order);
+                $this->user_model->update_user($item, $db_array);
+                $order += 10;
+            }
+        }
+
+        public function update_declined_order(){
+            $order_array = json_decode($this->input->post('string'));
+            $order = 10;
+            foreach ($order_array as $item) {
+                $db_array = array('table_order' => $order);
+                $this->user_model->update_temp_user($item, $db_array);
+                $order += 10;
+            }
+        }
     }

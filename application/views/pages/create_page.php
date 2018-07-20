@@ -1,13 +1,13 @@
 <main class="main">
     <ol class="breadcrumb">
         <li class="breadcrumb-item">Admin</li>
-        <li class="breadcrumb-item">Dokumente</li>
-        <li class="breadcrumb-item active">Dokument erstellen</li>
+        <li class="breadcrumb-item">Seiten</li>
+        <li class="breadcrumb-item active">Seite erstellen</li>
     </ol>
     <div class="container-fluid">
         <div class="card card-accent-primary">
             <div class="card-header">
-                Dokument erstellen
+                Seite erstellen
             </div>
             <?php echo form_open_multipart('pages/create_new_page'); ?>
             <div class="card-body">
@@ -33,7 +33,7 @@
 
                 <div class="form-group">
                     <label for="content">Inhalt</label>
-                    <textarea id="textarea-input" name="content" class="form-control"> value="<?php echo set_value('content');?>"</textarea>
+                    <textarea id="textarea-input" name="content" class="form-control"><?php echo set_value('content');?></textarea>
                 </div>
                 <div class="form-group">
                     <label>Bild</label>

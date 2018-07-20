@@ -24,7 +24,7 @@
                     echo '<div class="card-header">'.$cat->name.'</div>';
                     echo '<div class="card-body" id="'.$cat->name.'">';
                     if($print_table) {
-                        echo '<table class="table table-responsive-sm table-hover table-outline sorted_table" id="'.$cat->name.'">';
+                        echo '<table class="table table-responsive-sm table-hover table-outline sorted_table doc-table" id="'.$cat->name.'">';
                             echo '<thead class="thead-light">';
                                 echo '<tr>';
                                     echo '<th>Technische Kennung</th>';
@@ -32,10 +32,11 @@
                                     echo '<th class="no-sort">Optionen</th>';
                                 echo '<tr>';
                             echo '</thead>';
-                            echo '<tbody>';
+                            echo '<tbody class="ui-sortable">';
+                            $id_cat_table = 0;
                             foreach ($documents as $doc) {
                                 if ($doc->category === $cat->id) {
-                                    echo '<tr>';
+                                    echo '<tr id="'.$doc->id.'">';
                                         echo '<td>' . $doc->technische_kennung . '</td>';
                                         echo '<td>' . $doc->name . '</td>';
                                         echo '<td>';
@@ -43,6 +44,7 @@
                                             echo '<a href="#" class="btn btn-md btn-danger mx-1 delete_row" data-id="'.$doc->id.'">Löschen</a>';
                                         echo '</td>';
                                     echo '</tr>';
+                                    $id_cat_table++;
                                 }
                             }
                             echo '</tbody>';
@@ -67,13 +69,6 @@
 
     <script>
         $(document).ready(function(){
-            $('.sorted_table').sortable({
-                containerSelector: 'table',
-                itemPath: '> tbody',
-                itemSelector: 'tr',
-                placeholder: '<tr class="placeholder"/>'
-            });
-
             $('table').tablesort();
         });
     </script>

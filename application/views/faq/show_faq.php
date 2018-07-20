@@ -1,8 +1,8 @@
 <main class="main">
     <ol class="breadcrumb">
         <li class="breadcrumb-item">Admin</li>
-        <li class="breadcrumb-item">Dokumente</li>
-        <li class="breadcrumb-item active">Dokumente anzeigen</li>
+        <li class="breadcrumb-item">FAQ</li>
+        <li class="breadcrumb-item active">FAQs anzeigen</li>
     </ol>
     <div class="container-fluid">
         <?php if ($this->session->flashdata('faq_deleted')) : ?>

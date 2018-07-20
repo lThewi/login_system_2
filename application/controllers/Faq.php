@@ -48,7 +48,6 @@ class Faq extends CI_Controller{
             $db_array = array(
                 'question' => $this->input->post('question'),
                 'answer' => $this->input->post('content'),
-                'category_id' => $this->input->post('category'),
             );
 
             $result = $this->Faq_model->create_faq($db_array);

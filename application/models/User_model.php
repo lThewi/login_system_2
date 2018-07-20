@@ -87,6 +87,7 @@
         }
 
         public function get_all_temp_users(){
+            $this->db->order_by('table_order', 'ASC');
             $result = $this->db->get('temp_users');
             return json_encode($result->result());
         }
@@ -98,8 +99,15 @@
         }
 
         public function get_users(){
+            $this->db->order_by('table_order', 'ASC');
             $result = $this->db->get('users');
             return json_encode($result->result());
+        }
+
+        public function update_user($id, $data){
+            $this->db->where('id', $id);
+            $result = $this->db->update('users', $data);
+            return json_encode($result);
         }
 
         public function get_temp_user_email($id){

@@ -3,7 +3,7 @@ $(document).ready(function() {
         var id = $(this).attr('data-id');
         if(confirm('Sind Sie sicher, dass Sie dieses Dokument löschen wollen?')){
             $.ajax({
-                url: 'http://localhost/login_system_2/documents/delete_document/'+id,
+                url: 'delete_document/'+id,
                 method: 'post',
                 success: function(){
                     console.log('success');
@@ -20,7 +20,7 @@ $(document).ready(function() {
         var id = $(this).attr('data-id');
         if(confirm('Sind Sie sicher, dass Sie diesen Nutzer ablehnen wollen?')){
             $.ajax({
-                url: 'http://localhost/login_system_2/users/decline_user/'+id,
+                url: 'decline_user/'+id,
                 method: 'post',
                 dataType: 'json',
                 success: function(data){
@@ -38,7 +38,7 @@ $(document).ready(function() {
         var id = $(this).attr('data-id');
         if(confirm('Sind Sie sicher, dass Sie diese Seite löschen wollen?')){
             $.ajax({
-                url: 'http://localhost/login_system_2/pages/delete_page/'+id,
+                url: 'delete_page/'+id,
                 method: 'post',
                 success: function(){
                     location.reload();
@@ -54,7 +54,7 @@ $(document).ready(function() {
         var id = $(this).attr('data-id');
         if(confirm('Sind Sie sicher, dass Sie diese Seite löschen wollen?')){
             $.ajax({
-                url: 'http://localhost/login_system_2/faq/delete_faq/'+id,
+                url: 'delete_faq/'+id,
                 method: 'post',
                 success: function(){
                     location.reload();
@@ -70,7 +70,7 @@ $(document).ready(function() {
         var id = $(this).attr('data-id');
         if(confirm('Sind Sie sicher, dass Sie diese Seite löschen wollen?')){
             $.ajax({
-                url: 'http://localhost/login_system_2/news/delete_news/'+id,
+                url: 'delete_news/'+id,
                 method: 'post',
                 success: function(){
                     location.reload();
@@ -86,7 +86,7 @@ $(document).ready(function() {
         var id = $(this).attr('data-id');
         if(confirm('Sind Sie sicher, dass Sie diese Kontaktperson entfernen wollen?')){
             $.ajax({
-                url: 'http://localhost/login_system_2/documents/delete_contact/'+id,
+                url: 'delete_contact/'+id,
                 method: 'post',
                 success: function(){
                     location.reload();
@@ -97,6 +97,198 @@ $(document).ready(function() {
             })
         }
     });
+
+    //send table order
+
+    $('table.doc-table').sortable({
+        containerSelector: 'table',
+        itemPath: '> tbody',
+        itemSelector: 'tr',
+        placeholder: '<tr class="placeholder"/>',
+        group: 'sorted_table',
+        onDrop: function ($item, container, _super){
+            $item.removeClass(container.group.options.draggedClass).removeAttr("style");
+            $("body").removeClass(container.group.options.bodyClass);
+            var index = 0;
+            var array = [];
+            $('tbody tr').each( function () {
+                array[index] = $(this).attr('id');
+                index++;
+            });
+            var json_string = JSON.stringify(array);
+            $.ajax({
+                method: 'POST',
+                data: {string: json_string},
+                url: 'update_documents_order',
+                error: function () {
+                    console.log('Ajax error in doc-table');
+                }
+            });
+        }
+    });
+    $('table#pending-users-table').sortable({
+        containerSelector: 'table',
+        itemPath: '> tbody',
+        itemSelector: 'tr',
+        placeholder: '<tr class="placeholder"/>',
+        group: 'pending-users-table',
+        onDrop: function ($item, container, _super){
+            $item.removeClass(container.group.options.draggedClass).removeAttr("style");
+            $("body").removeClass(container.group.options.bodyClass);
+            var index = 0;
+            var array = [];
+            $('tbody tr').each( function () {
+                array[index] = $(this).attr('id');
+                index++;
+            });
+            var json_string = JSON.stringify(array);
+            $.ajax({
+                method: 'POST',
+                data: {string: json_string},
+                url: 'update_pending_order',
+                success: function(){
+                    console.log('pending');
+                },
+                error: function () {
+                    console.log('Ajax error in pending-table');
+                }
+            });
+        }
+    });
+    $('table#active-users-table').sortable({
+        containerSelector: 'table',
+        itemPath: '> tbody',
+        itemSelector: 'tr',
+        placeholder: '<tr class="placeholder"/>',
+        group: 'active-users-table',
+        onDrop: function ($item, container, _super){
+            $item.removeClass(container.group.options.draggedClass).removeAttr("style");
+            $("body").removeClass(container.group.options.bodyClass);
+            var index = 0;
+            var array = [];
+            $('tbody tr').each( function () {
+                array[index] = $(this).attr('id');
+                index++;
+            });
+            var json_string = JSON.stringify(array);
+            $.ajax({
+                method: 'POST',
+                data: {string: json_string},
+                url: 'update_user_order',
+                error: function () {
+                    console.log('Ajax error in active-user-table');
+                }
+            });
+        }
+    });
+    $('table#declined-users-table').sortable({
+        containerSelector: 'table',
+        itemPath: '> tbody',
+        itemSelector: 'tr',
+        placeholder: '<tr class="placeholder"/>',
+        group: 'declined-users-table',
+        onDrop: function ($item, container, _super){
+            $item.removeClass(container.group.options.draggedClass).removeAttr("style");
+            $("body").removeClass(container.group.options.bodyClass);
+            var index = 0;
+            var array = [];
+            $('tbody tr').each( function () {
+                array[index] = $(this).attr('id');
+                index++;
+            });
+            var json_string = JSON.stringify(array);
+            $.ajax({
+                method: 'POST',
+                data: {string: json_string},
+                url: 'update_user_order',
+                error: function () {
+                    console.log('Ajax error in declined-table');
+                }
+            });
+        }
+    });
+
+    $('table#contacts-table').sortable({
+        containerSelector: 'table',
+        itemPath: '> tbody',
+        itemSelector: 'tr',
+        placeholder: '<tr class="placeholder"/>',
+        group: 'contacts-table',
+        onDrop: function ($item, container, _super){
+            $item.removeClass(container.group.options.draggedClass).removeAttr("style");
+            $("body").removeClass(container.group.options.bodyClass);
+            var index = 0;
+            var array = [];
+            $('tbody tr').each( function () {
+                array[index] = $(this).attr('id');
+                index++;
+            });
+            var json_string = JSON.stringify(array);
+            $.ajax({
+                method: 'POST',
+                data: {string: json_string},
+                url: 'update_contactperson_order',
+                error: function () {
+                    console.log('Ajax error in contacts-table');
+                }
+            });
+        }
+    });
+
+    $('table#news-table').sortable({
+        containerSelector: 'table',
+        itemPath: '> tbody',
+        itemSelector: 'tr',
+        placeholder: '<tr class="placeholder"/>',
+        group: 'news-table',
+        onDrop: function ($item, container, _super){
+            $item.removeClass(container.group.options.draggedClass).removeAttr("style");
+            $("body").removeClass(container.group.options.bodyClass);
+            var index = 0;
+            var array = [];
+            $('tbody tr').each( function () {
+                array[index] = $(this).attr('id');
+                index++;
+            });
+            var json_string = JSON.stringify(array);
+            $.ajax({
+                method: 'POST',
+                data: {string: json_string},
+                url: 'update_news_order',
+                error: function () {
+                    console.log('Ajax error in news-table');
+                }
+            });
+        }
+    });
+
+    $('table#all_pages_table').sortable({
+        containerSelector: 'table',
+        itemPath: '> tbody',
+        itemSelector: 'tr',
+        placeholder: '<tr class="placeholder"/>',
+        group: 'all_pages_table',
+        onDrop: function ($item, container, _super){
+            $item.removeClass(container.group.options.draggedClass).removeAttr("style");
+            $("body").removeClass(container.group.options.bodyClass);
+            var index = 0;
+            var array = [];
+            $('tbody tr').each( function () {
+                array[index] = $(this).attr('id');
+                index++;
+            });
+            var json_string = JSON.stringify(array);
+            $.ajax({
+                method: 'POST',
+                data: {string: json_string},
+                url: 'update_page_order',
+                error: function () {
+                    console.log('Ajax error in pages-table');
+                }
+            });
+        }
+    });
+    /////////
 
     function readURL(input, img_pv) {
         if (input.files && input.files[0]) {

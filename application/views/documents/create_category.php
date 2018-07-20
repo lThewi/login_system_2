@@ -2,12 +2,12 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item">Admin</li>
             <li class="breadcrumb-item">Dokumente</li>
-            <li class="breadcrumb-item active">Dokument erstellen</li>
+            <li class="breadcrumb-item active">Kategorie erstellen</li>
         </ol>
         <div class="container-fluid">
             <div class="card card-accent-primary">
                 <div class="card-header">
-                    Dokument erstellen
+                    Kategorie erstellen
                 </div>
                 <?php echo form_open_multipart('documents/create_category'); ?>
                 <div class="card-body">
