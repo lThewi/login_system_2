@@ -5,8 +5,6 @@
     <link rel="stylesheet" href="<?php echo base_url();?>assets/css/normalize.css">
     <link rel="stylesheet" href="<?php echo base_url();?>assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo base_url();?>assets/css/coreui.min.css">
-    <link rel="stylesheet/less" type="text/css" href="<?php echo base_url();?>assets/css/stylesheet.less" />
-    <script src="<?php echo base_url();?>assets/js/less.min.js"></script>
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/styles.css">
 </head>
 <body class="app flex-row align-items-center">
@@ -18,34 +16,40 @@
                 <div class="card p-4">
                     <div class="card-body">
                         <h1>Login</h1>
-                        <p class="text-muted">Loggen Sie sich mit ihrem Account ein</p>
+                        <?php
+                        $strings = json_decode($strings_json);
+
+                        ?>
+                        <p class="text-muted"><?php echo $strings->login_text_head; ?></p>
                         <?php echo form_open('users/login'); ?>
                         <?php echo validation_errors(); ?>
+                        <?php
 
+                        ?>
                         <?php if ($this->session->flashdata('wrong_password')) : ?>
-                            <?php echo '<p class="alert">' . $this->session->flashdata('wrong_password') . '</p>'; ?>
+                            <?php echo $this->session->flashdata('wrong_password'); ?>
                         <?php endif; ?>
 
                         <?php if ($this->session->flashdata('wrong_email')) : ?>
-                            <?php echo '<p class="alert">' . $this->session->flashdata('wrong_email') . '</p>'; ?>
+                            <?php echo $this->session->flashdata('wrong_email'); ?>
                         <?php endif; ?>
 
                         <div class="input-group mb-3">
-                            <input type="text" name="mail" placeholder="E-MAIL" id="email" required class="form-control">
+                            <input type="text" name="mail" placeholder="E-MAIL" id="mail" required class="form-control" value="<?php if ($this->session->flashdata('mail')) echo set_value('mail',$this->session->flashdata('mail')); ?>">
                         </div>
                         <div class="input-group mb-4">
-                            <input type="password" name="password" placeholder="PASSWORT" id="password" required class="form-control">
+                            <input type="password" name="password" placeholder="<?php echo $strings->login_text_password;?>" id="password" required class="form-control">
                         </div>
-                        <input type="submit" name="submit" value="ANMELDEN" class="btn btn-primary px-4">
+                        <input type="submit" name="submit" value="<?php echo $strings->login_text_button ?>" class="btn btn-primary px-4">
                         <?php echo form_close() ?>
                     </div>
                 </div>
                 <div class="card text-white bg-primary py-5 d-md-down-none">
                     <div class="card-body text-center">
                         <div>
-                            <h2>Registrieren Sie sich</h2>
-                            <p>Sie haben noch keinen Account bei uns? Registrieren Sie sich.</p>
-                            <a href="<?php echo base_url(); ?>users/register" class="btn btn-primary active mt-3">Registrieren Sie sich jetzt!</a>
+                            <h2><?php echo $strings->login_reg_text_headline; ?></h2>
+                            <p><?php echo $strings->login_reg_text_head; ?></p>
+                            <a href="<?php echo base_url(); ?>users/register" class="btn btn-primary active mt-3"><?php echo $strings->login_reg_text_button; ?></a>
                         </div>
                     </div>
                 </div>

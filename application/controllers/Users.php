@@ -10,16 +10,24 @@
          * validating the form data, register a user, adding the data to the temp_user table and sending the validation mail
          */
         public function register(){
+            $string_json = $this->language_model->get_lang_strings_users();
+            $string = json_decode($string_json);
             $this->form_validation->set_rules('name', 'Name', 'required|trim');
             $this->form_validation->set_rules('lastname', 'Lastname', 'required|trim');
-            $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[users.email]');
+            $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[users.email]', array('valid_email' => $string->no_valid_email_error));
             $this->form_validation->set_rules('password', 'Password', 'required|trim');
-            $this->form_validation->set_rules('password2', 'Confirm Password', 'matches[password]|trim');
+            $this->form_validation->set_rules('password2', 'Confirm Password', 'matches[password]|trim', array('matches' => $string->pw_confirm_error));
 
-            $this->form_validation->set_message('is_unique', 'That email is already used');
+            $this->form_validation->set_message('is_unique', $string->register_email_unique);
 
             if ($this->form_validation->run() === FALSE) {
-                $this->load->view('register');
+                $this->session->set_flashdata('name', $this->input->post('name'));
+                $this->session->set_flashdata('lastname', $this->input->post('lastname'));
+                $this->session->set_flashdata('mail', $this->input->post('email'));
+
+                $strings_json = $this->language_model->get_lang_strings_register();
+                $data['strings_json'] = $strings_json;
+                $this->load->view('register', $data);
             } else {
                 $enc_password = md5($this->input->post('password'));
                 $mail = $this->input->post('email');
@@ -30,15 +38,16 @@
 
                 $admin_mail = 'yyy';
                 $lang_strings = json_decode($this->language_model->get_lang_strings_email());
+                $strings = json_decode($this->language_model->get_lang_strings_users());
 
                 //preparing the mailcontent
                 $this->email->from('vftestadresse@gmail.com', 'MyName');
                 $this->email->to($mail);
                 $this->email->subject($lang_strings->email_register_subject);
                 $message = $lang_strings->email_register_body;
-
-
                 $this->email->message($message);
+
+
                 //adding user to temp_user table and sending the mail
                 $temp_user = $this->user_model->add_temp_user();
                 if($temp_user != FALSE){
@@ -49,10 +58,10 @@
                         $data['json_data'] = $temp_user;
                         redirect('users/login', $data);
                     } else {
-                        redirect('users/register');
+                        redirect('users/login');
                     }
                 } else {
-                    echo 'Problem adding user to database';
+                    echo $strings->user_register_error;
                 }
             }
         }
@@ -74,21 +83,62 @@
             redirect('users/users_view');
         }
 
+        public function decline_multiple_users(){
+            //loop over all rows and add them to the DB (with add_user)
+                $db_array = array(
+                    'declined' => TRUE
+                );
+                $lang_strings = json_decode($this->language_model->get_lang_strings_email());
+                $rows = json_decode($this->input->post('json_string'));
+
+                foreach($rows as $value){
+
+                    $email = json_decode($this->user_model->get_temp_user_email($value));
+
+                    if($this->user_model->update_temp_user($value, $db_array)){
+
+                        //preparing the mailcontent
+                        $this->email->from('vftestadresse@gmail.com', 'MyName');
+                        $this->email->to($email[0]->email);
+                        $this->email->subject($lang_strings->email_declined_subject);
+                        $this->email->message($lang_strings->email_declined_body);
+
+                        //sending mail
+                        if($this->email->send()){
+                            //echo json_encode(TRUE);
+                        } else {
+                            //echo json_encode(FALSE);
+                        }
+                    } else {
+                        //echo json_encode(FALSE);
+                        //return json_encode(FALSE);
+                    }
+                }
+        }
+
         public function login(){
             $this->form_validation->set_rules('mail', 'Email', 'required');
             $this->form_validation->set_rules('password', 'Password', 'required');
 
-            $this->load->view('login');
+            $strings = $this->language_model->get_lang_strings_login();
+
+            $data['strings_json'] = $strings;
+
+
+            $this->load->view('login', $data);
 
             if($this->form_validation->run()){
+                $this->session->set_flashdata('mail', $this->input->post('mail'));
+
+                $strings = json_decode($this->language_model->get_lang_strings_users());
                 $mail = $_POST['mail'];
                 $password = md5($_POST['password']);
                 $user_data = $this->user_model->login($mail, $password);
                 $user = json_decode($user_data);
                 if ($user) {
                     if($user == 'wrong password'){
-                        $this->session->set_flashdata('wrong_password', 'Das angegebene Passwort ist falsch.');
-                        redirect('users/login', 'refresh');
+                        $this->session->set_flashdata('wrong_password', $strings->user_login_pw);
+                        redirect('users/login');
                     } else {
                         $user_data = array(
                             'user_id' => $user->id,
@@ -109,8 +159,8 @@
                         }
                     }
                 } else {
-                    $this->session->set_flashdata('wrong_email', 'Die angegebene Email ist falsch.');
-                    redirect('users/login', 'refresh');
+                    $this->session->set_flashdata('wrong_email', $strings->user_login_mail);
+                    redirect('users/login');
                 }
             }
         }
@@ -130,6 +180,9 @@
 
         public function users_view(){
             if($this->session->userdata('logged_in') === TRUE){
+                $header['strings_json'] = $this->language_model->get_lang_strings_navbar();
+                $strings_json = $this->language_model->get_lang_strings_dashboard();
+                $data['strings_json'] = $strings_json;
                 if($this->session->userdata('user_type') === '1'){
                     $temp_users = $this->user_model->get_all_temp_users();
                     $user_types = $this->user_model->get_user_types();
@@ -138,7 +191,7 @@
                     $data['user_types_json'] = $user_types;
                     $data['users_json'] = $users;
 
-                    $this->load->view('header');
+                    $this->load->view('header', $header);
                     $this->load->view('users_view', $data);
                 } else {
                     redirect('users/home');

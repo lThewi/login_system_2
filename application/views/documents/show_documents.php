@@ -1,4 +1,5 @@
     <main class="main">
+        <?php $strings = json_decode($strings_json); ?>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">Admin</li>
             <li class="breadcrumb-item">Dokumente</li>
@@ -6,7 +7,7 @@
         </ol>
         <div class="container-fluid">
             <?php if ($this->session->flashdata('documents_created')) : ?>
-                <?php echo '<p class="alert alert-success">Dokument erfolgreich erstellt.</p>'; ?>
+                <?php echo $this->session->flashdata('documents_created'); ?>
             <?php endif; ?>
         <?php
             $categories = json_decode($categories_json);
@@ -27,9 +28,9 @@
                         echo '<table class="table table-responsive-sm table-hover table-outline sorted_table doc-table" id="'.$cat->name.'">';
                             echo '<thead class="thead-light">';
                                 echo '<tr>';
-                                    echo '<th>Technische Kennung</th>';
-                                    echo '<th>Name</th>';
-                                    echo '<th class="no-sort">Optionen</th>';
+                                    echo '<th>'.$strings->table_tech.'</th>';
+                                    echo '<th>'.$strings->table_name.'</th>';
+                                    echo '<th class="no-sort">'.$strings->table_options.'</th>';
                                 echo '<tr>';
                             echo '</thead>';
                             echo '<tbody class="ui-sortable">';
@@ -40,8 +41,8 @@
                                         echo '<td>' . $doc->technische_kennung . '</td>';
                                         echo '<td>' . $doc->name . '</td>';
                                         echo '<td>';
-                                            echo '<a href="'.base_url().'documents/modify_document/'.$doc->id.'" class="btn btn-md btn-primary mx-1">Bearbeiten</a>';
-                                            echo '<a href="#" class="btn btn-md btn-danger mx-1 delete_row" data-id="'.$doc->id.'">Löschen</a>';
+                                            echo '<a href="'.base_url().'documents/modify_document/'.$doc->id.'" class="btn btn-md btn-primary mx-1">'.$strings->button_mod.'</a>';
+                                            echo '<a href="#" class="btn btn-md btn-danger mx-1 delete_row" data-id="'.$doc->id.'">'.$strings->button_delete.'</a>';
                                         echo '</td>';
                                     echo '</tr>';
                                     $id_cat_table++;
@@ -49,7 +50,7 @@
                             }
                             echo '</tbody>';
                         echo '</table>';
-                    } else echo 'Keine Einträge in dieser Kategorie';
+                    } else echo $strings->no_entries;
                     echo '</div>';
                 echo '</div>';
             }

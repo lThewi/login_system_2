@@ -1,4 +1,5 @@
 <main class="main">
+    <?php $strings = json_decode($strings_json)?>
     <ol class="breadcrumb">
         <li class="breadcrumb-item">Admin</li>
         <li class="breadcrumb-item">Dokumente</li>
@@ -7,16 +8,16 @@
     <div class="container-fluid">
         <div class="card card-accent-primary">
             <div class="card-header">
-                Dokument erstellen
+                <?php echo $strings->card_header; ?>
             </div>
             <?php echo form_open_multipart('documents/create'); ?>
             <div class="card-body">
                 <?php echo validation_errors(); ?>
                 <?php if ($this->session->flashdata('database_error')) : ?>
-                    <?php echo '<p class="alert">' . $this->session->flashdata('database_error') . '</p>'; ?>
+                    <?php echo $this->session->flashdata('database_error'); ?>
                 <?php endif; ?>
                 <?php if ($this->session->flashdata('upload_error')) : ?>
-                    <?php echo '<p class="alert">Problem beim Hochladen des Bildes.</p>'; ?>
+                    <?php echo $this->session->flashdata('upload_error'); ?>
                 <?php endif; ?>
                 <?php
                 $categories = json_decode($categories_json);
@@ -31,40 +32,40 @@
 
                 <div class="row">
                     <div class="form-group col-md-8">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" class="form-control" required>
+                        <label for="name"><?php echo $strings->form_name; ?></label>
+                        <input type="text" id="name" name="name" class="form-control" required value="<?php echo set_value('name') ?>">
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="category">Kategorie</label>
-                        <?php echo form_dropdown('categories', $category_list, 1, array('class' => 'form-control', 'id' => 'category')); ?>
+                        <label for="category"><?php echo $strings->form_category; ?></label>
+                        <?php echo form_dropdown('categories', $category_list, set_value('categories'), array('class' => 'form-control', 'id' => 'category')); ?>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-8">
-                        <label for="tech">Technische Kennung</label>
-                        <input type="text" name="tech" id="tech" class="form-control" required>
+                        <label for="tech"><?php echo $strings->form_tech; ?></label>
+                        <input type="text" name="tech" id="tech" class="form-control" required value="<?php echo set_value('tech') ?>">
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="date">Erstellungsdatum</label>
+                        <label for="date"><?php echo $strings->form_date; ?></label>
                         <input type="text" name="date" class="flatpickr flatpickr-input form-control input"
-                               placeholder="Datum auswählen" readonly="readonly" tabindex="0">
+                               placeholder="Datum auswählen" readonly="readonly" tabindex="0" value="<?php echo set_value('date') ?>">
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label for="checked_by">Geprüft von</label>
-                        <input type="text" name="checked_by" id="checked_by" class="form-control" required>
+                        <label for="checked_by"><?php echo $strings->form_checked_by; ?></label>
+                        <input type="text" name="checked_by" id="checked_by" class="form-control" required value="<?php echo set_value('checked_by') ?>">
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="contacts">Kontaktperson</label>
-                        <?php echo form_dropdown('contacts', $contact_list, 0, array('class' => 'form-control', 'id' => 'contacts')); ?>
+                        <label for="contacts"><?php echo $strings->form_contact; ?></label>
+                        <?php echo form_dropdown('contacts', $contact_list, set_value('contacts'), array('class' => 'form-control', 'id' => 'contacts')); ?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="content">Freitext</label>
-                    <textarea id="textarea-input" name="content" class="form-control"></textarea>
+                    <label for="content"><?php echo $strings->form_text; ?></label>
+                    <textarea id="textarea-input" name="content" class="form-control"><?php echo set_value('content') ?></textarea>
                 </div>
-                <label>Bilder (Optional, bis zu drei Bilder möglich)</label>
+                <label><?php echo $strings->form_img; ?></label>
                 <div class="row">
                     <div class="form-group col-md-4">
                         <input type="file" name="img_1" id="img_1"
@@ -82,8 +83,8 @@
                         <img id="img_pv_3"/>
                     </div>
                 </div>
-                <input type="submit" class="btn btn-lg btn-primary" value="Speichern">
-                <input type="reset" class="btn btn-lg btn-danger" value="Zurücksetzen">
+                <input type="submit" class="btn btn-lg btn-primary" value="<?php echo $strings->form_button_save; ?>">
+                <input type="reset" class="btn btn-lg btn-danger" value="<?php echo $strings->form_button_reset; ?>">
 
                 <?php echo form_close(); ?>
 
@@ -105,11 +106,10 @@
     $(document).ready(function () {
         tinymce.init({
             selector: 'textarea',
-            branding: false
+            branding: false,
         });
 
         $(".flatpickr").flatpickr({dateFormat: "Y-m-d"});
-
     });
 </script>
 

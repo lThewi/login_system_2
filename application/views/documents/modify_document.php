@@ -1,4 +1,5 @@
 <main class="main">
+    <?php $strings = json_decode($strings_json); ?>
     <ol class="breadcrumb">
         <li class="breadcrumb-item">Admin</li>
         <li class="breadcrumb-item">Dokumente</li>
@@ -7,15 +8,15 @@
     <div class="container-fluid">
         <div class="card card-accent-primary">
             <div class="card-header">
-                Dokument erstellen
+                <?php echo $strings->card_header_mod; ?>
             </div>
             <?php echo form_open_multipart('documents/modify_doc'); ?>
             <div class="card-body">
                 <?php if ($this->session->flashdata('database_error')) : ?>
-                    <?php echo '<p class="alert">' . $this->session->flashdata('database_error') . '</p>'; ?>
+                    <?php echo $this->session->flashdata('database_error'); ?>
                 <?php endif; ?>
                 <?php if ($this->session->flashdata('upload_error')) : ?>
-                    <?php echo '<p class="alert">' . $this->session->flashdata('upload_error_1') . '</p>'; ?>
+                    <?php echo $this->session->flashdata('upload_error_1'); ?>
                 <?php endif; ?>
                 <?php
                 $categories = json_decode($categories_json);
@@ -32,24 +33,24 @@
 
                 <div class="row">
                     <div class="form-group col-md-8">
-                        <label for="name">Name</label>
+                        <label for="name"><?php echo $strings->form_name; ?></label>
                         <input type="text" id="name" name="name" class="form-control"
                                value="<?php echo set_value('name', $doc[0]->name); ?>" required>
                         <input type="hidden" id="doc_id" name="doc_id" value="<?php echo $doc[0]->id; ?>">
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="category">Kategorie</label>
+                        <label for="category"><?php echo $strings->form_category; ?></label>
                         <?php echo form_dropdown('categories', $category_list, $doc[0]->category, array('class' => 'form-control', 'id' => 'category')); ?>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-8">
-                        <label for="tech">Technische Kennung</label>
+                        <label for="tech"><?php echo $strings->form_tech; ?></label>
                         <input type="text" name="tech" id="tech" class="form-control"
                                value="<?php echo set_value('tech', $doc[0]->technische_kennung); ?>" required>
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="date">Erstellungsdatum</label>
+                        <label for="date"><?php echo $strings->form_date; ?></label>
                         <input type="text" name="date" value="<?php echo set_value('date', $doc[0]->created_date); ?>"
                                class="flatpickr flatpickr-input form-control input" placeholder="Datum auswählen"
                                readonly="readonly" tabindex="0">
@@ -57,22 +58,22 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label for="checked_by">Geprüft von</label>
+                        <label for="checked_by"><?php echo $strings->form_checked_by; ?></label>
                         <input type="text" name="checked_by"
                                value="<?php echo set_value('checked_by', $doc[0]->checked_by); ?>" id="checked_by"
                                class="form-control" required>
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="contacts">Kontaktperson</label>
+                        <label for="contacts"><?php echo $strings->form_contact; ?></label>
                         <?php echo form_dropdown('contacts', $contact_list, $doc[0]->contact_person, array('class' => 'form-control', 'id' => 'contacts')); ?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="content">Freitext</label>
+                    <label for="content"><?php echo $strings->form_text; ?></label>
                     <textarea id="textarea-input" name="content"
                               class="form-control"><?php echo $doc[0]->text; ?></textarea>
                 </div>
-                <label>Bilder (Optional, bis zu drei Bilder möglich)</label>
+                <label><?php echo $strings->form_img; ?></label>
                 <div class="row">
                     <div class="form-group col-md-4">
                         <input type="file" name="img_1" id="img_1" value=""
@@ -107,8 +108,8 @@
                         <img id="img_pv_3" <?php echo $src_3; ?>/>
                     </div>
                 </div>
-                <input type="submit" class="btn btn-lg btn-primary" value="Speichern">
-                <input type="reset" class="btn btn-lg btn-danger" value="Zurücksetzen">
+                <input type="submit" class="btn btn-lg btn-primary" value="<?php echo $strings->form_button_save; ?>">
+                <input type="reset" class="btn btn-lg btn-danger" value="<?php echo $strings->form_button_reset; ?>">
 
                 <?php echo form_close(); ?>
 

@@ -1,4 +1,5 @@
 <main class="main">
+    <?php $strings = json_decode($strings_json) ?>
     <ol class="breadcrumb">
         <li class="breadcrumb-item">Admin</li>
         <li class="breadcrumb-item">Seiten</li>
@@ -10,29 +11,29 @@
 
         //table
         echo '<div class="card card-accent-primary" id="all_pages">';
-        echo '<div class="card-header">Alle Seiten</div>';
+        echo '<div class="card-header">'.$strings->card_header_show.'</div>';
         echo '<div class="card-body" id="all_pages_body">';
 
         if ($this->session->flashdata('page_created')){
-            echo '<p class="alert alert-success">' . $this->session->flashdata("page_created") . '</p>';
+            echo $this->session->flashdata("page_created");
         }
         if ($this->session->flashdata('page_updated')){
-            echo '<p class="alert alert-success">' . $this->session->flashdata("page_updated") . '</p>';
+            echo $this->session->flashdata("page_updated");
         }
         if ($this->session->flashdata('page_deleted')){
-            echo '<p class="alert alert-success">' . $this->session->flashdata("page_deleted") . '</p>';
+            echo $this->session->flashdata("page_deleted");
         }
         if ($this->session->flashdata('page_delete_error')){
-            echo '<p class="alert alert-success">' . $this->session->flashdata("page_delete_error") . '</p>';
+            echo$this->session->flashdata("page_delete_error");
         }
 
             echo '<table class="table table-responsive-sm table-hover table-outline sorted_table" id="all_pages_table">';
             echo '<thead class="thead-light">';
             echo '<tr>';
-            echo '<th class="no-sort">Bild</th>';
-            echo '<th>Name</th>';
-            echo '<th>Erstelldatum</th>';
-            echo '<th class="no-sort">Optionen</th>';
+            echo '<th class="no-sort">'.$strings->form_img.'</th>';
+            echo '<th>'.$strings->form_name.'</th>';
+            echo '<th>'.$strings->form_date.'</th>';
+            echo '<th class="no-sort">'.$strings->table_options.'</th>';
             echo '<tr>';
             echo '</thead>';
             echo '<tbody>';
@@ -42,8 +43,8 @@
                     echo '<td>' . $page->name . '</td>';
                     echo '<td>'. $page->created_at .'</td>';
                     echo '<td>';
-                    echo '<a href="'.base_url().'pages/modify_page/'.$page->id.'" class="btn btn-md btn-primary mx-1">Bearbeiten</a>';
-                    echo '<a href="#" class="btn btn-md btn-danger mx-1 delete-page" data-id="'.$page->id.'">Löschen</a>';
+                    echo '<a href="'.base_url().'pages/modify_page/'.$page->id.'" class="btn btn-md btn-primary mx-1">'.$strings->table_button_mod.'</a>';
+                    echo '<a href="#" class="btn btn-md btn-danger mx-1 delete-page" data-id="'.$page->id.'">'.$strings->table_button_delete.'</a>';
                     echo '</td>';
                     echo '</tr>';
             }
@@ -79,12 +80,6 @@
 
 <script>
     $(document).ready(function(){
-        $('.sorted_table').sortable({
-            containerSelector: 'table',
-            itemPath: '> tbody',
-            itemSelector: 'tr',
-            placeholder: '<tr class="placeholder"/>'
-        });
 
         $('table').tablesort();
     });

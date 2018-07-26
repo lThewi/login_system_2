@@ -4,9 +4,13 @@
             <li class="breadcrumb-item active">Dashboard</li>
         </ol>
         <div class="container-fluid">
+            <?php
+                $strings = json_decode($strings_json);
+            ?>
+
             <div class="card card-accent-primary">
                 <div class="card-header">
-                    Nicht aktivierte Accounts
+                    <?php echo $strings->card_header_pending;?>
                 </div>
                 <div class="card-body" id="pending-users">
                     <?php echo form_open('users/add_multiple_users') ?>
@@ -14,11 +18,11 @@
                         <thead class="thead-light">
                         <tr>
                             <th><!--<label><input type="checkbox" id="check-all"></label>--></th>
-                            <th><strong>Name</strong></th>
-                            <th><strong>Nachname</strong></th>
-                            <th><strong>Email</strong></th>
-                            <th class="no-sort"><strong>Accounttyp</strong></th>
-                            <th class="no-sort"><strong>Optionen</strong></th>
+                            <th><strong><?php echo $strings->table_header_firstname;?></strong></th>
+                            <th><strong><?php echo $strings->table_header_lastname;?></strong></th>
+                            <th><strong><?php echo $strings->table_header_email;?></strong></th>
+                            <th><strong><?php echo $strings->table_header_date;?></strong></th>
+                            <th class="no-sort"><strong><?php echo $strings->table_header_type;?></strong></th>
                         </tr>
                         </thead>
 
@@ -36,29 +40,31 @@
                                 <td>'. $temp_user->name .'</td>
                                 <td>'. $temp_user->lastname .'</td>
                                 <td>'. $temp_user->email .'</td>
+                                <td>'. $temp_user->register_date .'</td>
                                 <td>'. form_dropdown($dropdown_name, $types, 2, array('class' => 'form-control')) .'</td>
-                                <td><a href="#" class="btn btn-md btn-danger mx-1 decline-user" data-id="'.$temp_user->id.'">Ablehnen</a></td>
                                 </tr>';
                             }
                         }
                         ?>
                     </table>
-                    <input type="submit" value="Hinzufügen" class="btn btn-lg btn-primary">
+                    <input type="submit" value="<?php echo $strings->table_button_add;?>" class="btn btn-lg btn-primary accept-user" disabled>
+                    <input type="button" value="<?php echo $strings->table_button_decline;?>" class="btn btn-lg btn-danger mx-1 decline-user" disabled/>
                     <?php echo form_close() ?>
                 </div>
             </div>
             <div class="card card-accent-primary">
                 <div class="card-header">
-                    Aktivierte Accounts
+                    <?php echo $strings->card_header_active;?>
                 </div>
                 <div class="card-body" id="users">
                     <table class="table table-responsive-sm table-hover table-outline sorted_table" id="active-users-table">
                         <thead class="thead-light">
                         <tr>
-                            <th><strong>Name</strong></th>
-                            <th><strong>Nachname</strong></th>
-                            <th><strong>Email</strong></th>
-                            <th><strong>Accounttyp</strong></th>
+                            <th><strong><?php echo $strings->table_header_firstname;?></strong></th>
+                            <th><strong><?php echo $strings->table_header_lastname;?></strong></th>
+                            <th><strong><?php echo $strings->table_header_email;?></strong></th>
+                            <th><strong><?php echo $strings->table_header_date;?></strong></th>
+                            <th><strong><?php echo $strings->table_header_type;?></strong></th>
                         </tr>
                         </thead>
 
@@ -69,6 +75,7 @@
                                 <td>'. $user->name .'</td>
                                 <td>'. $user->lastname .'</td>
                                 <td>'. $user->email .'</td>
+                                <td>'. $user->register_date .'</td>
                                 <td>'. $user->acc_type_id .'</td>
                                 </tr>';
                         }?>
@@ -78,16 +85,17 @@
 
             <div class="card card-accent-primary">
                 <div class="card-header">
-                    Abgelehnte Accounts
+                    <?php echo $strings->card_header_declined;?>
                 </div>
                 <div class="card-body" id="declined-users">
                     <table class="table table-responsive-sm table-hover table-outline sorted_table" id="declined-users-table">
                         <thead class="thead-light">
                         <tr>
-                            <th><strong>Name</strong></th>
-                            <th><strong>Nachname</strong></th>
-                            <th><strong>Email</strong></th>
-                            <th class="no-sort"><strong>Optionen</strong></th>
+                            <th><strong><?php echo $strings->table_header_firstname;?></strong></th>
+                            <th><strong><?php echo $strings->table_header_lastname;?></strong></th>
+                            <th><strong><?php echo $strings->table_header_email;?></strong></th>
+                            <th><strong><?php echo $strings->table_header_date;?></strong></th>
+                            <th class="no-sort"><strong><?php echo $strings->table_header_options?></strong></th>
                         </tr>
                         </thead>
 
@@ -98,6 +106,7 @@
                                 <td>'. $temp_user->name .'</td>
                                 <td>'. $temp_user->lastname .'</td>
                                 <td>'. $temp_user->email .'</td>
+                                <td>'. $temp_user->register_date .'</td>
                                 <td>PLACEHOLDER</td>
                                 </tr>';
                             }

@@ -14,9 +14,11 @@ class News extends CI_Controller{
 
     public function show_news(){
         if($this->session->userdata('logged_in') == true){
+            $header['strings_json'] = $this->language_model->get_lang_strings_navbar();
             $data['all_news_json'] = $this->news_model->get_all_news();
+            $data['strings_json'] = $this->language_model->get_lang_strings_news();
 
-            $this->load->view('header');
+            $this->load->view('header', $header);
             $this->load->view('news/show_news', $data);
 
         } else {
@@ -26,14 +28,16 @@ class News extends CI_Controller{
 
     public function create_news(){
         if($this->session->userdata('logged_in') == true){
+            $header['strings_json'] = $this->language_model->get_lang_strings_navbar();
             $lang = json_decode($this->language_model->get_lang_strings_news());
             $data['categories_json'] = $this->news_model->get_all_categories();
+            $data['strings_json'] = $this->language_model->get_lang_strings_news();
 
             $this->form_validation->set_rules('title', 'Title', 'required', array('required' => $lang->news_formvalid_title));
             $this->form_validation->set_rules('content', 'Content', 'required', array('required' => $lang->news_formvalid_content));
 
             if(!$this->form_validation->run()){
-                $this->load->view('header');
+                $this->load->view('header', $header);
                 $this->load->view('news/create_news', $data);
             } else {
                 $db_array = array(
@@ -80,11 +84,13 @@ class News extends CI_Controller{
 
     public function update_news($id){
         if($this->session->userdata('logged_in') == true){
+            $header['strings_json'] = $this->language_model->get_lang_strings_navbar();
             $data['categories_json'] = $this->news_model->get_all_categories();
             $data['news_json'] = $this->news_model->get_news_by_id($id);
             $data['path_json'] = json_encode($this->image_path);
+            $data['strings_json'] = $this->language_model->get_lang_strings_news();
 
-            $this->load->view('header');
+            $this->load->view('header',$header);
             $this->load->view('news/update_news', $data);
         } else {
             redirect('users/login');

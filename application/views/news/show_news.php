@@ -1,4 +1,5 @@
 <main class="main">
+    <?php $strings = json_decode($strings_json) ?>
     <ol class="breadcrumb">
         <li class="breadcrumb-item">Admin</li>
         <li class="breadcrumb-item">News</li>
@@ -6,23 +7,23 @@
     </ol>
     <div class="container-fluid">
         <?php if ($this->session->flashdata('upload_error')) : ?>
-            <?php echo '<p class="alert alert-danger">'.$this->session->set_flashdata("upload_error").'</p>'; ?>
+            <?php echo $this->session->set_flashdata("upload_error"); ?>
         <?php endif; ?>
         <?php
         $all_news = json_decode($all_news_json);
 
         echo '<div class="card card-accent-primary" id="news">';
-        echo '<div class="card-header">News</div>';
+        echo '<div class="card-header">'.$strings->card_header_show.'</div>';
         echo '<div class="card-body" id="news-body">';
 
         echo '<table class="table table-responsive-sm table-hover table-outline sorted_table" id="news-table">';
         echo '<thead class="thead-light">';
         echo '<tr>';
-        echo '<th class="no-sort">Titel</th>';
-        echo '<th>Content</th>';
-        echo '<th>Kategorie</th>';
-        echo '<th>Berechtigungslevel</th>';
-        echo '<th class="no-sort">Optionen</th>';
+        echo '<th class="no-sort">'.$strings->form_title.'</th>';
+        echo '<th>'.$strings->form_content.'</th>';
+        echo '<th>'.$strings->form_category.'</th>';
+        echo '<th>'.$strings->form_auth_level.'</th>';
+        echo '<th class="no-sort">'.$strings->table_options.'</th>';
         echo '<tr>';
         echo '</thead>';
         echo '<tbody>';
@@ -33,8 +34,8 @@
             echo '<td>' . $news->category_id. '</td>';
             echo '<td>' . $news->auth_levels. '</td>';
             echo '<td>';
-            echo '<a href="'.base_url().'news/update_news/'.$news->id.'" class="btn btn-md btn-primary mx-1">Bearbeiten</a>';
-            echo '<a href="#" class="btn btn-md btn-danger mx-1 delete-news" data-id="'.$news->id.'">Löschen</a>';
+            echo '<a href="'.base_url().'news/update_news/'.$news->id.'" class="btn btn-md btn-primary mx-1">'.$strings->button_mod.'</a>';
+            echo '<a href="#" class="btn btn-md btn-danger mx-1 delete-news" data-id="'.$news->id.'">'.$strings->button_delete.'</a>';
             echo '</td>';
             echo '</tr>';
         }

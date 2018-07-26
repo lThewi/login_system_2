@@ -1,4 +1,5 @@
 <main class="main">
+    <?php $strings = json_decode($strings_json); ?>
     <ol class="breadcrumb">
         <li class="breadcrumb-item">Admin</li>
         <li class="breadcrumb-item">News</li>
@@ -7,16 +8,16 @@
     <div class="container-fluid">
         <div class="card card-accent-primary">
             <div class="card-header">
-                News Beitrag erstellen
+                <?php echo $strings->card_header_mod ?>
             </div>
             <?php echo form_open_multipart('news/create_news'); ?>
             <div class="card-body">
                 <?php echo validation_errors(); ?>
                 <?php if ($this->session->flashdata('database_error')) : ?>
-                    <?php echo '<p class="alert">' . $this->session->flashdata('database_error') . '</p>'; ?>
+                    <?php echo $this->session->flashdata('database_error'); ?>
                 <?php endif; ?>
                 <?php if ($this->session->flashdata('upload_error')) : ?>
-                    <?php echo '<p class="alert">Problem beim Hochladen des Bildes.</p>'; ?>
+                    <?php echo $this->session->flashdata('upload_error'); ?>
                 <?php endif; ?>
                 <?php
                 $categories = json_decode($categories_json);
@@ -36,20 +37,20 @@
 
                 <div class="row">
                     <div class="form-group col-md-8">
-                        <label for="title">Titel</label>
+                        <label for="title"><?php echo $strings->form_title ?></label>
                         <input type="text" id="title" name="title" class="form-control" required value="<?php echo set_value('title', $news[0]->title); ?>">
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="category">Kategorie</label>
+                        <label for="category"><?php echo $strings->form_category ?></label>
                         <?php echo form_dropdown('category', $category_list, set_value('category', $news[0]->category_id), array('class' => 'form-control', 'id' => 'category')); ?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="content">Inhalt</label>
+                    <label for="content"><?php echo $strings->form_content ?></label>
                     <textarea id="textarea-input" name="content" class="form-control"><?php echo set_value('content', $news[0]->content);?></textarea>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-3 col-form-label">Berechtigungsstufen</label>
+                    <label class="col-md-3 col-form-label"><?php echo $strings->form_auth_level ?></label>
                     <div class="col-md-9 col-form-label">
                         <div class="form-check checkbox">
                             <input class="form-check-input" type="checkbox" value="1" id="check1" name="check1" <?php if($check1 != ' '){echo 'checked';} ?>>
@@ -70,7 +71,7 @@
                     </div>
                 </div>
 
-                <label>Bilder (Optional, bis zu drei Bilder möglich)</label>
+                <label><?php echo $strings->form_img ?></label>
                 <div class="row">
                     <div class="form-group col-md-4">
                         <input type="file" name="img_1" id="img_1" value=""
@@ -104,8 +105,8 @@
                         } else $src_3 = '';?>
                         <img id="img_pv_3" <?php echo $src_3;?>/>
                     </div>
-                <input type="submit" class="btn btn-lg btn-primary" value="Speichern">
-                <input type="reset" class="btn btn-lg btn-danger" value="Zurücksetzen">
+                <input type="submit" class="btn btn-lg btn-primary" value="<?php echo $strings->form_button_save ?>">
+                <input type="reset" class="btn btn-lg btn-danger" value="<?php echo $strings->form_button_reset ?>">
 
                 <?php echo form_close(); ?>
 

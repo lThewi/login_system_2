@@ -38,6 +38,12 @@ class Document_model extends CI_Model{
         return json_encode($result);
     }
 
+    public function modify_category($cat_id, $data){
+        $this->db->where('id', $cat_id);
+        $result = $this->db->update('doc_categories', $data);
+        return json_encode($result);
+    }
+
     public function delete_document($doc_id){
         $this->db->where('id', $doc_id);
         $result = $this->db->delete('documents');
@@ -55,6 +61,12 @@ class Document_model extends CI_Model{
         return json_encode($result);
     }
 
+    public function delete_category($id){
+        $this->db->where('id', $id);
+        $result = $this->db->delete('doc_categories');
+        return json_encode($result);
+    }
+
     public function create_contactperson($data){
         $result = $this->db->insert('contact_persons', $data);
         return json_encode($result);
@@ -69,6 +81,12 @@ class Document_model extends CI_Model{
     public function get_contact($id){
         $this->db->where('id', $id);
         $result = $this->db->get('contact_persons');
+        return json_encode($result->result());
+    }
+
+    public function get_category_by_id($id){
+        $this->db->where('id', $id);
+        $result = $this->db->get('doc_categories');
         return json_encode($result->result());
     }
 }

@@ -1,4 +1,17 @@
 $(document).ready(function() {
+    $('[type="checkbox"]').on('click', function () {
+        value = true
+        $('[type="checkbox"]').each(function(){
+            if($(this).is(':checked')){
+                value = false;
+            }
+        });
+        $('.decline-user').prop('disabled', value);
+        $('.accept-user').prop('disabled', value);
+    });
+
+
+
     $(".delete_row").on('click', function () {
         var id = $(this).attr('data-id');
         if(confirm('Sind Sie sicher, dass Sie dieses Dokument löschen wollen?')){
@@ -18,13 +31,22 @@ $(document).ready(function() {
 
     $(".decline-user").on('click', function () {
         var id = $(this).attr('data-id');
+        //alle gecheckten boxen abfragen
+        var index = 0;
+        var array = [];
+        $('input:checked').each( function () {
+            array[index] = $(this).attr('value');
+            index++;
+        });
+        var json_string = JSON.stringify(array);
         if(confirm('Sind Sie sicher, dass Sie diesen Nutzer ablehnen wollen?')){
             $.ajax({
-                url: 'decline_user/'+id,
+                url: 'decline_multiple_users',
                 method: 'post',
-                dataType: 'json',
-                success: function(data){
-                    console.log(data);
+                //dataType: 'json',
+                data: {json_string: json_string},
+                success: function(){
+                    //console.log('test');
                     location.reload();
                 },
                 error: function(){
@@ -97,8 +119,50 @@ $(document).ready(function() {
             })
         }
     });
+    $(".delete-category").on('click', function () {
+        var id = $(this).attr('data-id');
+        if(confirm('Sind Sie sicher, dass Sie diese Kategorie entfernen wollen?')){
+            $.ajax({
+                url: 'delete_category/'+id,
+                method: 'post',
+                success: function(){
+                    location.reload();
+                },
+                error: function(){
+                    console.log('error');
+                }
+            })
+        }
+    });
 
     //send table order
+
+    $('table#cat-table').sortable({
+        containerSelector: 'table',
+        itemPath: '> tbody',
+        itemSelector: 'tr',
+        placeholder: '<tr class="placeholder"/>',
+        group: 'sorted_table',
+        onDrop: function ($item, container, _super){
+            $item.removeClass(container.group.options.draggedClass).removeAttr("style");
+            $("body").removeClass(container.group.options.bodyClass);
+            var index = 0;
+            var array = [];
+            $('tbody tr').each( function () {
+                array[index] = $(this).attr('id');
+                index++;
+            });
+            var json_string = JSON.stringify(array);
+            $.ajax({
+                method: 'POST',
+                data: {string: json_string},
+                url: 'update_categories_order',
+                error: function () {
+                    console.log('Ajax error in doc-table');
+                }
+            });
+        }
+    });
 
     $('table.doc-table').sortable({
         containerSelector: 'table',

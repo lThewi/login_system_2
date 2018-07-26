@@ -11,9 +11,12 @@ class Faq extends CI_Controller{
 
     public function show_faq(){
         if($this->session->userdata('logged_in') == TRUE ){
+            $header['strings_json'] = $this->language_model->get_lang_strings_navbar();
             $data['faq_json'] = $this->Faq_model->get_all_questions();
+            $strings_json = $this->language_model->get_lang_strings_faq();
+            $data['strings_json'] = $strings_json;
 
-            $this->load->view('header');
+            $this->load->view('header',$header);
             $this->load->view('faq/show_faq', $data);
         } else {
             redirect('users/login');
@@ -22,9 +25,12 @@ class Faq extends CI_Controller{
 
     public function modify_faq($id){
         if($this->session->userdata('logged_in') == TRUE ){
+            $header['strings_json'] = $this->language_model->get_lang_strings_navbar();
             $data['faq_json'] = $this->Faq_model->get_question_by_id($id);
+            $strings_json = $this->language_model->get_lang_strings_faq();
+            $data['strings_json'] = $strings_json;
 
-            $this->load->view('header');
+            $this->load->view('header', $header);
             $this->load->view('faq/modify_faq', $data);
         } else {
             redirect('users/login');
@@ -33,16 +39,46 @@ class Faq extends CI_Controller{
 
     public function create_faq(){
         if($this->session->userdata('logged_in') == TRUE ){
-            $this->load->view('header');
-            $this->load->view('faq/create_faq');
+            $header['strings_json'] = $this->language_model->get_lang_strings_navbar();
+            $strings_json = $this->language_model->get_lang_strings_faq();
+            $data['strings_json'] = $strings_json;
+
+
+            $strings = json_decode($strings_json);
+
+            $this->form_validation->set_rules('question', 'Question', 'required', array('required' => $strings->faq_rules_question));
+            $this->form_validation->set_rules('content', 'Content', 'required', array('required' => $strings->faq_rules_answer));
+
+            if($this->form_validation->run() === FALSE) {
+                $this->load->view('header', $header);
+                $this->load->view('faq/create_faq', $data);
+            } else {
+                $db_array = array(
+                    'question' => $this->input->post('question'),
+                    'answer' => $this->input->post('content'),
+                );
+
+                $result = $this->Faq_model->create_faq($db_array);
+                if($result){
+                    $this->session->set_flashdata('faq_created', $strings->faq_created);
+                    redirect('faq/show_faq');
+                } else {
+                    $this->session->set_flashdata('faq_error', $strings->faq_create_error);
+                    redirect('faq/create_faq');
+                }
+            }
+
+
         } else {
             redirect('users/login');
         }
     }
 
     public function create_new_faq(){
-        $this->form_validation->set_rules('question', 'Question', 'required', array('required' => 'Sie müssen eine Frage angeben.'));
-        $this->form_validation->set_rules('content', 'Content', 'required', array('required' => 'Sie müssen eine Antwort angeben.'));
+        $strings = json_decode($this->language_model->get_lang_strings_faq());
+
+        $this->form_validation->set_rules('question', 'Question', 'required', array('required' => $strings->faq_rules_question));
+        $this->form_validation->set_rules('content', 'Content', 'required', array('required' => $strings->faq_rules_answer));
 
         if($this->form_validation->run()){
             $db_array = array(
@@ -52,10 +88,10 @@ class Faq extends CI_Controller{
 
             $result = $this->Faq_model->create_faq($db_array);
             if($result){
-                $this->session->set_flashdata('faq_created', 'Die Frage wurde erfolgreich erstellt.');
+                $this->session->set_flashdata('faq_created', $strings->faq_created);
                 redirect('faq/show_faq');
             } else {
-                $this->session->set_flashdata('faq_error', 'Beim Eintragen in die Datenbank ist ein Fehler aufgetreten.');
+                $this->session->set_flashdata('faq_error', $strings->faq_create_error);
                 redirect('faq/create_faq');
             }
         }
@@ -74,6 +110,8 @@ class Faq extends CI_Controller{
     }
 
     public function mod_faq(){
+        $strings = json_decode($this->language_model->get_lang_strings_faq());
+
         $db_array = array(
             'question' => $this->input->post('question'),
             'answer' => $this->input->post('content')
@@ -87,10 +125,10 @@ class Faq extends CI_Controller{
         $result = $this->Faq_model->update_faq($id, $db_array);
 
         if($result){
-            $this->session->set_userdata('faq_updated', 'Die Frage wurde erfolgreich bearbeitet.');
+            $this->session->set_userdata('faq_updated', $strings->faq_modified);
             redirect('faq/show_faq');
         } else {
-            $this->session->set_userdata('faq_update_error', 'Beim Speichern der Änderungen ist ein Fehler aufgetreten.');
+            $this->session->set_userdata('faq_update_error', $strings->faq_modify_error);
             redirect('faq/modify_faq/'.$id);
         }
     }

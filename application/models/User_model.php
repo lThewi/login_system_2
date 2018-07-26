@@ -22,7 +22,8 @@
                 'name' => $this->input->post('name'),
                 'email' => $this->input->post('email'),
                 'lastname' => $this->input->post('lastname'),
-                'password' => md5($this->input->post('password'))
+                'password' => md5($this->input->post('password')),
+                'register_date' => date('Y-m-d')
             );
             $this->db->where('email', $this->input->post('email'));
             $is_already_registered = $this->db->get('users');
@@ -48,7 +49,8 @@
                         'password' => $row->password,
                         'name' => $row->name,
                         'lastname' => $row->lastname,
-                        'acc_type_id' => $user_type
+                        'acc_type_id' => $user_type,
+                        'register_date' => $row->register_date
                     );
 
                     $did_add_user = $this->db->insert('users', $data);
@@ -74,7 +76,7 @@
                 if($user->row(0)->password == $password){
                     return json_encode($user->row(0));
                 } else {
-                    return 'wrong password' ;
+                    return json_encode('wrong password');
                 }
             } else {
                 return false;
