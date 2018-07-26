@@ -80,7 +80,7 @@ class Documents extends CI_Controller{
         if($this->session->userdata('logged_in') == TRUE){
             $header['strings_json'] = $this->language_model->get_lang_strings_navbar();
             $strings_json = $this->language_model->get_lang_strings_categories();
-            $string = json_decode($this->language_model->get_lang_strings_documents);
+            $string = json_decode($this->language_model->get_lang_strings_documents());
 
             $this->form_validation->set_rules('name', 'Name', 'required|trim|is_unique[doc_categories.name]', array('is_unique[doc_categories.name]' => $string->cat_not_unique));
 
@@ -227,8 +227,7 @@ class Documents extends CI_Controller{
 
     public function create(){
         //image upload config
-        $config['upload_path'] = $this->image_path;
-        $this->upload->initialize($config);
+        $this->load->library('upload');
 
         $strings = json_decode($this->language_model->get_lang_strings_documents());
 
@@ -329,6 +328,7 @@ class Documents extends CI_Controller{
     }
 
     public function upload_image($field){
+        $this->load->library('upload');
         if(!$this->upload->do_upload($field)){
             $error = $this->upload->display_errors();
             $img_name = null;
@@ -342,6 +342,7 @@ class Documents extends CI_Controller{
     }
 
     public function upload_contact_image($img){
+        $this->load->library('upload');
         if(!$this->upload->do_upload($img)){
             $img_name = null;
         } else {

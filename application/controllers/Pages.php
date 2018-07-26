@@ -119,7 +119,7 @@ class Pages extends CI_Controller{
     }
 
     public function upload_graphic($field){
-
+        $this->load->library('upload');
         if(!$this->upload->do_upload($field)){
             $error = $this->upload->display_errors();
             $img_name = null;

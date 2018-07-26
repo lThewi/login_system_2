@@ -58,7 +58,11 @@ class News extends CI_Controller{
                     }
                 }
                 $db_array['auth_levels'] = $auth_string;
+                $config['upload_path'] = $this->image_path;
+
+                $this->load->library('upload');
                 //uploading images to server
+
                 $img_name_1 = $this->upload_image('img_1');
                 $img_name_2 = $this->upload_image('img_2');
                 $img_name_3 = $this->upload_image('img_3');
@@ -122,7 +126,6 @@ class News extends CI_Controller{
     }
 
     public function upload_image($field){
-        echo $this->image_path;
         if(!$this->upload->do_upload($field)){
             $error = $this->upload->display_errors();
             $img_name = null;
