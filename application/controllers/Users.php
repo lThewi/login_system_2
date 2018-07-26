@@ -3,7 +3,7 @@
 
 
         function index(){
-            $this->load->view('login');
+            redirect('users/login');
         }
 
         /**
