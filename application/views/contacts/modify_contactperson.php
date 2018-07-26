@@ -68,7 +68,7 @@
                     </div>
                 </div>
                 <input type="submit" class="btn btn-lg btn-primary" value="<?php echo $strings->form_button_save ?>">
-                <input type="reset" class="btn btn-lg btn-danger" value="<?php echo $strings->form_reset ?>">
+                <input type="reset" class="btn btn-lg btn-danger" value="<?php echo $strings->form_button_reset ?>">
 
                 <?php echo form_close(); ?>
 

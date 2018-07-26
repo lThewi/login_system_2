@@ -28,6 +28,11 @@
                 foreach ($contacts as $contact) {
                     $contact_list[$contact->id] = $contact->name;
                 }
+                if(!$contacts){
+                    $contact_list[0] = $strings->no_contacts;
+                } else{
+                    $contact_list[0] = $strings->contacts_list;
+                }
                 ?>
 
                 <div class="row">
@@ -37,7 +42,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label for="category"><?php echo $strings->form_category; ?></label>
-                        <?php echo form_dropdown('categories', $category_list, set_value('categories'), array('class' => 'form-control', 'id' => 'category')); ?>
+                        <?php echo form_dropdown('categories', $category_list, set_value('categories', '0'), array('class' => 'form-control', 'id' => 'category')); ?>
                     </div>
                 </div>
                 <div class="row">

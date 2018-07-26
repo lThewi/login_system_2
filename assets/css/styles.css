@@ -33,3 +33,11 @@ th.sorted.ascending:after {
 th.sorted.descending:after {
     content: " \2193";
 }
+
+.sidebar .nav-dropdown.open{
+    background: rgba(0,0,0,1);
+}
+
+.sidebar .nav-link.active{
+    background: #3e5362;
+}

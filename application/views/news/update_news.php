@@ -10,7 +10,7 @@
             <div class="card-header">
                 <?php echo $strings->card_header_mod ?>
             </div>
-            <?php echo form_open_multipart('news/create_news'); ?>
+            <?php echo form_open_multipart('news/mod_news'); ?>
             <div class="card-body">
                 <?php echo validation_errors(); ?>
                 <?php if ($this->session->flashdata('database_error')) : ?>
@@ -39,6 +39,7 @@
                     <div class="form-group col-md-8">
                         <label for="title"><?php echo $strings->form_title ?></label>
                         <input type="text" id="title" name="title" class="form-control" required value="<?php echo set_value('title', $news[0]->title); ?>">
+                        <input type="hidden" id="news_id" name="news_id" value="<?php echo $news[0]->id ?>">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="category"><?php echo $strings->form_category ?></label>

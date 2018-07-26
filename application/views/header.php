@@ -41,6 +41,7 @@
                         <?php echo $strings->dashboard ?>
                     </a>
                 </li>
+                <li class="nav-title"><?php echo $strings->nav_group_2 ?></li>
                 <li class="nav-item nav-dropdown">
                     <a href="#" class="nav-link nav-dropdown-toggle">
                         <div class="nav-icon cui-file"></div>
@@ -83,6 +84,7 @@
                     </ul>
                 </li>
                 </li>
+                <li class="nav-title"><?php echo $strings->nav_group_3 ?></li>
                 <li class="nav-item nav-dropdown">
                     <a href="#" class="nav-link nav-dropdown-toggle">
                         <div class="nav-icon cui-globe"></div>
@@ -143,6 +145,7 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-title"><?php echo $strings->nav_group_4 ?></li>
                 <li class="nav-item">
                     <a href="<?php echo base_url(); ?>users/logout" class="nav-link">
                         <div class="nav-icon cui-account-logout"></div>

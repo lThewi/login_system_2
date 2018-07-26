@@ -58,7 +58,6 @@ class News extends CI_Controller{
                     }
                 }
                 $db_array['auth_levels'] = $auth_string;
-                $config['upload_path'] = $this->image_path;
 
                 $this->load->library('upload');
                 //uploading images to server
@@ -92,12 +91,65 @@ class News extends CI_Controller{
             $data['categories_json'] = $this->news_model->get_all_categories();
             $data['news_json'] = $this->news_model->get_news_by_id($id);
             $data['path_json'] = json_encode($this->image_path);
-            $data['strings_json'] = $this->language_model->get_lang_strings_news();
+            $strings_json = $this->language_model->get_lang_strings_news();
+            $data['strings_json'] = $strings_json;
 
-            $this->load->view('header',$header);
-            $this->load->view('news/update_news', $data);
+            $strings = json_decode($strings_json);
+
+                $this->load->view('header',$header);
+                $this->load->view('news/update_news', $data);
+
+
+
         } else {
             redirect('users/login');
+        }
+    }
+
+    public function mod_news(){
+        $strings = json_decode($this->language_model->get_lang_strings_news());
+        $this->form_validation->set_rules('title', 'Title', 'trim|required', array('required' => $strings->news_formvalid_title));
+        $this->form_validation->set_rules('content', 'Content', 'trim|required', array('required' => $strings->news_formvalid_content));
+        //preparing DB array
+        $db_array = array(
+            'title' => $this->input->post('title'),
+            'content' => $this->input->post('content'),
+            'category_id' => $this->input->post('category'),
+        );
+        $auth_string = '';
+        for($idx = 1;$idx <= 4; $idx++){
+            $input_name = 'check'.$idx;
+            if($this->input->post($input_name) != null){
+                $auth_string .= $this->input->post($input_name).',';
+            } else {
+                $auth_string .= ' ,';
+            }
+        }
+        $db_array['auth_levels'] = $auth_string;
+        $this->load->library('upload');
+        //uploading images to server
+        $img_path_1 = $this->upload_image('img_1');
+        $img_path_2 = $this->upload_image('img_2');
+        $img_path_3 = $this->upload_image('img_3');
+        if($img_path_1 != null){
+            $db_array['img_1'] = $img_path_1;
+            unlink($this->input->post('img_1_old'));
+        }
+        if($img_path_2 != null){
+            $db_array['img_2'] = $img_path_2;
+            unlink($this->input->post('img_3_old'));
+        }
+        if($img_path_3 != null){
+            $db_array['img_3'] = $img_path_3;
+            unlink($this->input->post('img_3_old'));
+        }
+        //model call to insert array into DB
+        $result = $this->news_model->update_news($this->input->post('news_id'), $db_array);
+        if($result){
+            redirect('news/show_news');
+        } else {
+            $this->session->set_flashdata('database_error', $strings->doc_modify_error);
+            redirect('news/update_news/'.$this->input->post('news_id'));
         }
     }
 
@@ -119,10 +171,6 @@ class News extends CI_Controller{
 
         $result = $this->news_model->delete_news($id);
         redirect('news/show_news');
-    }
-
-    public function mod_news(){
-
     }
 
     public function upload_image($field){

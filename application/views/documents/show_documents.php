@@ -30,6 +30,7 @@
                                 echo '<tr>';
                                     echo '<th>'.$strings->table_tech.'</th>';
                                     echo '<th>'.$strings->table_name.'</th>';
+                                    echo '<th>'.$strings->table_date.'</th>';
                                     echo '<th class="no-sort">'.$strings->table_options.'</th>';
                                 echo '<tr>';
                             echo '</thead>';
@@ -40,6 +41,7 @@
                                     echo '<tr id="'.$doc->id.'">';
                                         echo '<td>' . $doc->technische_kennung . '</td>';
                                         echo '<td>' . $doc->name . '</td>';
+                                        echo '<td>' . $doc->created_date . '</td>';
                                         echo '<td>';
                                             echo '<a href="'.base_url().'documents/modify_document/'.$doc->id.'" class="btn btn-md btn-primary mx-1">'.$strings->button_mod.'</a>';
                                             echo '<a href="#" class="btn btn-md btn-danger mx-1 delete_row" data-id="'.$doc->id.'">'.$strings->button_delete.'</a>';

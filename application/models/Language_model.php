@@ -8,6 +8,9 @@ class Language_model extends CI_Model{
 
     public function get_lang_strings_navbar(){
         $language_array['nav_group_1'] = 'Allgemein';
+        $language_array['nav_group_2'] = 'Dokumente';
+        $language_array['nav_group_3'] = 'Seiten';
+        $language_array['nav_group_4'] = 'Sonstiges';
         $language_array['dashboard'] = 'Benutzerverwaltung';
         $language_array['documents'] = 'Dokumente';
         $language_array['documents_create'] = 'Dokument erstellen';
@@ -131,6 +134,8 @@ class Language_model extends CI_Model{
         $language_array['form_img'] = 'Bilder (Optional, bis zu drei Bilder möglich)';
         $language_array['form_button_save'] = 'Speichern';
         $language_array['form_button_reset'] = 'Zurücksetzen';
+        $language_array['no_contacts'] = 'Keine Kontaktpersonen gefunden!';
+        $language_array['contacts_list'] = 'Keine Kontaktperson ausgewählt';
 
         return json_encode($language_array);
     }
@@ -138,6 +143,7 @@ class Language_model extends CI_Model{
     public function get_lang_strings_document_show(){
         $language_array['table_tech'] = 'Technische Kennung';
         $language_array['table_name'] = 'Name';
+        $language_array['table_date'] = 'Erstelldatum';
         $language_array['table_options'] = 'Otionen';
         $language_array['button_mod'] = 'Bearbeiten';
         $language_array['button_delete'] = 'Löschen';
