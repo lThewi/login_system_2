@@ -29,6 +29,22 @@ $(document).ready(function() {
         }
     });
 
+    $(".decline-active-user").on('click', function () {
+        var id = $(this).attr('data-id');
+        if(confirm('Sind Sie sicher, dass Sie diesen Nutzeraccount deaktivieren möchten?')){
+            $.ajax({
+                url: 'decline_active_user/'+id,
+                method: 'post',
+                success: function(){
+                    location.reload();
+                },
+                error: function(){
+                    console.log('error');
+                }
+            })
+        }
+    });
+
     $(".decline-user").on('click', function () {
         var id = $(this).attr('data-id');
         //alle gecheckten boxen abfragen
@@ -47,6 +63,22 @@ $(document).ready(function() {
                 data: {json_string: json_string},
                 success: function(){
                     //console.log('test');
+                    location.reload();
+                },
+                error: function(){
+                    console.log('error');
+                }
+            })
+        }
+    });
+
+    $(".re-add-user").on('click', function () {
+        var id = $(this).attr('data-id');
+        if(confirm('Sind Sie sicher, dass Sie diesen Nutzer hinzufügen möchten?')){
+            $.ajax({
+                url: 're_add_user/'+id,
+                method: 'post',
+                success: function(){
                     location.reload();
                 },
                 error: function(){

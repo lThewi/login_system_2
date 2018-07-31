@@ -34,13 +34,29 @@
                             <?php echo $this->session->flashdata('wrong_email'); ?>
                         <?php endif; ?>
 
+                        <?php if ($this->session->flashdata('reset_success')) : ?>
+                            <?php echo $this->session->flashdata('reset_success'); ?>
+                        <?php endif; ?>
+
+                        <?php if ($this->session->flashdata('reset_error')) : ?>
+                            <?php echo $this->session->flashdata('reset_error'); ?>
+                        <?php endif; ?>
+
                         <div class="input-group mb-3">
                             <input type="text" name="mail" placeholder="E-MAIL" id="mail" required class="form-control" value="<?php if ($this->session->flashdata('mail')) echo set_value('mail',$this->session->flashdata('mail')); ?>">
                         </div>
                         <div class="input-group mb-4">
                             <input type="password" name="password" placeholder="<?php echo $strings->login_text_password;?>" id="password" required class="form-control">
                         </div>
-                        <input type="submit" name="submit" value="<?php echo $strings->login_text_button ?>" class="btn btn-primary px-4">
+                        <div class="row">
+                            <div class="col-6">
+                                <input type="submit" name="submit" value="<?php echo $strings->login_text_button ?>" class="btn btn-primary px-4">
+                            </div>
+                            <div class="col-6 text-right">
+                                <a class="btn btn-link px-0" href="<?php echo base_url();?>users/reset_pw_email"><?php echo $strings->login_forgot_password ?></a>
+                            </div>
+                        </div>
+
                         <?php echo form_close() ?>
                     </div>
                 </div>

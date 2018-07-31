@@ -64,20 +64,27 @@
                             <th><strong><?php echo $strings->table_header_lastname;?></strong></th>
                             <th><strong><?php echo $strings->table_header_email;?></strong></th>
                             <th><strong><?php echo $strings->table_header_date;?></strong></th>
+                            <th><strong><?php echo $strings->table_header_last_login;?></strong></th>
                             <th><strong><?php echo $strings->table_header_type;?></strong></th>
+                            <th><strong><?php echo $strings->table_header_options;?></strong></th>
                         </tr>
                         </thead>
 
                         <?php
                         $users = json_decode($users_json);
                         foreach ($users as $user) {
-                            echo '<tr id="'.$user->id.'">
-                                <td>'. $user->name .'</td>
-                                <td>'. $user->lastname .'</td>
-                                <td>'. $user->email .'</td>
-                                <td>'. $user->register_date .'</td>
-                                <td>'. $user->acc_type_id .'</td>
-                                </tr>';
+                            echo '<tr id="'.$user->id.'">';
+                            echo '<td>'. $user->name .'</td>';
+                            echo '<td>'. $user->lastname .'</td>';
+                            echo '<td>'. $user->email .'</td>';
+                            echo '<td>'. $user->register_date .'</td>';
+                            echo '<td>'. $user->last_login .'</td>';
+                            echo '<td>'. $user->acc_type_id .'</td>';
+                            echo '<td>';
+                                echo '<a href="'.base_url().'users/update_user/'.$user->id.'" class="btn btn-md btn-primary mx-1">'.$strings->table_button_mod.'</a>';
+                                echo '<a href="#" class="btn btn-md btn-danger mx-1 decline-active-user" data-id="'.$user->id.'">'.$strings->table_button_decline.'</a>';
+                            echo '</td>';
+                            echo '</tr>';
                         }?>
                     </table>
                 </div>
@@ -102,13 +109,13 @@
                         <?php
                         foreach ($temp_users as $temp_user) {
                             if($temp_user->declined == TRUE){
-                                echo '<tr id="'.$temp_user->id.'">
-                                <td>'. $temp_user->name .'</td>
-                                <td>'. $temp_user->lastname .'</td>
-                                <td>'. $temp_user->email .'</td>
-                                <td>'. $temp_user->register_date .'</td>
-                                <td>PLACEHOLDER</td>
-                                </tr>';
+                                echo '<tr id="'.$temp_user->id.'">';
+                                echo '<td>'. $temp_user->name .'</td>';
+                                echo '<td>'. $temp_user->lastname .'</td>';
+                                echo '<td>'. $temp_user->email .'</td>';
+                                echo '<td>'. $temp_user->register_date .'</td>';
+                                echo '<td><a href="#" class="btn btn-md btn-primary mx-1 re-add-user" data-id="'.$temp_user->id.'">'.$strings->table_button_add.'</a></td>';
+                                echo '</tr>';
                             }
                         }?>
                     </table>

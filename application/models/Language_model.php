@@ -38,6 +38,9 @@ class Language_model extends CI_Model{
         $language_array['email_register_body'] = '<p>Vielen Dank für Ihre Registrierung!</p><p>Ein Administartor wird sich in Kürze um Ihre Anfrage kümmern.</p>';
         $language_array['email_declined_subject'] = 'Ihr Account wurde abgelehnt';
         $language_array['email_declined_body'] = 'Die Aktivierung Ihres Accounts wurde von einem Administrator abgelehnt. Bei Fragen erreichen Sie uns unter platzhalter@mail.de';
+        $language_array['email_reset_body'] = 'Um Ihr passwort zurückzusetzen klicken Sie bitte auf den nachfolgenden Link. Falls Sie ihr Passwort nicht zurücksetzen möchten, ignorieren Sie diese Nachricht.</br></br>';
+        $language_array['email_reset_subject'] = 'Passwort vergessen';
+        $language_array['email_reset_link_text'] = 'Passwort zurücksetzen.';
 
 
         return json_encode($language_array);
@@ -211,6 +214,7 @@ class Language_model extends CI_Model{
         $language_array['login_text_password'] = 'PASSWORT';
         $language_array['login_text_head'] = 'Melden Sie sich mit Ihrem Account an.';
         $language_array['login_text_button'] = 'ANMELDEN';
+        $language_array['login_forgot_password'] = 'Passwort vergessen?';
         $language_array['login_reg_text_headline'] = 'Registrieren Sie sich';
         $language_array['login_reg_text_head'] = 'Sie haben noch keinen Account bei uns? Registrieren Sie sich.';
         $language_array['login_reg_text_button'] = 'Registrieren Sie sich jetzt!';
@@ -240,9 +244,50 @@ class Language_model extends CI_Model{
         $language_array['table_header_email'] = 'Email';
         $language_array['table_header_date'] = 'Registrierungsdatum';
         $language_array['table_header_type'] = 'Accounttyp';
+        $language_array['table_header_last_login'] = 'Letzter Login';
         $language_array['table_header_options'] = 'Optionen';
         $language_array['table_button_add'] = 'Hinzufügen';
         $language_array['table_button_decline'] = 'Ablehnen';
+        $language_array['table_button_mod'] = 'Bearbeiten';
+
+        return json_encode($language_array);
+    }
+
+    public function get_lang_strings_update_user(){
+        $language_array['form_button_save'] = 'Speichern';
+        $language_array['form_button_reset'] = 'Zurücksetzen';
+        $language_array['form_name'] = 'Vorname';
+        $language_array['form_lastname'] = 'Nachname';
+        $language_array['form_type'] = 'Account Typ';
+        $language_array['form_email'] = 'Email-Adresse';
+        $language_array['card_header_mod'] = 'Nutzer bearbeiten';
+
+        $language_array['email_required'] = '<div class="alert alert-warning">Sie müssen eine gültige Email-Adresse eingeben.</div>';
+        $language_array['name_required'] = '<div class="alert alert-warning">Sie müssen einen Namen eingeben.</div>';
+        $language_array['lastname_required'] = '<div class="alert alert-warning">Sie müssen einen Nachnamen eingeben.</div>';
+
+        return json_encode($language_array);
+    }
+
+    public function get_lang_strings_reset_password(){
+        $language_array['reset_text_password'] = 'Passwort';
+        $language_array['reset_text_cpassword'] = 'Passwort bestätigen';
+        $language_array['reset_card_header'] = 'Passwort zurücksetzen';
+        $language_array['reset_text_head'] = 'Geben Sie ein neues Passwort ein.';
+        $language_array['reset_text_button'] = 'Zurücksetzen';
+        $language_array['reset_text_button_email'] = 'Abschicken';
+        $language_array['reset_text_email'] = 'E-Mail';
+        $language_array['reset_text_head_email'] = 'Geben Sie Ihre E-Mail Adresse ein.';
+        $language_array['email_card_header'] = 'Passwort vergessen';
+        $language_array['reset_text_back_link'] = 'Zurück zum Login.';
+
+        $language_array['pw_confirm_error'] = '<div class="alert alert-warning">Die eingegebenen Passwörter müssen übereinstimmen.</div>';
+        $language_array['pw_error'] = '<div class="alert alert-warning">Sie müssen ein Passwort eingeben.</div>';
+        $language_array['cpw_error'] = '<div class="alert alert-warning">Sie müssen das Passwort bestätigen.</div>';
+        $language_array['email_error'] = '<div class="alert alert-warning">Sie müssen Ihre E-Mail Adresse eingeben.</div>';
+        $language_array['email_valid_error'] = '<div class="alert alert-warning">Sie müssen eine gültige E-Mail Adresse eingeben.</div>';
+        $language_array['pw_reset_success'] = '<div class="alert alert-success">Ihr Passwort wurde erfolgreich geändert. Sie können sich jetzt einloggen.</div>';
+        $language_array['pw_reset_error'] = '<div class="alert alert-danger">Beim Zurücksetzen Ihres Passwortes ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.</div>';
 
         return json_encode($language_array);
     }

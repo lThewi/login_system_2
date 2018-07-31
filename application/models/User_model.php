@@ -37,6 +37,17 @@
             }
         }
 
+        public function delete_active_user($id){
+            $this->db->where('id', $id);
+            $result = $this->db->delete('users');
+            return json_encode($result);
+        }
+
+        public function add_user_to_declined($data){
+            $result = $this->db->insert('temp_users',$data);
+            return json_encode($result);
+        }
+
         public function add_user($temp_id, $user_type){
             $this->db->where('id', $temp_id);
             $temp_user = $this->db->get('temp_users');
@@ -50,7 +61,8 @@
                         'name' => $row->name,
                         'lastname' => $row->lastname,
                         'acc_type_id' => $user_type,
-                        'register_date' => $row->register_date
+                        'register_date' => $row->register_date,
+                        'last_login' => $row->last_login,
                     );
 
                     $did_add_user = $this->db->insert('users', $data);
@@ -72,13 +84,14 @@
             $this->db->where('email', $mail);
             $user = $this->db->get('users');
 
-            if($user->num_rows() == 1){
-                if($user->row(0)->password == $password){
+            if($user->num_rows() == 1) {
+                if ($user->row(0)->password == $password) {
                     return json_encode($user->row(0));
                 } else {
                     return json_encode('wrong password');
                 }
             } else {
+                //TODO: update login for temp_user
                 return false;
             }
         }
@@ -105,6 +118,11 @@
             $result = $this->db->get('users');
             return json_encode($result->result());
         }
+        public function get_user($id){
+            $this->db->where('id', $id);
+            $result = $this->db->get('users');
+            return json_encode($result->result());
+        }
 
         public function update_user($id, $data){
             $this->db->where('id', $id);
@@ -123,5 +141,11 @@
             $this->db->where('id', $id);
             $result = $this->db->update('temp_users', $data);
             return $result;
+        }
+
+        public function get_user_by_email($email){
+            $this->db->where('email', $email);
+            $result = $this->db->get('users');
+            return json_encode($result->result());
         }
     }
