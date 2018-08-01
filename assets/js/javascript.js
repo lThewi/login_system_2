@@ -166,6 +166,29 @@ $(document).ready(function() {
             })
         }
     });
+    function readURL(input, img_pv) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $(img_pv).attr('src', e.target.result);
+                $(img_pv).attr('class', 'img-thumbnail mt-2');
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#img_1").on('change',function() {
+        readURL(this, '#img_pv_1');
+    });
+    $("#img_2").on('change',function() {
+        readURL(this, '#img_pv_2');
+    });
+    $("#img_3").on('change',function() {
+        readURL(this, '#img_pv_3');
+    });
+    $("#img").on('change',function() {
+        readURL(this, '#img_pv');
+    });
 
     //send table order
 
@@ -385,28 +408,4 @@ $(document).ready(function() {
         }
     });
     /////////
-
-    function readURL(input, img_pv) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                $(img_pv).attr('src', e.target.result);
-                $(img_pv).attr('class', 'img-thumbnail mt-2');
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    $("#img_1").on('change',function() {
-        readURL(this, '#img_pv_1');
-    });
-    $("#img_2").on('change',function() {
-        readURL(this, '#img_pv_2');
-    });
-    $("#img_3").on('change',function() {
-        readURL(this, '#img_pv_3');
-    });
-    $("#img").on('change',function() {
-        readURL(this, '#img_pv');
-    });
 });

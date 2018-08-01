@@ -82,7 +82,7 @@ class Documents extends CI_Controller{
             $strings_json = $this->language_model->get_lang_strings_categories();
             $string = json_decode($this->language_model->get_lang_strings_documents());
 
-            $this->form_validation->set_rules('name', 'Name', 'required|trim|is_unique[doc_categories.name]', array('is_unique[doc_categories.name]' => $string->cat_not_unique));
+            $this->form_validation->set_rules('name', 'Name', 'required|trim|is_unique[doc_categories.name]', array('is_unique' => $string->cat_not_unique));
 
             $data['categories'] = $this->get_categories();
             $data['form_func'] = 'documents/create_category';
@@ -229,37 +229,62 @@ class Documents extends CI_Controller{
         //image upload config
         $this->load->library('upload');
 
-        $strings = json_decode($this->language_model->get_lang_strings_documents());
+        $strings = json_decode($this->language_model->get_lang_strings_document_create());
 
-        //uploading images to server
-        $img_path_1 = $this->upload_image('img_1');
-        $img_path_2 = $this->upload_image('img_2');
-        $img_path_3 = $this->upload_image('img_3');
+        $this->form_validation->set_rules('name','Name','required|is_unique[documents.name]', array(
+            'required' => $strings->name_required,
+            'is_unique' => $strings->name_not_unique,
+        ));
+        $this->form_validation->set_rules('tech','Tech','required|is_unique[documents.technische_kennung]', array(
+            'required' => $strings->tech_required,
+            'is_unique' => $strings->tech_not_unique,
+        ));
+        $this->form_validation->set_rules('checked_by','Checked_by','required',array(
+            'required' => $strings->checked_by_required
+        ));
+        $this->form_validation->set_rules('content','Content','required', array(
+            'required' => $strings->content_required
+        ));
 
-        //preparing DB array
-        $db_array = array(
-            'category' => $this->input->post('categories'),
-            'technische_kennung' => $this->input->post('tech'),
-            'name' => $this->input->post('name'),
-            'checked_by' => $this->input->post('checked_by'),
-            'created_date' =>  $this->input->post('date'),
-            'text' => $this->input->post('content'),
-            'img_1' => $img_path_1,
-            'img_2' => $img_path_2,
-            'img_3' => $img_path_3,
-            'contact_person' => $this->input->post('contacts')
-        );
+        if($this->form_validation->run()){
+            //uploading images to server
+            $img_path_1 = $this->upload_image('img_1');
+            $img_path_2 = $this->upload_image('img_2');
+            $img_path_3 = $this->upload_image('img_3');
 
-        //model call to insert array into DB
-        $result = $this->document_model->create_document($db_array);
-        if($result){
-            $this->session->set_flashdata('document_created', $strings->doc_created);
-            redirect('documents/show_documents');
+            $date = $this->input->post('date');
+            if($date == ''){
+                $date = date('Y-m-d');
+            }
+
+            //preparing DB array
+            $db_array = array(
+                'category' => $this->input->post('categories'),
+                'technische_kennung' => $this->input->post('tech'),
+                'name' => $this->input->post('name'),
+                'checked_by' => $this->input->post('checked_by'),
+                'created_date' =>  $date,
+                'text' => $this->input->post('content'),
+                'img_1' => $img_path_1,
+                'img_2' => $img_path_2,
+                'img_3' => $img_path_3,
+                'contact_person' => $this->input->post('contacts')
+            );
+
+            //model call to insert array into DB
+            $result = $this->document_model->create_document($db_array);
+            if($result){
+                $this->session->set_flashdata('document_created', $strings->doc_created);
+                redirect('documents/show_documents');
+            } else {
+                unlink($img_path_1);
+                unlink($img_path_2);
+                unlink($img_path_3);
+                $this->session->set_flashdata('database_error', $strings->doc_create_error);
+                redirect('documents/create_document');
+            }
         } else {
-            unlink($img_path_1);
-            unlink($img_path_2);
-            unlink($img_path_3);
-            $this->session->set_flashdata('database_error', $strings->doc_create_error);
+            $this->session->set_flashdata('form_errors', validation_errors());
             redirect('documents/create_document');
         }
     }
@@ -275,7 +300,9 @@ class Documents extends CI_Controller{
         $img_name = $this->upload_contact_image('img');
         if($img_name != null){
             $db_array['img'] = $img_name;
-            unlink($this->image_path.$this->input->post('img_old'));
+            if($this->input->post('img_old') != 'default-user-icon.jpg'){
+                unlink($this->image_path.$this->input->post('img_old'));
+            }
         }
 
         $result = $this->document_model->modify_contactperson($this->input->post('con_id'), $db_array);
@@ -297,6 +324,19 @@ class Documents extends CI_Controller{
             'text' => $this->input->post('content'),
             'contact_person' => $this->input->post('contact')
         );
+
+        if($this->input->post('del_old_1') != null){
+            unlink($this->input->post('img_1_old'));
+            $db_array['img_1'] = '';
+        }
+        if($this->input->post('del_old_2') != null){
+            unlink($this->input->post('img_2_old'));
+            $db_array['img_2'] = '';
+        }
+        if($this->input->post('del_old_3') != null){
+            unlink($this->input->post('img_3_old'));
+            $db_array['img_3'] = '';
+        }
 
         //uploading images to server
         $img_path_1 = $this->upload_image('img_1');
@@ -344,7 +384,7 @@ class Documents extends CI_Controller{
     public function upload_contact_image($img){
         $this->load->library('upload');
         if(!$this->upload->do_upload($img)){
-            $img_name = null;
+            $img_name = 'default-user-icon.jpg';
         } else {
             $img_name = $this->upload->data('file_name');
 
@@ -364,8 +404,10 @@ class Documents extends CI_Controller{
     }
 
     public function delete_image($name){
-        $path = $this->image_path.$name;
-        unlink($path);
+        if($name != 'default-user-icon.jpg'){
+            $path = $this->image_path.$name;
+            unlink($path);
+        }
     }
 
     public function delete_Document($doc_id){

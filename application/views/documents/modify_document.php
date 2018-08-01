@@ -84,6 +84,17 @@
                             $src_1 = 'class="img-thumbnail mt-2" src="' . base_url() . 'assets/uploaded_images/' . $doc[0]->img_1 . '"';
                         } else $src_1 = ''; ?>
                         <img id="img_pv_1" <?php echo $src_1; ?>/>
+                        <?php
+                        if($doc[0]->img_1 != null){
+                            echo '<div class="form-group row m-0 mt-2">';
+                            echo '<label class="switch switch-sm switch-secondary mr-2">';
+                            echo '<input type="checkbox" name="del_old_1" id="del_old_1" class="switch-input">';
+                            echo '<span class="switch-slider"></span>';
+                            echo '</label>';
+                            echo '<label for="del_old_1">'.$strings->del_old_image.'</label>';
+                            echo '</div>';
+                        }
+                        ?>
 
                     </div>
                     <div class="form-group col-md-4">
@@ -95,6 +106,17 @@
                             $src_2 = 'class="img-thumbnail mt-2" src="' . base_url() . 'assets/uploaded_images/' . $doc[0]->img_2 . '"';
                         } else $src_2 = ''; ?>
                         <img id="img_pv_2" <?php echo $src_2; ?>/>
+                        <?php
+                        if($doc[0]->img_2 != null){
+                            echo '<div class="form-group row m-0 mt-2">';
+                            echo '<label class="switch switch-sm switch-secondary mr-2">';
+                            echo '<input type="checkbox" name="del_old_2" id="del_old_2" class="switch-input">';
+                            echo '<span class="switch-slider"></span>';
+                            echo '</label>';
+                            echo '<label for="del_old_2">'.$strings->del_old_image.'</label>';
+                            echo '</div>';
+                        }
+                        ?>
 
                     </div>
                     <div class="form-group col-md-4">
@@ -106,6 +128,17 @@
                             $src_3 = 'class="img-thumbnail mt-2" src="' . base_url() . 'assets/uploaded_images/' . $doc[0]->img_3 . '"';
                         } else $src_3 = ''; ?>
                         <img id="img_pv_3" <?php echo $src_3; ?>/>
+                        <?php
+                        if($doc[0]->img_3 != null){
+                            echo '<div class="form-group row m-0 mt-2">';
+                            echo '<label class="switch switch-sm switch-secondary mr-2">';
+                            echo '<input type="checkbox" name="del_old_3" id="del_old_3" class="switch-input">';
+                            echo '<span class="switch-slider"></span>';
+                            echo '</label>';
+                            echo '<label for="del_old_3">'.$strings->del_old_image.'</label>';
+                            echo '</div>';
+                        }
+                        ?>
                     </div>
                 </div>
                 <input type="submit" class="btn btn-lg btn-primary" value="<?php echo $strings->form_button_save; ?>">

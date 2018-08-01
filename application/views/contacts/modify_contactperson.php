@@ -3,7 +3,7 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item">Admin</li>
         <li class="breadcrumb-item">Dokumente</li>
-        <li class="breadcrumb-item active">Ansprechpartner erstellen</li>
+        <li class="breadcrumb-item active">Ansprechpartner bearbeiten</li>
     </ol>
     <div class="container-fluid">
         <div class="card card-accent-primary">

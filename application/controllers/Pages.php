@@ -45,10 +45,15 @@ class Pages extends CI_Controller{
                 $this->load->view('pages/create_page', $data);
             } else {
                 //db_array
+                $date = $this->input->post('date');
+                if($date == ''){
+                    $date = date('Y-m-d');
+                }
+
                 $db_array = array(
                     'name' => $this->input->post('name'),
                     'content' => $this->input->post('content'),
-                    'created_at' => $this->input->post('date')
+                    'created_at' => $date
                 );
                 //upload graphic and add it to the array
                 $graphic_name = $this->upload_graphic('img');

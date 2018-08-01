@@ -26,6 +26,7 @@
                     <?php echo $this->session->flashdata("updated_category"); ?>
                 <?php endif; ?>
 
+                <?php echo validation_errors(); ?>
 
                 <div class="form-group">
                     <label for="name"><?php echo $strings->form_name;?></label>

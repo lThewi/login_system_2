@@ -3,7 +3,7 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item">Admin</li>
         <li class="breadcrumb-item">Dokumente</li>
-        <li class="breadcrumb-item active">Dokumente anzeigen</li>
+        <li class="breadcrumb-item active">Kontaktpersonen anzeigen</li>
     </ol>
     <div class="container-fluid">
         <?php
@@ -55,12 +55,6 @@
 <script src="<?php echo base_url();?>assets/js/sortable.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/jquery.tablesort.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/javascript.js"></script>
-
-<script>
-    $(document).ready(function(){
-        $('table').tablesort();
-    });
-</script>
 
 </body>
 </html>

@@ -127,6 +127,21 @@ class News extends CI_Controller{
         }
         $db_array['auth_levels'] = $auth_string;
         $this->load->library('upload');
+
+        //delete old images when checkbox is checked
+        if($this->input->post('del_old_1') != null){
+            unlink($this->input->post('img_1_old'));
+            $db_array['img_1'] = '';
+        }
+        if($this->input->post('del_old_2') != null){
+            unlink($this->input->post('img_2_old'));
+            $db_array['img_2'] = '';
+        }
+        if($this->input->post('del_old_3') != null){
+            unlink($this->input->post('img_3_old'));
+            $db_array['img_3'] = '';
+        }
+
         //uploading images to server
         $img_path_1 = $this->upload_image('img_1');
         $img_path_2 = $this->upload_image('img_2');

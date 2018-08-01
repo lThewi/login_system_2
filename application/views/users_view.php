@@ -134,11 +134,6 @@
 <script src="<?php echo base_url();?>assets/js/jquery.tablesort.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/javascript.js"></script>
 
-    <script>
-        $(document).ready(function(){
-            $('table').tablesort();
-        });
-    </script>
 
 </body>
 </html>

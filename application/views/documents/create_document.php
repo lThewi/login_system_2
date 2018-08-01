@@ -19,6 +19,10 @@
                 <?php if ($this->session->flashdata('upload_error')) : ?>
                     <?php echo $this->session->flashdata('upload_error'); ?>
                 <?php endif; ?>
+                <?php if ($this->session->flashdata('form_errors')) : ?>
+                    <?php echo $this->session->flashdata('form_errors'); ?>
+                <?php endif; ?>
+
                 <?php
                 $categories = json_decode($categories_json);
                 $contacts = json_decode($contact_persons);

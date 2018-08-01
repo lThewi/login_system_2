@@ -91,8 +91,18 @@
                     return json_encode('wrong password');
                 }
             } else {
-                //TODO: update login for temp_user
-                return false;
+                //TODO: update login for temp_user, change temp_user table, update user controller login function
+                //$this->db->where('email', $mail);
+                //$temp_user = $this->db->get('temp_users');
+                //if($temp_user->num_rows() == 1){
+                //    if ($temp_user->row(0)->password == $password) {
+                //        return json_encode($temp_user->row(0));
+                //    } else {
+                //        return json_encode('wrong password');
+                //    }
+                //} else {
+                    return false;
+                //}
             }
         }
 

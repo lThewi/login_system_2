@@ -77,6 +77,7 @@ class Language_model extends CI_Model{
         $language_array['button_delete'] = 'Löschen';
         $language_array['button_mod'] = 'Bearbeiten';
         $language_array['table_options'] = 'Optionen';
+        $language_array['del_old_image'] = 'Dieses Bild entfernen';
 
         return json_encode($language_array);
     }
@@ -111,9 +112,9 @@ class Language_model extends CI_Model{
 
     public function get_lang_strings_documents(){
         $language_array['cat_created'] = '<div class="alert alert-success">Die Kategorie wurde erfolgreich erstellt.</div>';
-        $language_array['cat_created_error'] = '<div class="alert alert-danger">Beim Erstellen der Kategorie ist ein Fehler aufgetreten.';
+        $language_array['cat_created_error'] = '<div class="alert alert-danger">Beim Erstellen der Kategorie ist ein Fehler aufgetreten.</div>';
         $language_array['cat_updated'] = '<div class="alert alert-success">Die Kategorie wurde erfolgreich bearbeitet.</div>';
-        $language_array['cat_not_unique'] = '<div class="alert alert-success">Die Kategorie wurde erfolgreich bearbeitet.</div>';
+        $language_array['cat_not_unique'] = '<div class="alert alert-danger">Diese Kategorie existiert bereits. Geben Sie bitte einen anderen Namen an oder verwenden die existierenden Kategorien.</div>';
         $language_array['contact_created'] = '<div class="alert alert-success">Die Kontaktperson wurde erfolgreich hinzugefügt.</div>';
         $language_array['contact_create_error'] = '<div class="alert alert-danger">Beim Eintragen der Kontaktperson in die Datenbank ist ein Fehler aufgetreten.</div>';
         $language_array['doc_created'] = '<div class="alert alert-success">Das Dokument wurde erfolgreich erstellt.</div>';
@@ -125,6 +126,13 @@ class Language_model extends CI_Model{
     }
 
     public function get_lang_strings_document_create(){
+        $language_array['name_not_unique'] = '<div class="alert alert-danger">Dieser Name ist bereits vergeben.</div>';
+        $language_array['tech_not_unique'] = '<div class="alert alert-danger">Diese Technische Kennung ist bereits vergeben.</div>';
+        $language_array['name_required'] = '<div class="alert alert-warning">Sie müssen einen Namen anbeben.</div>';
+        $language_array['tech_required'] = '<div class="alert alert-warning">Sie müssen eine Technische Kennung angeben.</div>';
+        $language_array['checked_by_required'] = '<div class="alert alert-warning">Sie müssen das Feld "Geprüft von" ausfüllen.</div>';
+        $language_array['content_required'] = '<div class="alert alert-warning">Sie müssen einen Inhalt angeben.</div>';
+
         $language_array['card_header'] = 'Dokument erstellen';
         $language_array['card_header_mod'] = 'Dokument bearbeiten';
         $language_array['form_name'] = 'Name';
@@ -139,6 +147,7 @@ class Language_model extends CI_Model{
         $language_array['form_button_reset'] = 'Zurücksetzen';
         $language_array['no_contacts'] = 'Keine Kontaktpersonen gefunden!';
         $language_array['contacts_list'] = 'Keine Kontaktperson ausgewählt';
+        $language_array['del_old_image'] = 'Dieses Bild entfernen';
 
         return json_encode($language_array);
     }

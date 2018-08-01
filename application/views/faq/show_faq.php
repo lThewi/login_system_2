@@ -63,18 +63,5 @@
 <script src="<?php echo base_url();?>assets/js/jquery.tablesort.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/javascript.js"></script>
 
-<script>
-    $(document).ready(function(){
-        $('.sorted_table').sortable({
-            containerSelector: 'table',
-            itemPath: '> tbody',
-            itemSelector: 'tr',
-            placeholder: '<tr class="placeholder"/>'
-        });
-
-        $('table').tablesort();
-    });
-</script>
-
 </body>
 </html>
