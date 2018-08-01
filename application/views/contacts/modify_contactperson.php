@@ -60,11 +60,22 @@
                                accept="image/tif, image/tiff, image/png, image/jpg, image/jpeg">
                         <input type="hidden" name="img_old" value="<?php echo $contact[0]->img?>">
                         <?php
-                        if($contact[0]->img != null){
+                        if($contact[0]->img != null && $contact[0]->img != 'default-user-icon.jpg'){
                             $path = json_decode($img_path);
                             $src = 'class="img-thumbnail mt-2" src="'.base_url().$path.$contact[0]->img.'"';
-                        } else $src = 'class="img-thumbnail mt-2"';?>
+                        } else $src = '';?>
                         <img id="img_pv" <?php echo $src;?>/>
+                        <?php
+                        if($contact[0]->img != null && $contact[0]->img != 'default-user-icon.jpg'){
+                            echo '<div class="form-group row m-0 mt-2">';
+                            echo '<label class="switch switch-sm switch-secondary mr-2">';
+                            echo '<input type="checkbox" name="del_old" id="del_old" class="switch-input">';
+                            echo '<span class="switch-slider"></span>';
+                            echo '</label>';
+                            echo '<label for="del_old">'.$strings->del_old_image.'</label>';
+                            echo '</div>';
+                        }
+                        ?>
                     </div>
                 </div>
                 <input type="submit" class="btn btn-lg btn-primary" value="<?php echo $strings->form_button_save ?>">

@@ -90,7 +90,7 @@ class Pages extends CI_Controller{
             $strings_json = $this->language_model->get_lang_strings_pages();
             $data['strings_json'] = $strings_json;
             $data['page_json'] = $this->Page_model->get_page_by_id($page_id);
-            $data['path_json'] = $this->graphics_path;
+            $data['path_json'] = json_encode($this->graphics_path);
 
             $this->load->view('header', $header);
             $this->load->view('pages/modify_page', $data);
@@ -107,10 +107,18 @@ class Pages extends CI_Controller{
             'created_at' => $this->input->post('date'),
         );
 
+        if($this->input->post('del_old') != null){
+            $db_array['graphic'] = 'default-image.jpg';
+            $this->delete_image($this->input->post('img_old'));
+        }
+
         $graphic_name = $this->upload_graphic('img');
-        if($graphic_name != null){
-            $db_array['img'] = $graphic_name;
-            unlink($this->graphics_path.$this->input->post('img_old'));
+        if($graphic_name != 'default-image.jpg'){
+
+            $db_array['graphic'] = $graphic_name;
+            if($this->input->post('img_old') != 'default-image.jpg'){
+                $this->delete_image($this->graphics_path.$this->input->post('img_old'));
+            }
         }
         $strings = json_decode($this->language_model->get_lang_strings_pages());
         $result = $this->Page_model->modify_page($this->input->post('page_id'), $db_array);
@@ -127,7 +135,7 @@ class Pages extends CI_Controller{
         $this->load->library('upload');
         if(!$this->upload->do_upload($field)){
             $error = $this->upload->display_errors();
-            $img_name = null;
+            $img_name = 'default-image.jpg';
             $this->session->set_flashdata('upload_error', $error);
         } else {
             $img_name = $this->upload->data('file_name');
@@ -166,8 +174,10 @@ class Pages extends CI_Controller{
     }
 
     public function delete_image($name){
-        $path = $this->graphics_path.$name;
-        unlink($path);
+        if($name != 'default-image.jpg'){
+            $path = $this->graphics_path.$name;
+            unlink($path);
+        }
     }
 
     public function update_page_order(){

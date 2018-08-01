@@ -29,6 +29,7 @@ class Language_model extends CI_Model{
         $language_array['faq_show'] = 'FAQ anzeigen';
         $language_array['faq_create'] = 'FAQ erstellen';
         $language_array['logout'] = 'Abmelden';
+        $language_array['rules'] = 'Goldene Regeln';
 
         return json_encode($language_array);
     }
@@ -106,6 +107,7 @@ class Language_model extends CI_Model{
         $language_array['table_options'] = 'Optionen';
         $language_array['table_button_mod'] = 'Bearbeiten';
         $language_array['table_button_delete'] = 'Löschen';
+        $language_array['del_old_image'] = 'Dieses Bild entfernen';
 
         return json_encode($language_array);
     }
@@ -193,6 +195,7 @@ class Language_model extends CI_Model{
         $language_model['table_options'] = 'Optionen';
         $language_model['button_delete'] = 'Löschen';
         $language_model['button_mod'] = 'Bearbeiten';
+        $language_model['del_old_image'] = 'Dieses Bild entfernen';
 
         return json_encode($language_model);
     }
@@ -297,6 +300,15 @@ class Language_model extends CI_Model{
         $language_array['email_valid_error'] = '<div class="alert alert-warning">Sie müssen eine gültige E-Mail Adresse eingeben.</div>';
         $language_array['pw_reset_success'] = '<div class="alert alert-success">Ihr Passwort wurde erfolgreich geändert. Sie können sich jetzt einloggen.</div>';
         $language_array['pw_reset_error'] = '<div class="alert alert-danger">Beim Zurücksetzen Ihres Passwortes ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.</div>';
+
+        return json_encode($language_array);
+    }
+
+    public function get_lang_strings_rules(){
+        $language_array['card_header_show'] = 'Goldene Regeln';
+        $language_array['table_number'] = 'Nummer';
+        $language_array['table_icon'] = 'Icon';
+        $language_array['table_text'] = 'Regel';
 
         return json_encode($language_array);
     }

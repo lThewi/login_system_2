@@ -75,7 +75,6 @@
 <script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/coreui.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/sortable.min.js"></script>
-<script src="<?php echo base_url();?>assets/js/jquery.tablesort.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/javascript.js"></script>
 
 </body>

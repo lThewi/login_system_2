@@ -19,6 +19,9 @@
                 <?php if ($this->session->flashdata('upload_error')) : ?>
                     <?php echo $this->session->flashdata('upload_error'); ?>
                 <?php endif; ?>
+                <?php if ($this->session->flashdata('news_validation_error')) : ?>
+                    <?php echo $this->session->flashdata('news_validation_error'); ?>
+                <?php endif; ?>
                 <?php
                 $categories = json_decode($categories_json);
                 $news = json_decode($news_json);
@@ -48,7 +51,7 @@
                 </div>
                 <div class="form-group">
                     <label for="content"><?php echo $strings->form_content ?></label>
-                    <textarea id="textarea-input" name="content" class="form-control"><?php echo set_value('content', $news[0]->content);?></textarea>
+                    <textarea id="textarea-input" name="content" class="form-control" ><?php echo set_value('content', $news[0]->content);?></textarea>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-3 col-form-label"><?php echo $strings->form_auth_level ?></label>

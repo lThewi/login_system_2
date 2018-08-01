@@ -297,8 +297,13 @@ class Documents extends CI_Controller{
             'category_id' => $this->input->post('category')
         );
 
+        if($this->input->post('del_old') != null){
+            $this->delete_image($this->input->post('img_old'));
+            $db_array['img'] = 'default-user-icon.jpg';
+        }
+
         $img_name = $this->upload_contact_image('img');
-        if($img_name != null){
+        if($img_name != 'default-user-icon.jpg'){
             $db_array['img'] = $img_name;
             if($this->input->post('img_old') != 'default-user-icon.jpg'){
                 unlink($this->image_path.$this->input->post('img_old'));
@@ -326,15 +331,15 @@ class Documents extends CI_Controller{
         );
 
         if($this->input->post('del_old_1') != null){
-            unlink($this->input->post('img_1_old'));
+            $this->delete_image($this->input->post('img_1_old'));
             $db_array['img_1'] = '';
         }
         if($this->input->post('del_old_2') != null){
-            unlink($this->input->post('img_2_old'));
+            $this->delete_image($this->input->post('img_2_old'));
             $db_array['img_2'] = '';
         }
         if($this->input->post('del_old_3') != null){
-            unlink($this->input->post('img_3_old'));
+            $this->delete_image($this->input->post('img_3_old'));
             $db_array['img_3'] = '';
         }
 
@@ -344,15 +349,15 @@ class Documents extends CI_Controller{
         $img_path_3 = $this->upload_image('img_3');
         if($img_path_1 != null){
             $db_array['img_1'] = $img_path_1;
-            unlink($this->input->post('img_1_old'));
+            $this->delete_image($this->input->post('img_1_old'));
         }
         if($img_path_2 != null){
             $db_array['img_2'] = $img_path_2;
-            unlink($this->input->post('img_3_old'));
+            $this->delete_image($this->input->post('img_3_old'));
         }
         if($img_path_3 != null){
             $db_array['img_3'] = $img_path_3;
-            unlink($this->input->post('img_3_old'));
+            $this->delete_image($this->input->post('img_3_old'));
         }
 
         $strings = json_decode($this->language_model->get_lang_strings_documents());

@@ -10,6 +10,7 @@ class Document_model extends CI_Model{
     }
 
     public function get_categories(){
+        $this->db->order_by('table_order', 'ASC');
         $result = $this->db->get('doc_categories');
         return json_encode($result->result());
     }

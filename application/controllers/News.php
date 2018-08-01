@@ -77,6 +77,7 @@ class News extends CI_Controller{
                     redirect('news/show_news');
                 } else {
                     $this->session->set_flashdata('news_created_error', $lang->news_create_error);
+                    $this->session->set_flashdata('news_validation_error', $lang->news_create_error);
                     redirect('news/create_news');
                 }
             }
@@ -130,15 +131,15 @@ class News extends CI_Controller{
 
         //delete old images when checkbox is checked
         if($this->input->post('del_old_1') != null){
-            unlink($this->input->post('img_1_old'));
+            $this->delete_image($this->input->post('img_1_old'));
             $db_array['img_1'] = '';
         }
         if($this->input->post('del_old_2') != null){
-            unlink($this->input->post('img_2_old'));
+            $this->delete_image($this->input->post('img_2_old'));
             $db_array['img_2'] = '';
         }
         if($this->input->post('del_old_3') != null){
-            unlink($this->input->post('img_3_old'));
+            $this->delete_image($this->input->post('img_3_old'));
             $db_array['img_3'] = '';
         }
 
@@ -148,15 +149,15 @@ class News extends CI_Controller{
         $img_path_3 = $this->upload_image('img_3');
         if($img_path_1 != null){
             $db_array['img_1'] = $img_path_1;
-            unlink($this->input->post('img_1_old'));
+            $this->delete_image($this->input->post('img_1_old'));
         }
         if($img_path_2 != null){
             $db_array['img_2'] = $img_path_2;
-            unlink($this->input->post('img_3_old'));
+            $this->delete_image($this->input->post('img_3_old'));
         }
         if($img_path_3 != null){
             $db_array['img_3'] = $img_path_3;
-            unlink($this->input->post('img_3_old'));
+            $this->delete_image($this->input->post('img_3_old'));
         }
         //model call to insert array into DB
         $result = $this->news_model->update_news($this->input->post('news_id'), $db_array);

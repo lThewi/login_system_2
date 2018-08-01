@@ -41,6 +41,12 @@
                         <?php echo $strings->dashboard ?>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="<?php echo base_url(); ?>rules/show_rules" class="nav-link">
+                        <div class="nav-icon cui-list"></div>
+                        <?php echo $strings->rules ?>
+                    </a>
+                </li>
                 <li class="nav-title"><?php echo $strings->nav_group_2 ?></li>
                 <li class="nav-item nav-dropdown">
                     <a href="#" class="nav-link nav-dropdown-toggle">
