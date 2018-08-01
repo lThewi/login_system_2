@@ -1,5 +1,7 @@
 <?php
 class Rules extends CI_Controller{
+    public $image_path = 'assets/uploaded_images/';
+
     public function index(){
         redirect('rules/show_rules');
     }
@@ -8,6 +10,7 @@ class Rules extends CI_Controller{
         if($this->session->userdata('logged_in') == TRUE){
             $strings_json = $this->language_model->get_lang_strings_rules();
 
+            $data['path_json'] = json_encode($this->image_path);
             $data['strings_json'] = $strings_json;
             $data['rules_json'] = $this->get_rules();
 

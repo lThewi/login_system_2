@@ -10,6 +10,7 @@
         <?php endif; ?>
         <?php
         $all_rules = json_decode($rules_json);
+        $path = json_decode($path_json);
 
         echo '<div class="card card-accent-primary" id="rules">';
         echo '<div class="card-header">'.$strings->card_header_show.'</div>';
@@ -27,7 +28,7 @@
         foreach ($all_rules as $rule) {
             echo '<tr id="'.$rule->id.'">';
             echo '<td>' . $rule->id . '</td>';
-            echo '<td><img src="'. $rule->icon . '"></td>';
+            echo '<td><img src="'. base_url() . $path . $rule->icon . '"></td>';
             echo '<td>' . $rule->text. '</td>';
             echo '</tr>';
         }
@@ -41,7 +42,6 @@
     </div>
 </main>
 </div>
-
 
 <script src="<?php echo base_url();?>assets/js/jquery-3.3.1.min.js"></script>
 <script src="<?php echo base_url();?>assets/js/popper.min.js"></script>
