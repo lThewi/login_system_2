@@ -38,8 +38,69 @@ class Documents extends CI_Controller{
             $data['contact_persons'] = $this->get_all_contactpersons();
             $data['strings_json'] = $strings_json;
 
-            $this->load->view('header',$header);
-            $this->load->view('documents/create_document', $data);
+            //image upload config
+            $this->load->library('upload');
+
+            $strings = json_decode($this->language_model->get_lang_strings_document_create());
+
+            //setting the validation rules
+            $this->form_validation->set_rules('name','Name','required|is_unique[documents.name]', array(
+                'required' => $strings->name_required,
+                'is_unique' => $strings->name_not_unique,
+            ));
+            $this->form_validation->set_rules('tech','Tech','required|is_unique[documents.technische_kennung]', array(
+                'required' => $strings->tech_required,
+                'is_unique' => $strings->tech_not_unique,
+            ));
+            $this->form_validation->set_rules('checked_by','Checked_by','required',array(
+                'required' => $strings->checked_by_required
+            ));
+            $this->form_validation->set_rules('content','Content','required', array(
+                'required' => $strings->content_required
+            ));
+
+            if(!$this->form_validation->run()){
+                $this->load->view('header',$header);
+                $this->load->view('documents/create_document', $data);
+            } else {
+                //uploading images to server
+                $img_path_1 = $this->upload_image('img_1');
+                $img_path_2 = $this->upload_image('img_2');
+                $img_path_3 = $this->upload_image('img_3');
+
+                $date = $this->input->post('date');
+                if($date == ''){
+                    $date = date('Y-m-d');
+                }
+
+                //preparing DB array
+                $db_array = array(
+                    'category' => $this->input->post('categories'),
+                    'technische_kennung' => $this->input->post('tech'),
+                    'name' => $this->input->post('name'),
+                    'checked_by' => $this->input->post('checked_by'),
+                    'created_date' =>  $date,
+                    'text' => $this->input->post('content'),
+                    'img_1' => $img_path_1,
+                    'img_2' => $img_path_2,
+                    'img_3' => $img_path_3,
+                    'contact_person' => $this->input->post('contacts')
+                );
+
+                //model call to insert array into DB
+                $result = $this->document_model->create_document($db_array);
+                if($result){
+                    $this->session->set_flashdata('document_created', $strings->doc_created);
+                    redirect('documents/show_documents');
+                } else {
+                    unlink($img_path_1);
+                    unlink($img_path_2);
+                    unlink($img_path_3);
+                    $this->session->set_flashdata('database_error', $strings->doc_create_error);
+                    redirect('documents/create_document');
+                }
+            }
+
         } else {
             redirect('users/login');
         }
@@ -222,70 +283,6 @@ class Documents extends CI_Controller{
             $this->load->view('contacts/show_contactpersons', $data);
         } else {
             redirect('users/login');
-        }
-    }
-
-    public function create(){
-        //image upload config
-        $this->load->library('upload');
-
-        $strings = json_decode($this->language_model->get_lang_strings_document_create());
-
-        $this->form_validation->set_rules('name','Name','required|is_unique[documents.name]', array(
-            'required' => $strings->name_required,
-            'is_unique' => $strings->name_not_unique,
-        ));
-        $this->form_validation->set_rules('tech','Tech','required|is_unique[documents.technische_kennung]', array(
-            'required' => $strings->tech_required,
-            'is_unique' => $strings->tech_not_unique,
-        ));
-        $this->form_validation->set_rules('checked_by','Checked_by','required',array(
-            'required' => $strings->checked_by_required
-        ));
-        $this->form_validation->set_rules('content','Content','required', array(
-            'required' => $strings->content_required
-        ));
-
-        if($this->form_validation->run()){
-            //uploading images to server
-            $img_path_1 = $this->upload_image('img_1');
-            $img_path_2 = $this->upload_image('img_2');
-            $img_path_3 = $this->upload_image('img_3');
-
-            $date = $this->input->post('date');
-            if($date == ''){
-                $date = date('Y-m-d');
-            }
-
-            //preparing DB array
-            $db_array = array(
-                'category' => $this->input->post('categories'),
-                'technische_kennung' => $this->input->post('tech'),
-                'name' => $this->input->post('name'),
-                'checked_by' => $this->input->post('checked_by'),
-                'created_date' =>  $date,
-                'text' => $this->input->post('content'),
-                'img_1' => $img_path_1,
-                'img_2' => $img_path_2,
-                'img_3' => $img_path_3,
-                'contact_person' => $this->input->post('contacts')
-            );
-
-            //model call to insert array into DB
-            $result = $this->document_model->create_document($db_array);
-            if($result){
-                $this->session->set_flashdata('document_created', $strings->doc_created);
-                redirect('documents/show_documents');
-            } else {
-                unlink($img_path_1);
-                unlink($img_path_2);
-                unlink($img_path_3);
-                $this->session->set_flashdata('database_error', $strings->doc_create_error);
-                redirect('documents/create_document');
-            }
-        } else {
-            $this->session->set_flashdata('form_errors', validation_errors());
-            redirect('documents/create_document');
         }
     }
 

@@ -319,7 +319,7 @@ $(document).ready(function() {
             $.ajax({
                 method: 'POST',
                 data: {string: json_string},
-                url: 'update_user_order',
+                url: 'update_pending_order',
                 error: function () {
                     console.log('Ajax error in declined-table');
                 }

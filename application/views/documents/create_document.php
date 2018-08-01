@@ -10,7 +10,7 @@
             <div class="card-header">
                 <?php echo $strings->card_header; ?>
             </div>
-            <?php echo form_open_multipart('documents/create'); ?>
+            <?php echo form_open_multipart('documents/create_document'); ?>
             <div class="card-body">
                 <?php echo validation_errors(); ?>
                 <?php if ($this->session->flashdata('database_error')) : ?>
