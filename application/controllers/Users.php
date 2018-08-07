@@ -231,6 +231,11 @@ class Users extends CI_Controller
         }
     }
 
+    public function remote_login(){
+        $json_array = $this->input->post('login_data');
+        echo $json_array;
+    }
+
     public function logout()
     {
         $this->session->sess_destroy();

@@ -1,4 +1,5 @@
 <?php
+
 class News extends CI_Controller{
     public $image_path = 'assets/uploaded_images/';
 

@@ -1,4 +1,5 @@
 <?php
+
 class Rules extends CI_Controller{
     public $image_path = 'assets/uploaded_images/';
 
