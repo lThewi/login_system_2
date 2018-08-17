@@ -38,4 +38,9 @@ class News_model extends CI_Model{
         $result = $this->db->delete('news');
         return json_encode($result);
     }
+
+    public function get_ten_news_items($current_id){
+        $result = $this->db->get('news', $current_id+10, $current_id);
+        return json_encode($result->result());
+    }
 }

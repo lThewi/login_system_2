@@ -122,6 +122,7 @@
                 </div>
             </div>
         </div>
+        <a href="<?php echo base_url() ?>api/test">test</a>
     </main>
 </div>
 

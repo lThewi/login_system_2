@@ -80,29 +80,26 @@
                 }
         }
 
-        public function login($mail, $password){
-            $this->db->where('email', $mail);
-            $user = $this->db->get('users');
+        public function login($email, $password){
+            $this->db->where('email', $email);
+            $user_data = $this->db->get('users');
 
-            if($user->num_rows() == 1) {
-                if ($user->row(0)->password == $password) {
-                    return json_encode($user->row(0));
+            if($user_data->num_rows() == 1) {
+                if ($user_data->row(0)->password == $password) {
+                    $user = $user_data->row(0);
+                    //update lastlogin
+                    $db_array = array(
+                        'last_login' => date('Y-m-d')
+                    );
+                    $user_update = $this->update_user($user->id, $db_array);
+
+                    return json_encode($user);
                 } else {
                     return json_encode('wrong password');
                 }
             } else {
                 //TODO: update login for temp_user, change temp_user table, update user controller login function
-                //$this->db->where('email', $mail);
-                //$temp_user = $this->db->get('temp_users');
-                //if($temp_user->num_rows() == 1){
-                //    if ($temp_user->row(0)->password == $password) {
-                //        return json_encode($temp_user->row(0));
-                //    } else {
-                //        return json_encode('wrong password');
-                //    }
-                //} else {
-                    return false;
-                //}
+                return false;
             }
         }
 

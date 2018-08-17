@@ -2,6 +2,17 @@
 
 class Users extends CI_Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        header('Access-Control-Allow-Origin: *');
+        //header('Access-Control-Allow-Credentials: true');
+        //header('Access-Control-Allow-headers: content-type, if-none-match');
+        header('Access-Control-Allow--Methods: POST,GET,OPTIONS');
+        //header('Access-Control-Max-Age: 3600');
+        //header('Content-Type: text/json, application/x-www-form-urlencoded');
+    }
 
 
     function index()
@@ -197,7 +208,7 @@ class Users extends CI_Controller
             if ($user) {
                 if ($user == 'wrong password') {
                     $this->session->set_flashdata('wrong_password', $strings->user_login_pw);
-                    redirect('users/login');
+                    return redirect('users/login');
                 } else {
                     $user_data = array(
                         'user_id' => $user->id,
@@ -207,14 +218,8 @@ class Users extends CI_Controller
                         'user_type' => $user->acc_type_id,
                         'logged_in' => TRUE
                     );
-                    //update user (last_login)
-                    $db_array = array(
-                        'last_login' => date('Y-m-d')
-                    );
-                    $user_update = $this->user_model->update_user($user->id, $db_array);
-
-
                     $this->session->set_userdata($user_data);
+
                     switch ($user->acc_type_id) {
                         case 1:
                             redirect('users/users_view');
@@ -226,14 +231,9 @@ class Users extends CI_Controller
                 }
             } else {
                 $this->session->set_flashdata('wrong_email', $strings->user_login_mail);
-                redirect('users/login');
+                return redirect('users/login');
             }
         }
-    }
-
-    public function remote_login(){
-        $json_array = $this->input->post('login_data');
-        echo $json_array;
     }
 
     public function logout()
