@@ -24,6 +24,7 @@
                 <?php endif; ?>
                 <?php
                 $categories = json_decode($categories_json);
+                $user_types = json_decode($user_types_json);
 
                 foreach ($categories as $cat) {
                     $category_list[$cat->id] = $cat->name;
@@ -47,22 +48,22 @@
                 <div class="form-group row">
                     <label class="col-md-3 col-form-label"><?php echo $strings->form_auth_level; ?></label>
                     <div class="col-md-9 col-form-label">
-                        <div class="form-check checkbox">
-                            <input class="form-check-input" type="checkbox" value="1" id="check1" name="check1">
-                            <label class="form-check-label">Berechtigungsstufe 1</label>
-                        </div>
-                        <div class="form-check checkbox">
-                            <input class="form-check-input" type="checkbox" value="2" id="check2" name="check2">
-                            <label class="form-check-label">Berechtigungsstufe 2</label>
-                        </div>
-                        <div class="form-check checkbox">
-                            <input class="form-check-input" type="checkbox" value="3" id="check3" name="check3">
-                            <label class="form-check-label">Berechtigungsstufe 3</label>
-                        </div>
-                        <div class="form-check checkbox">
-                            <input class="form-check-input" type="checkbox" value="4" id="check4" name="check4">
-                            <label class="form-check-label">Berechtigungsstufe 4</label>
-                        </div>
+                    <?php
+                    foreach ($user_types as $type) {
+                        if($type->name == 'Admin'){
+                            echo '<div class="form-check checkbox">';
+                            echo '<input class="form-check-input" type="checkbox" value="'.$type->id.'" id="check'.$type->id.'" name="check'.$type->id.'" disabled checked>';
+                            echo '<label class="form-check-label">'.$type->name.'</label>';
+                            echo '</div>';
+                        } else {
+                            echo '<div class="form-check checkbox">';
+                            echo '<input class="form-check-input" type="checkbox" value="'.$type->id.'" id="check'.$type->id.'" name="check'.$type->id.'">';
+                            echo '<label class="form-check-label">'.$type->name.'</label>';
+                            echo '</div>';
+                        }
+
+                    }
+                    ?>
                     </div>
                 </div>
 

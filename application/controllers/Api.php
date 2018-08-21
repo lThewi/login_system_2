@@ -5,11 +5,11 @@ class Api extends CI_Controller{
     {
         parent::__construct();
 
-        //header('Access-Control-Allow-Origin: *');
-        //header('Access-Control-Allow-Credentials: true');
-        //header('Access-Control-Allow-headers: content-type, if-none-match');
-        //header('Access-Control-Allow--Methods: POST,GET,OPTIONS');
-        //header('Access-Control-Max-Age: 3600');
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Credentials: true');
+        header('Access-Control-Allow-headers: content-type, if-none-match');
+        header('Access-Control-Allow--Methods: POST,GET,OPTIONS');
+        header('Access-Control-Max-Age: 3600');
         //header('Content-Type: text/json, application/x-www-form-urlencoded');
     }
 
@@ -63,9 +63,9 @@ class Api extends CI_Controller{
     public function test(){
 
         if(isset($_POST)) {
-            $token = json_decode($this->input->post('token'));
+            $title = json_decode($this->input->post('title'));
             $message = json_encode($this->input->post('message'));
-            $result = $this->notifications_model->push_message_to_all($token, $message);
+            $result = $this->notifications_model->push_message_to_all($title, $message);
             return json_encode($result);
         }
 

@@ -191,13 +191,14 @@ $(document).ready(function() {
     });
 
     //send table order
-
+    var delay = 500;
     $('table#cat-table').sortable({
         containerSelector: 'table',
         itemPath: '> tbody',
         itemSelector: 'tr',
         placeholder: '<tr class="placeholder"/>',
         group: 'sorted_table',
+        delay: delay,
         onDrop: function ($item, container, _super){
             $item.removeClass(container.group.options.draggedClass).removeAttr("style");
             $("body").removeClass(container.group.options.bodyClass);
@@ -225,6 +226,7 @@ $(document).ready(function() {
         itemSelector: 'tr',
         placeholder: '<tr class="placeholder"/>',
         group: 'sorted_table',
+        delay: delay,
         onDrop: function ($item, container, _super){
             $item.removeClass(container.group.options.draggedClass).removeAttr("style");
             $("body").removeClass(container.group.options.bodyClass);
@@ -251,6 +253,7 @@ $(document).ready(function() {
         itemSelector: 'tr',
         placeholder: '<tr class="placeholder"/>',
         group: 'pending-users-table',
+        delay: delay,
         onDrop: function ($item, container, _super){
             $item.removeClass(container.group.options.draggedClass).removeAttr("style");
             $("body").removeClass(container.group.options.bodyClass);
@@ -280,6 +283,7 @@ $(document).ready(function() {
         itemSelector: 'tr',
         placeholder: '<tr class="placeholder"/>',
         group: 'active-users-table',
+        delay: delay,
         onDrop: function ($item, container, _super){
             $item.removeClass(container.group.options.draggedClass).removeAttr("style");
             $("body").removeClass(container.group.options.bodyClass);
@@ -306,6 +310,7 @@ $(document).ready(function() {
         itemSelector: 'tr',
         placeholder: '<tr class="placeholder"/>',
         group: 'declined-users-table',
+        delay: delay,
         onDrop: function ($item, container, _super){
             $item.removeClass(container.group.options.draggedClass).removeAttr("style");
             $("body").removeClass(container.group.options.bodyClass);
@@ -333,6 +338,7 @@ $(document).ready(function() {
         itemSelector: 'tr',
         placeholder: '<tr class="placeholder"/>',
         group: 'contacts-table',
+        delay: delay,
         onDrop: function ($item, container, _super){
             $item.removeClass(container.group.options.draggedClass).removeAttr("style");
             $("body").removeClass(container.group.options.bodyClass);
@@ -360,6 +366,7 @@ $(document).ready(function() {
         itemSelector: 'tr',
         placeholder: '<tr class="placeholder"/>',
         group: 'news-table',
+        delay: delay,
         onDrop: function ($item, container, _super){
             $item.removeClass(container.group.options.draggedClass).removeAttr("style");
             $("body").removeClass(container.group.options.bodyClass);
@@ -387,6 +394,7 @@ $(document).ready(function() {
         itemSelector: 'tr',
         placeholder: '<tr class="placeholder"/>',
         group: 'all_pages_table',
+        delay: delay,
         onDrop: function ($item, container, _super){
             $item.removeClass(container.group.options.draggedClass).removeAttr("style");
             $("body").removeClass(container.group.options.bodyClass);

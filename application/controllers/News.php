@@ -18,6 +18,8 @@ class News extends CI_Controller{
             $header['strings_json'] = $this->language_model->get_lang_strings_navbar();
             $data['all_news_json'] = $this->news_model->get_all_news();
             $data['strings_json'] = $this->language_model->get_lang_strings_news();
+            $data['news_auths_json'] = $this->news_model->get_all_news_auths();
+            $data['user_types_json'] = $this->user_model->get_user_types();
 
             $this->load->view('header', $header);
             $this->load->view('news/show_news', $data);
@@ -33,6 +35,8 @@ class News extends CI_Controller{
             $lang = json_decode($this->language_model->get_lang_strings_news());
             $data['categories_json'] = $this->news_model->get_all_categories();
             $data['strings_json'] = $this->language_model->get_lang_strings_news();
+            $data['user_types_json'] = $this->user_model->get_user_types();
+            $data['news_auths_json'] = $this->news_model->get_all_news_auths();
 
             $this->form_validation->set_rules('title', 'Title', 'required', array('required' => $lang->news_formvalid_title));
             $this->form_validation->set_rules('content', 'Content', 'required', array('required' => $lang->news_formvalid_content));
@@ -46,19 +50,6 @@ class News extends CI_Controller{
                     'content' => $this->input->post('content'),
                     'category_id' => $this->input->post('category'),
                 );
-
-                //wenn Berechtigungsstufen aus der DB abgerufen werden, länge des ergebnis-arrays abragen um
-                //Abbruchbedingung für for-schleife zu erhalten
-                $auth_string = '';
-                for($idx = 1;$idx <= 4; $idx++){
-                    $input_name = 'check'.$idx;
-                    if($this->input->post($input_name) != null){
-                        $auth_string .= $this->input->post($input_name).',';
-                    } else {
-                        $auth_string .= ' ,';
-                    }
-                }
-                $db_array['auth_levels'] = $auth_string;
 
                 $this->load->library('upload');
                 //uploading images to server
@@ -75,6 +66,20 @@ class News extends CI_Controller{
                 $result = $this->news_model->create_news($db_array);
                 if($result){
                     $this->session->set_flashdata('news_created', $lang->news_create_success);
+
+                    $user_types = json_decode($data['user_types_json']);
+                    foreach ($user_types as $type){
+                        $input_name = 'check'.$type->id;
+                        if($type->id == 1){
+                            $this->news_model->add_news_auth($type->id);
+                        } else if($this->input->post($input_name) != null){
+                            $this->news_model->add_news_auth($type->id);
+                        }
+                    }
+
+                    //TODO this needs to be changed to send push notifications only to the correct user_types
+                    $this->notifications_model->push_message_to_all($this->input->post('title'),$this->input->post('title'));
+
                     redirect('news/show_news');
                 } else {
                     $this->session->set_flashdata('news_created_error', $lang->news_create_error);
@@ -95,13 +100,13 @@ class News extends CI_Controller{
             $data['path_json'] = json_encode($this->image_path);
             $strings_json = $this->language_model->get_lang_strings_news();
             $data['strings_json'] = $strings_json;
+            $data['user_types_json'] = $this->user_model->get_user_types();
+            $data['news_auths_json'] = $this->news_model->get_news_auths_by_news_id($id);
 
             $strings = json_decode($strings_json);
 
-                $this->load->view('header',$header);
-                $this->load->view('news/update_news', $data);
-
-
+            $this->load->view('header',$header);
+            $this->load->view('news/update_news', $data);
 
         } else {
             redirect('users/login');
@@ -110,6 +115,8 @@ class News extends CI_Controller{
 
     public function mod_news(){
         $strings = json_decode($this->language_model->get_lang_strings_news());
+        $data['user_types_json'] = $this->user_model->get_user_types();
+
         $this->form_validation->set_rules('title', 'Title', 'trim|required', array('required' => $strings->news_formvalid_title));
         $this->form_validation->set_rules('content', 'Content', 'trim|required', array('required' => $strings->news_formvalid_content));
         //preparing DB array
@@ -118,16 +125,7 @@ class News extends CI_Controller{
             'content' => $this->input->post('content'),
             'category_id' => $this->input->post('category'),
         );
-        $auth_string = '';
-        for($idx = 1;$idx <= 4; $idx++){
-            $input_name = 'check'.$idx;
-            if($this->input->post($input_name) != null){
-                $auth_string .= $this->input->post($input_name).',';
-            } else {
-                $auth_string .= ' ,';
-            }
-        }
-        $db_array['auth_levels'] = $auth_string;
+
         $this->load->library('upload');
 
         //delete old images when checkbox is checked
@@ -162,6 +160,18 @@ class News extends CI_Controller{
         }
         //model call to insert array into DB
         $result = $this->news_model->update_news($this->input->post('news_id'), $db_array);
+
+        $user_types = json_decode($data['user_types_json']);
+        foreach ($user_types as $type){
+            $input_name = 'check'.$type->id;
+            if($type->id == 1){
+                //$this->news_model->add_news_auth($type->id);
+            } else if($this->input->post($input_name) != null){
+                $this->news_model->add_news_auth($type->id);
+            } else {
+                $this->news_model->delete_news_auth($this->input->post('news_id'), $type->id);
+            }
+        }
         if($result){
             redirect('news/show_news');
         } else {
@@ -186,7 +196,9 @@ class News extends CI_Controller{
             $this->delete_image($img_3);
         }
 
-        $result = $this->news_model->delete_news($id);
+        $result_news = $this->news_model->delete_news($id);
+        $result_auth = $this->news_model->delete_news_auths_by_news_id($id);
+
         redirect('news/show_news');
     }
 

@@ -14,34 +14,33 @@
             <div class="card-body">
                 <?php echo validation_errors(); ?>
                 <?php if ($this->session->flashdata('database_error')) : ?>
-                    <?php echo $this->session->flashdata('database_error'); ?>
+                <?php echo $this->session->flashdata('database_error'); ?>
                 <?php endif; ?>
                 <?php if ($this->session->flashdata('upload_error')) : ?>
-                    <?php echo $this->session->flashdata('upload_error'); ?>
+                <?php echo $this->session->flashdata('upload_error'); ?>
                 <?php endif; ?>
                 <?php if ($this->session->flashdata('news_validation_error')) : ?>
-                    <?php echo $this->session->flashdata('news_validation_error'); ?>
+                <?php echo $this->session->flashdata('news_validation_error'); ?>
                 <?php endif; ?>
                 <?php
                 $categories = json_decode($categories_json);
                 $news = json_decode($news_json);
                 $path = json_decode($path_json);
+                $user_types = json_decode($user_types_json);
+                $auths = json_decode($news_auths_json);
 
                 foreach ($categories as $cat) {
                     $category_list[$cat->id] = $cat->name;
                 }
 
-                $checked_array = explode(',',$news[0]->auth_levels);
-                $check1 = $checked_array[0];
-                $check2 = $checked_array[1];
-                $check3 = $checked_array[2];
-                $check4 = $checked_array[3];
+
                 ?>
 
                 <div class="row">
                     <div class="form-group col-md-8">
                         <label for="title"><?php echo $strings->form_title ?></label>
-                        <input type="text" id="title" name="title" class="form-control" required value="<?php echo set_value('title', $news[0]->title); ?>">
+                        <input type="text" id="title" name="title" class="form-control" required
+                               value="<?php echo set_value('title', $news[0]->title); ?>">
                         <input type="hidden" id="news_id" name="news_id" value="<?php echo $news[0]->id ?>">
                     </div>
                     <div class="form-group col-md-4">
@@ -51,27 +50,35 @@
                 </div>
                 <div class="form-group">
                     <label for="content"><?php echo $strings->form_content ?></label>
-                    <textarea id="textarea-input" name="content" class="form-control" ><?php echo set_value('content', $news[0]->content);?></textarea>
+                    <textarea id="textarea-input" name="content"
+                              class="form-control"><?php echo set_value('content', $news[0]->content); ?></textarea>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-3 col-form-label"><?php echo $strings->form_auth_level ?></label>
                     <div class="col-md-9 col-form-label">
-                        <div class="form-check checkbox">
-                            <input class="form-check-input" type="checkbox" value="1" id="check1" name="check1" <?php if($check1 != ' '){echo 'checked';} ?>>
-                            <label class="form-check-label">Berechtigungsstufe 1</label>
-                        </div>
-                        <div class="form-check checkbox">
-                            <input class="form-check-input" type="checkbox" value="2" id="check2" name="check2" <?php if($check2 != ' '){echo 'checked';} ?>>
-                            <label class="form-check-label">Berechtigungsstufe 2</label>
-                        </div>
-                        <div class="form-check checkbox">
-                            <input class="form-check-input" type="checkbox" value="3" id="check3" name="check3" <?php if($check3 != ' '){echo 'checked';} ?>>
-                            <label class="form-check-label">Berechtigungsstufe 3</label>
-                        </div>
-                        <div class="form-check checkbox">
-                            <input class="form-check-input" type="checkbox" value="4" id="check4" name="check4" <?php if($check4 != ' '){echo 'checked';} ?>>
-                            <label class="form-check-label">Berechtigungsstufe 4</label>
-                        </div>
+                        <?php
+                        foreach ($user_types as $type) {
+                            foreach($auths as $auth){
+                                if($auth->auth_id == $type->id && $type->id != 1){
+                                    $check = 'checked';
+                                } else {
+                                    $check = '';
+                                }
+                            }
+                            if($type->id == 1){
+                                echo '<div class="form-check checkbox">';
+                                echo '<input class="form-check-input" type="checkbox" value="'.$type->id.'" id="check'.$type->id.'" name="check'.$type->id.'" disabled checked>';
+                                echo '<label class="form-check-label">'.$type->name.'</label>';
+                                echo '</div>';
+                            } else if($type->id != 1){
+                                echo '<div class="form-check checkbox">';
+                                echo '<input class="form-check-input" type="checkbox" value="'.$type->id.'" id="check'.$type->id.'" name="check'.$type->id.'" '.$check.'>';
+                                echo '<label class="form-check-label">'.$type->name.'</label>';
+                                echo '</div>';
+                            }
+
+                        }
+                        ?>
                     </div>
                 </div>
 
@@ -80,43 +87,43 @@
                     <div class="form-group col-md-4">
                         <input type="file" name="img_1" id="img_1" value=""
                                accept="image/tif, image/tiff, image/png, image/jpg, image/jpeg">
-                        <input type="hidden" name="img_1_old" value="<?php echo $news[0]->img_1?>">
+                        <input type="hidden" name="img_1_old" value="<?php echo $news[0]->img_1 ?>">
                         <?php
-                        if($news[0]->img_1 != null){
-                            $src_1 = 'class="img-thumbnail mt-2" src="'.base_url().$path.$news[0]->img_1.'"';
-                        } else $src_1 = '';?>
+                        if ($news[0]->img_1 != null){
+                        $src_1 = 'class="img-thumbnail mt-2" src="'.base_url().$path.$news[0]->img_1.'"';
+                        } else $src_1 = ''; ?>
 
-                        <img id="img_pv_1" <?php echo $src_1;?>/>
+                        <img id="img_pv_1" <?php echo $src_1; ?>/>
                         <?php
-                        if($news[0]->img_1 != null){
-                            echo '<div class="form-group row m-0 mt-2">';
-                            echo '<label class="switch switch-sm switch-secondary mr-2">';
-                            echo '<input type="checkbox" name="del_old_1" id="del_old_1" class="switch-input">';
-                            echo '<span class="switch-slider"></span>';
-                            echo '</label>';
-                            echo '<label for="del_old_1">'.$strings->del_old_image.'</label>';
-                            echo '</div>';
+                        if ($news[0]->img_1 != null){
+                        echo '<div class="form-group row m-0 mt-2">';
+                        echo '<label class="switch switch-sm switch-secondary mr-2">';
+                        echo '<input type="checkbox" name="del_old_1" id="del_old_1" class="switch-input">';
+                        echo '<span class="switch-slider"></span>';
+                        echo '</label>';
+                        echo '<label for="del_old_1">'.$strings->del_old_image.'</label>';
+                        echo '</div>';
                         }
                         ?>
                     </div>
                     <div class="form-group col-md-4">
                         <input type="file" name="img_2" id="img_2"
                                accept="image/tif, image/tiff, image/png, image/jpg, image/jpeg">
-                        <input type="hidden" name="img_2_old" value="<?php echo $news[0]->img_2?>">
+                        <input type="hidden" name="img_2_old" value="<?php echo $news[0]->img_2 ?>">
                         <?php
-                        if($news[0]->img_2 != null){
-                            $src_2 = 'class="img-thumbnail mt-2" src="'.base_url().$path.$news[0]->img_2.'"';
-                        } else $src_2 = '';?>
-                        <img id="img_pv_2" <?php echo $src_2;?>/>
+                        if ($news[0]->img_2 != null){
+                        $src_2 = 'class="img-thumbnail mt-2" src="'.base_url().$path.$news[0]->img_2.'"';
+                        } else $src_2 = ''; ?>
+                        <img id="img_pv_2" <?php echo $src_2; ?>/>
                         <?php
-                        if($news[0]->img_2 != null){
-                            echo '<div class="form-group row m-0 mt-2">';
-                            echo '<label class="switch switch-sm switch-secondary mr-2">';
-                            echo '<input type="checkbox" name="del_old_2" id="del_old_2" class="switch-input">';
-                            echo '<span class="switch-slider"></span>';
-                            echo '</label>';
-                            echo '<label for="del_old_2">'.$strings->del_old_image.'</label>';
-                            echo '</div>';
+                        if ($news[0]->img_2 != null){
+                        echo '<div class="form-group row m-0 mt-2">';
+                        echo '<label class="switch switch-sm switch-secondary mr-2">';
+                        echo '<input type="checkbox" name="del_old_2" id="del_old_2" class="switch-input">';
+                        echo '<span class="switch-slider"></span>';
+                        echo '</label>';
+                        echo '<label for="del_old_2">'.$strings->del_old_image.'</label>';
+                        echo '</div>';
                         }
                         ?>
 
@@ -124,21 +131,21 @@
                     <div class="form-group col-md-4">
                         <input type="file" name="img_3" id="img_3"
                                accept="image/tif, image/tiff, image/png, image/jpg, image/jpeg">
-                        <input type="hidden" name="img_3_old" value="<?php echo $news[0]->img_3?>">
+                        <input type="hidden" name="img_3_old" value="<?php echo $news[0]->img_3 ?>">
                         <?php
-                        if($news[0]->img_3 != null){
-                            $src_3 = 'class="img-thumbnail mt-2" src="'.base_url().$path.$news[0]->img_3.'"';
-                        } else $src_3 = '';?>
-                        <img id="img_pv_3" <?php echo $src_3;?>/>
+                        if ($news[0]->img_3 != null){
+                        $src_3 = 'class="img-thumbnail mt-2" src="'.base_url().$path.$news[0]->img_3.'"';
+                        } else $src_3 = ''; ?>
+                        <img id="img_pv_3" <?php echo $src_3; ?>/>
                         <?php
-                        if($news[0]->img_3 != null){
-                            echo '<div class="form-group row m-0 mt-2">';
-                            echo '<label class="switch switch-sm switch-secondary mr-2">';
-                            echo '<input type="checkbox" name="del_old_3" id="del_old_3" class="switch-input">';
-                            echo '<span class="switch-slider"></span>';
-                            echo '</label>';
-                            echo '<label for="del_old_3">'.$strings->del_old_image.'</label>';
-                            echo '</div>';
+                        if ($news[0]->img_3 != null){
+                        echo '<div class="form-group row m-0 mt-2">';
+                        echo '<label class="switch switch-sm switch-secondary mr-2">';
+                        echo '<input type="checkbox" name="del_old_3" id="del_old_3" class="switch-input">';
+                        echo '<span class="switch-slider"></span>';
+                        echo '</label>';
+                        echo '<label for="del_old_3">'.$strings->del_old_image.'</label>';
+                        echo '</div>';
                         }
                         ?>
                     </div>
@@ -151,7 +158,6 @@
         </div>
 </main>
 </div>
-
 
 
 <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>

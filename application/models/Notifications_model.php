@@ -1,10 +1,23 @@
 <?php
+require_once 'vendor/autoload.php';
+
 class Notifications_model extends CI_Model{
     public function  __construct()
     {
         $this->load->database();
         $this->load->library('xmlrpc');
         $this->load->library('xmlrpcs');
+        putenv('GOOGLE_APPLICATION_CREDENTIALS=AppProject-5365c8dcaae1.json');
+
+        $this->firebase_path = 'https://fcm.googleapis.com/v1/projects/appproject-112eb/messages:send';
+
+        $this->client = new Google_Client();
+
+        $this->client->useApplicationDefaultCredentials();
+
+        $this->client->addScope('https://www.googleapis.com/auth/cloud-platform','https://www.googleapis.com/auth/firebase.messaging');
+
+        $this->httpClient = $this->client->authorize();
     }
 
     public function insert_device($token, $user_id){
@@ -12,11 +25,18 @@ class Notifications_model extends CI_Model{
             'token' => $token,
             'user_id' => $user_id,
         );
+        $this->db->where('user_id', $user_id);
+        $this->db->where('token', $token);
+        $query_check = $this->db->get('push_devices');
 
-        $query = $this->db->insert('push_devices', $db_array);
+        if($query_check->num_rows() == 0){
+            $query = $this->db->insert('push_devices', $db_array);
 
-        if($query) {
-            return json_encode($token);
+            if($query) {
+                return json_encode($token);
+            } else {
+                return json_encode(false);
+            }
         } else {
             return json_encode(false);
         }
@@ -36,50 +56,52 @@ class Notifications_model extends CI_Model{
         return json_encode($query->result());
     }
 
-    public function push_message_to_all($a_token, $message){
-        $device_tokens = json_decode($this->get_all_device_tokens());
-        $firebase_path = 'https://fcm.googleapis.com/fcm/send';
-        $access_token = $a_token;
-
-        foreach ($device_tokens as $token) {
-            $headers = array(
-            'Authorization: Bearer '. $access_token,//self::$API_SERVER_KEY,
-            'Content-Type:application/x-www-form-urlencoded'
-        );
-            $fields = array(
-                'to' => $token->token,
-                'priority' => 10,
-                'notification' => array('title' => 'Message Test', 'body' =>  $message ,'sound'=>'Default' ),
-            );
-            // Open connection
-            $ch = curl_init();
-            // Set the url, number of POST vars, POST data
-            curl_setopt($ch, CURLOPT_URL, $firebase_path);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-            // Execute post
-            $result = curl_exec($ch);
-            // Close connection
-            curl_close($ch);
-            echo $result;
-
+    public function get_devices_by_user_type($user_type){
+        $query = null;
+        $this->db->where('acc_type_id', $user_type);
+        $users = $this->db->get('users');
+        foreach ($users as $user){
+            $query .=$this->get_device_tokens_by_user($user->id);
         }
+
+        return json_encode($query->result());
     }
 
-    public function requestAccess(){
-        $acces_token = 0;
-        $path = 'https://appproject-112eb.firebaseapp.com/__/auth/handler';
-        $ch = curl_init();
-        // Set the url, number of POST vars, POST data
-        curl_setopt($ch, CURLOPT_URL, $path);
-        $result = curl_exec($ch);
-        // Close connection
-        curl_close($ch);
+    public function push_message_to_all($title, $body){
+        $device_tokens = json_decode($this->get_all_device_tokens());
 
-        return $result;
+        $this->push_message_to_token($device_tokens, $title, $body);
+    }
+
+    public function push_message_to_user($user_id, $title, $body){
+        $device_tokens = json_decode($this->get_device_tokens_by_user($user_id));
+
+        $this->push_message_to_token($device_tokens, $title, $body);
+    }
+
+    public function push_message_on_news($groups, $title, $body){
+        $device_tokens = null;
+        foreach ($groups as $group){
+            $device_tokens .= $this->get_devices_by_user_type($group);
+        }
+
+        $this->push_message_to_token($device_tokens, $title, $body);
+    }
+
+    public function push_message_to_token($device_tokens, $title, $body){
+        foreach ($device_tokens as $token) {
+            $message = array(
+                'message'=> array(
+                    'token' => $token->token,
+                    'notification' => array(
+                        'title' => $title,
+                        'body' => $body
+                    )
+                )
+            );
+
+            $response = $this->httpClient->post($this->firebase_path, array('json'=>$message));
+            echo json_encode($response);
+        }
     }
 }

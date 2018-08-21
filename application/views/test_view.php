@@ -14,6 +14,7 @@
             </div>
             <div class="card-body" id="pending-users">
                 <?php echo form_open('api/test') ?>
+                <input type="text" name="title" id="title" placeholder="Titel eingeben.">
                 <input type="text" name="message" id="message" placeholder="Nachricht eingeben.">
                 <input type="button" value="Senden" id="send" class="btn btn-lg btn-primary">
                 <?php echo form_close() ?>

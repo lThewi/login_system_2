@@ -11,6 +11,8 @@
         <?php endif; ?>
         <?php
         $all_news = json_decode($all_news_json);
+        $all_auths = json_decode($news_auths_json);
+        $all_types = json_decode($user_types_json);
 
         echo '<div class="card card-accent-primary" id="news">';
         echo '<div class="card-header">'.$strings->card_header_show.'</div>';
@@ -28,11 +30,22 @@
         echo '</thead>';
         echo '<tbody>';
         foreach ($all_news as $news) {
+            $auth_string = 'Admin';
+            foreach($all_auths as $auth){
+                if($news->id == $auth->news_id){
+                    foreach ($all_types as $type){
+                        if($auth->auth_id == $type->id && $auth->auth_id != 1)
+                        $auth_string .= ', '.$type->name;
+                    }
+
+                }
+            }
+
             echo '<tr id="'.$news->id.'">';
             echo '<td>' . $news->title . '</td>';
             echo '<td>' . $news->content . '</td>';
             echo '<td>' . $news->category_id. '</td>';
-            echo '<td>' . $news->auth_levels. '</td>';
+            echo '<td>' . $auth_string. '</td>';
             echo '<td>';
             echo '<a href="'.base_url().'news/update_news/'.$news->id.'" class="btn btn-md btn-primary mx-1">'.$strings->button_mod.'</a>';
             echo '<a href="#" class="btn btn-md btn-danger mx-1 delete-news" data-id="'.$news->id.'">'.$strings->button_delete.'</a>';
