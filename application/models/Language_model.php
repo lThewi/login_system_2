@@ -30,6 +30,10 @@ class Language_model extends CI_Model{
         $language_array['faq_create'] = 'FAQ erstellen';
         $language_array['logout'] = 'Abmelden';
         $language_array['rules'] = 'Goldene Regeln';
+        $language_array['surveys'] = 'Umfragen';
+        $language_array['surveys_create'] = 'Umfrage erstellen';
+        $language_array['surveys_show'] = 'Umfragen Anzeigen';
+        $language_array['surveys_results_show'] = 'Ergebnisse Anzeigen';
 
         return json_encode($language_array);
     }
@@ -313,5 +317,41 @@ class Language_model extends CI_Model{
         return json_encode($language_array);
     }
 
+    public function get_lang_strings_surveys(){
+        $language_array['breadcrumb_1'] = 'Admin';
+        $language_array['breadcrumb_2'] = 'Umfragen';
+        $language_array['breadcrumb_3'] = 'Umfrage erstellen';
+        $language_array['breadcrumb_4'] = 'Umfragen anzeigen';
+        $language_array['breadcrumb_5'] = 'Ergebnis';
+        $language_array['card_header_create'] = 'Neue Umfrage erstellen';
+        $language_array['card_header_show'] = 'Umfragen anzeigen';
+        $language_array['form_question'] = 'Frage';
+        $language_array['form_answer'] = 'Antwort';
+        $language_array['button_add_answer'] = 'Antwort hinzufügen';
+        $language_array['button_reset'] = 'Zurücksetzen';
+        $language_array['button_save'] = 'Speichern';
+        $language_array['button_delete'] = 'Löschen';
+        $language_array['button_switch'] = 'Rating Umfrage';
+        $language_array['button_switch_back'] = 'Multiple Choice Umfrage';
+        $language_array['form_auth_level'] = 'Berechtigte Nutzergruppen';
+        $language_array['form_image'] = 'Bild einfügen (Optional)';
+        $language_array['switch_label'] = 'Benachrichtigung versenden';
+        $language_array['push_title'] = 'Neue Umfrage!';
+        $language_array['table_head_img'] = 'Bild';
+        $language_array['table_head_question'] = 'Frage';
+        $language_array['table_head_type'] = 'Umfragentyp';
+        $language_array['table_head_date'] = 'Erstellungsdatum';
+        $language_array['table_head_options'] = 'Optionen';
+        $language_array['survey_type_mc'] = 'Multiple Choice';
+        $language_array['survey_type_r'] = 'Rating';
+        $language_array['table_button_results'] = 'Ergebnisse anzeigen';
+        $language_array['button_back'] = 'Zurück';
+        $language_array['result_card_body_header'] = 'Ergbniss:';
+        $language_array['table_head_votes'] = 'Eingegangene Votes / Teilnehmer';
+        $language_array['survey_created'] = '<div class="alert alert-success">Die Umfrage wurde erfolgreich erstellt</div>';
+        $language_array[''] = '';
+        $language_array[''] = '';
 
+        return json_encode($language_array);
+    }
 }

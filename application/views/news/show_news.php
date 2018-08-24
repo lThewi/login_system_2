@@ -35,7 +35,7 @@
                 if($news->id == $auth->news_id){
                     foreach ($all_types as $type){
                         if($auth->auth_id == $type->id && $auth->auth_id != 1)
-                        $auth_string .= ', '.$type->name;
+                        $auth_string .= ', '.$type->type_name;
                     }
 
                 }

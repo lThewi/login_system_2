@@ -50,18 +50,17 @@
                     <div class="col-md-9 col-form-label">
                     <?php
                     foreach ($user_types as $type) {
-                        if($type->name == 'Admin'){
+                        if($type->type_name == 'Admin'){
                             echo '<div class="form-check checkbox">';
                             echo '<input class="form-check-input" type="checkbox" value="'.$type->id.'" id="check'.$type->id.'" name="check'.$type->id.'" disabled checked>';
-                            echo '<label class="form-check-label">'.$type->name.'</label>';
+                            echo '<label class="form-check-label">'.$type->type_name.'</label>';
                             echo '</div>';
                         } else {
                             echo '<div class="form-check checkbox">';
                             echo '<input class="form-check-input" type="checkbox" value="'.$type->id.'" id="check'.$type->id.'" name="check'.$type->id.'">';
-                            echo '<label class="form-check-label">'.$type->name.'</label>';
+                            echo '<label class="form-check-label">'.$type->type_name.'</label>';
                             echo '</div>';
                         }
-
                     }
                     ?>
                     </div>

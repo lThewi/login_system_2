@@ -37,7 +37,8 @@ class Api extends CI_Controller{
                 'mail' => $email,
                 'name' => $query->name,
                 'lastname' => $query->lastname,
-                'user_type' => $query->acc_type_id,
+                'user_type_id' => $query->acc_type_id,
+                'user_type' => $query->type_name,
                 'logged_in' => TRUE
             );
             echo json_encode($user_data);
@@ -61,23 +62,33 @@ class Api extends CI_Controller{
     }
 
     public function test(){
-
         if(isset($_POST)) {
             $title = json_decode($this->input->post('title'));
             $message = json_encode($this->input->post('message'));
             $result = $this->notifications_model->push_message_to_all($title, $message);
             return json_encode($result);
         }
-
     }
 
-    public function test_view(){
-        $strings = $this->language_model->get_lang_strings_users();
-        $strings_header = $this->language_model->get_lang_strings_navbar();
-        $header['strings_json'] = $strings_header;
-        $data['strings_json'] = $strings;
-        $this->load->view('header', $header);
-        $this->load->view('test_view', $data);
+    public function get_all_survey_questions(){
+        echo $this->survey_model->get_survey_questions();
     }
 
+    public function get_survey_answers_by_qid(){
+        if(isset($_POST)){
+            $qid = json_decode($_POST['question_id']);
+            echo $this->survey_model->get_answers_by_qid($qid);
+        }
+    }
+
+    public function push_result(){
+        if(isset($_POST)){
+            $value = json_decode($_POST['value']);
+            $question_id = json_decode($_POST['question_id']);
+            $answer_id = json_decode($_POST['answer_id']);
+            $user_id = json_decode($_POST['user_id']);
+
+            echo $this->survey_model->push_value_to_db($question_id, $answer_id, $value, $user_id);
+        }
+    }
 }

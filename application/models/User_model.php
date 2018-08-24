@@ -81,8 +81,20 @@
         }
 
         public function login($email, $password){
+            $this->db->select('users.id, 
+                                users.name, 
+                                users.lastname, 
+                                users.acc_type_id, 
+                                users.email, 
+                                users.password,
+                                users.register_date,
+                                users.last_login,
+                                users.table_order,
+                                user_types.type_name');
+            $this->db->from('users');
+            $this->db->join('user_types', 'users.acc_type_id=user_types.id');
             $this->db->where('email', $email);
-            $user_data = $this->db->get('users');
+            $user_data = $this->db->get();
 
             if($user_data->num_rows() == 1) {
                 if ($user_data->row(0)->password == $password) {
@@ -125,6 +137,7 @@
             $result = $this->db->get('users');
             return json_encode($result->result());
         }
+        
         public function get_user($id){
             $this->db->where('id', $id);
             $result = $this->db->get('users');

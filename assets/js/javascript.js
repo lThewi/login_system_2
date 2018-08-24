@@ -1,4 +1,30 @@
 $(document).ready(function() {
+    var answer_counter = 3;
+
+
+    $('#add-answer').on('click', function(){
+        $('#answer-box').append(
+            '<div class="form-group">' +
+                '<label for="content">Antwort '+answer_counter+'</label>' +
+                '<input type="text" name="answer'+answer_counter+'" id="answer'+answer_counter+'" class="form-control">' +
+            '</div>'
+        );
+        $('#answer-counter').html(
+            '<input type="hidden" value="'+answer_counter+'" name="counter">'
+        );
+        answer_counter++;
+    });
+
+    $('#switch').on('click', function(){
+        $('#text-card').hide();
+        $('#skala-card').show();
+    });
+
+    $('#switch-back').on('click', function(){
+        $('#text-card').show();
+        $('#skala-card').hide();
+    });
+
     $('[type="checkbox"]').on('click', function () {
         value = true
         $('[type="checkbox"]').each(function(){
@@ -9,8 +35,6 @@ $(document).ready(function() {
         $('.decline-user').prop('disabled', value);
         $('.accept-user').prop('disabled', value);
     });
-
-
 
     $(".delete_row").on('click', function () {
         var id = $(this).attr('data-id');
@@ -189,6 +213,10 @@ $(document).ready(function() {
     $("#img").on('change',function() {
         readURL(this, '#img_pv');
     });
+    $("#img-rating").on('change',function() {
+        readURL(this, '#img_pv_rating');
+    });
+    
 
     //send table order
     var delay = 500;

@@ -41,3 +41,8 @@ th.sorted.descending:after {
 .sidebar .nav-link.active{
     background: #3e5362;
 }
+
+.table-image{
+    max-width: 40px;
+    height: auto;
+}

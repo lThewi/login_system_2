@@ -47,6 +47,26 @@
                         <?php echo $strings->rules ?>
                     </a>
                 </li>
+                <li class="nav-item nav-dropdown">
+                    <a href="#" class="nav-link nav-dropdown-toggle">
+                        <div class="nav-icon cui-speech"></div>
+                        <?php echo $strings->surveys ?>
+                    </a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a href="<?php echo base_url(); ?>surveys/create_survey" class="nav-link">
+                                <div class="nav-icon cui-speech"></div>
+                                <?php echo $strings->surveys_create ?>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo base_url(); ?>surveys/show_surveys" class="nav-link">
+                                <div class="nav-icon cui-speech"></div>
+                                <?php echo $strings->surveys_show ?>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-title"><?php echo $strings->nav_group_2 ?></li>
                 <li class="nav-item nav-dropdown">
                     <a href="#" class="nav-link nav-dropdown-toggle">
@@ -73,6 +93,7 @@
                             </a>
                         </li>
                     </ul>
+                </li>
                 <li class="nav-item nav-dropdown">
                     <a href="#" class="nav-link nav-dropdown-toggle">
                         <div class="nav-icon cui-user"></div>

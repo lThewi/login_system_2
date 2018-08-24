@@ -7,16 +7,12 @@ class Notifications_model extends CI_Model{
         $this->load->database();
         $this->load->library('xmlrpc');
         $this->load->library('xmlrpcs');
+        
         putenv('GOOGLE_APPLICATION_CREDENTIALS=AppProject-5365c8dcaae1.json');
-
         $this->firebase_path = 'https://fcm.googleapis.com/v1/projects/appproject-112eb/messages:send';
-
         $this->client = new Google_Client();
-
         $this->client->useApplicationDefaultCredentials();
-
         $this->client->addScope('https://www.googleapis.com/auth/cloud-platform','https://www.googleapis.com/auth/firebase.messaging');
-
         $this->httpClient = $this->client->authorize();
     }
 
@@ -56,15 +52,22 @@ class Notifications_model extends CI_Model{
         return json_encode($query->result());
     }
 
+    public function get_auth_name($auth_id){
+        $this->db->where('id', $auth_id);
+        $query = $this->db->get('user_types');
+
+        return json_encode($query->result());
+    }
+
     public function get_devices_by_user_type($user_type){
-        $query = null;
+        $array = array();
         $this->db->where('acc_type_id', $user_type);
         $users = $this->db->get('users');
         foreach ($users as $user){
-            $query .=$this->get_device_tokens_by_user($user->id);
+            $query = $this->get_device_tokens_by_user($user->id);
+            $array[] = $query->result();
         }
-
-        return json_encode($query->result());
+        return json_encode($array);
     }
 
     public function push_message_to_all($title, $body){
@@ -75,15 +78,6 @@ class Notifications_model extends CI_Model{
 
     public function push_message_to_user($user_id, $title, $body){
         $device_tokens = json_decode($this->get_device_tokens_by_user($user_id));
-
-        $this->push_message_to_token($device_tokens, $title, $body);
-    }
-
-    public function push_message_on_news($groups, $title, $body){
-        $device_tokens = null;
-        foreach ($groups as $group){
-            $device_tokens .= $this->get_devices_by_user_type($group);
-        }
 
         $this->push_message_to_token($device_tokens, $title, $body);
     }
@@ -103,5 +97,20 @@ class Notifications_model extends CI_Model{
             $response = $this->httpClient->post($this->firebase_path, array('json'=>$message));
             echo json_encode($response);
         }
+    }
+
+    public function push_message_to_topic($topic, $title, $body){
+        $message = array(
+            'message'=> array(
+                'topic' => $topic,
+                'notification' => array(
+                    'title' => $title,
+                    'body' => $body
+                )
+            )
+        );
+
+        $response = $this->httpClient->post($this->firebase_path, array('json'=>$message));
+        echo json_encode($response);
     }
 }

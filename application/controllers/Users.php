@@ -194,7 +194,6 @@ class Users extends CI_Controller
 
         $data['strings_json'] = $strings;
 
-
         $this->load->view('login', $data);
 
         if ($this->form_validation->run()) {
@@ -216,11 +215,11 @@ class Users extends CI_Controller
                         'name' => $user->name,
                         'lastname' => $user->lastname,
                         'user_type' => $user->acc_type_id,
+                        'user_type_name' => $user->type_name,
                         'logged_in' => TRUE
                     );
                     $this->session->set_userdata($user_data);
-
-                    switch ($user->acc_type_id) {
+                    switch ($user_data['user_type']) {
                         case 1:
                             redirect('users/users_view');
                             break;

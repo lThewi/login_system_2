@@ -19,7 +19,7 @@
                 <?php
                 $types = json_decode($types_json);
                 foreach ($types as $type) {
-                    $type_list[$type->id] = $type->name;
+                    $type_list[$type->id] = $type->type_name;
                 }
                 $user = json_decode($user_json);
                 ?>

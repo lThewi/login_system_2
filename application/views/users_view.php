@@ -30,7 +30,7 @@
                         $user_types = json_decode($user_types_json);
                         $temp_users = json_decode($temp_users_json);
                         foreach ($user_types as $user_type) {
-                            $types[$user_type->id] = $user_type->name;
+                            $types[$user_type->id] = $user_type->type_name;
                         }
                         foreach ($temp_users as $temp_user) {
                             if($temp_user->declined == FALSE){
