@@ -83,6 +83,7 @@ class Language_model extends CI_Model{
         $language_array['button_mod'] = 'Bearbeiten';
         $language_array['table_options'] = 'Optionen';
         $language_array['del_old_image'] = 'Dieses Bild entfernen';
+        $language_array['push_title'] = 'Neuer Beitrag!';
 
         return json_encode($language_array);
     }

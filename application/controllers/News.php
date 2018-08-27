@@ -68,17 +68,15 @@ class News extends CI_Controller{
                     $this->session->set_flashdata('news_created', $lang->news_create_success);
 
                     $user_types = json_decode($data['user_types_json']);
+                    $title = $strings->push_title;
+                    $body = $this->input->post('title');
                     foreach ($user_types as $type){
                         $input_name = 'check'.$type->id;
-                        if($type->id == 1){
+                        if($type->id == 1 || $this->input->post($input_name) != null){
                             $this->news_model->add_news_auth($type->id);
-                        } else if($this->input->post($input_name) != null){
-                            $this->news_model->add_news_auth($type->id);
+                            $this->notifications_model->push_message_to_topic($type->type_name, $title, $body);
                         }
                     }
-
-                    //TODO this needs to be changed to send push notifications only to the correct user_types
-                    $this->notifications_model->push_message_to_all($this->input->post('title'),$this->input->post('title'));
 
                     redirect('news/show_news');
                 } else {

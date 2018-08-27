@@ -40,22 +40,13 @@ class Survey_model extends CI_Model{
 
         //adding usertypes to auth table
         $user_types = json_decode($data['user_types_json']);
+        $title = $strings->push_title;
+        $body = $question;
         foreach ($user_types as $type){
             $input_name = 'check'.$type->id;
-            if($type->id == 1){
+            if($type->id == 1 || $this->input->post($input_name) != null){
                 $this->survey_model->add_auth($question_id[0]->id,$type->id);
-            } else if($this->input->post($input_name) != null){
-                $this->survey_model->add_auth($question_id[0]->id,$type->id);
-            }
-        }
-
-        //if checked, push messages to user types
-        if($this->input->post('push') == 'on'){
-            $title = $strings->push_title;
-            $body = $question;
-            foreach ($user_types as $type){
-                $input_name = 'check'.$type->id;
-                if($type->id == 1 || $this->input->post($input_name) != null){
+                if($this->input->post('push') == 'on'){
                     $this->notifications_model->push_message_to_topic($type->type_name, $title, $body);
                 }
             }
@@ -91,21 +82,13 @@ class Survey_model extends CI_Model{
 
         //adding usertypes to auth table
         $user_types = json_decode($data['user_types_json']);
+        $title = $strings->push_title;
+        $body = $question;
         foreach ($user_types as $type){
             $input_name = 'check-rating'.$type->id;
-            if($type->id == 1){
+            if($type->id == 1 || $this->input->post($input_name) != null){
                 $this->survey_model->add_auth($question_id[0]->id,$type->id);
-            } else if($this->input->post($input_name) != null){
-                $this->survey_model->add_auth($question_id[0]->id,$type->id);
-            }
-        }
-
-        if($this->input->post('push-rating') == 'on'){
-            $title = $strings->push_title;
-            $body = $question;
-            foreach ($user_types as $type){
-                $input_name = 'check'.$type->id;
-                if($type->id == 1 || $this->input->post($input_name) != null){
+                if($this->input->post('push-rating') == 'on'){
                     $this->notifications_model->push_message_to_topic($type->type_name, $title, $body);
                 }
             }

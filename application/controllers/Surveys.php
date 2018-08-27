@@ -52,7 +52,7 @@ class Surveys extends CI_Controller{
                 } else {
                     $result = json_decode($this->survey_model->create_new_r_survey());
                     if($result){
-                        redirect('surveys/show_survey');
+                        redirect('surveys/show_surveys');
                     } else {
                         redirect('surveys/create_survey');
                     }
