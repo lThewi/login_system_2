@@ -61,15 +61,6 @@ class Api extends CI_Controller{
         return $result;
     }
 
-    public function test(){
-        if(isset($_POST)) {
-            $title = json_decode($this->input->post('title'));
-            $message = json_encode($this->input->post('message'));
-            $result = $this->notifications_model->push_message_to_all($title, $message);
-            return json_encode($result);
-        }
-    }
-
     public function get_all_survey_questions(){
         echo $this->survey_model->get_survey_questions();
     }

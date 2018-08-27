@@ -16,18 +16,31 @@ class Rules extends CI_Controller{
             $data['rules_json'] = $this->get_rules();
 
             $head['strings_json'] = $this->language_model->get_lang_strings_navbar();
-            $this->load->view('header', $head);
-            $this->load->view('show_rules', $data);
+            
+            //set rules
+
+            if(!$this->form_validation->run()){
+                $this->load->view('header', $head);
+                $this->load->view('show_rules', $data);
+            } else {
+                //fetch post data and pass it to model
+                //on success redirect(rules/show_rules) and inform
+                //same on error
+            }
+            
 
         } else {
             redirect('users/login');
         }
     }
 
-
-
     public function get_rules(){
         $result = $this->rule_model->get_rules();
+        return $result;
+    }
+
+    public function delete_rule($id){
+        $result = $this->rule_model->delete_rule($id);
         return $result;
     }
 }

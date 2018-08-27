@@ -68,7 +68,7 @@ class News extends CI_Controller{
                     $this->session->set_flashdata('news_created', $lang->news_create_success);
 
                     $user_types = json_decode($data['user_types_json']);
-                    $title = $strings->push_title;
+                    $title = $lang->push_title;
                     $body = $this->input->post('title');
                     foreach ($user_types as $type){
                         $input_name = 'check'.$type->id;

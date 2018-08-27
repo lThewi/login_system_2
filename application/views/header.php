@@ -66,6 +66,12 @@
                             </a>
                         </li>
                     </ul>
+                    <li class="nav-item">
+                        <a href="<?php echo base_url(); ?>notifications/send_push" class="nav-link">
+                            <div class="nav-icon cui-note"></div>
+                            <?php echo $strings->notifications_send ?>
+                        </a>
+                    </li>
                 </li>
                 <li class="nav-title"><?php echo $strings->nav_group_2 ?></li>
                 <li class="nav-item nav-dropdown">

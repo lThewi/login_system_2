@@ -34,6 +34,7 @@ class Language_model extends CI_Model{
         $language_array['surveys_create'] = 'Umfrage erstellen';
         $language_array['surveys_show'] = 'Umfragen Anzeigen';
         $language_array['surveys_results_show'] = 'Ergebnisse Anzeigen';
+        $language_array['notifications_send'] = 'Push-Nachricht';
 
         return json_encode($language_array);
     }
@@ -351,6 +352,22 @@ class Language_model extends CI_Model{
         $language_array['table_head_votes'] = 'Eingegangene Votes / Teilnehmer';
         $language_array['survey_created'] = '<div class="alert alert-success">Die Umfrage wurde erfolgreich erstellt</div>';
         $language_array[''] = '';
+
+        return json_encode($language_array);
+    }
+
+    public function get_lang_strings_notifications(){
+        $language_array['breadcrumb_1'] = 'Admin';
+        $language_array['breadcrumb_2'] = 'Push-Nachricht senden';
+        $language_array['form_title'] = 'Titel eingeben';
+        $language_array['form_body'] = 'Nachricht eingeben';
+        $language_array['form_button_send'] = 'Nachricht senden';
+        $language_array['card_header'] = 'Push-Nachricht senden';
+        $language_array['form_auth_level'] = 'Nutzergruppen';
+        $language_array['error_title_required'] = '<div class="alert alert-warning">Sie müssen einen Titel angeben.</div>';
+        $language_array['error_message_required'] = '<div class="alert alert-warning">Sie müssen eine Nachricht angeben.</div>';
+        $language_array['send_success'] = '<div class="alert alert-success">Die Nachricht wurde versendet.</div>';
+        $language_array['send_error'] = '<div class="alert alert-danger">Beim Senden der Nachricht ist ein Fehler aufgetreten.</div>';
         $language_array[''] = '';
 
         return json_encode($language_array);
