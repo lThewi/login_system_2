@@ -190,6 +190,23 @@ $(document).ready(function() {
             })
         }
     });
+
+    $(".delete-rule").on('click', function () {
+        var id = $(this).attr('data-id');
+        if(confirm('Sind Sie sicher, dass Sie diese Regel löschen wollen?')){
+            $.ajax({
+                url: 'delete_rule/'+id,
+                method: 'post',
+                success: function(){
+                    location.reload();
+                },
+                error: function(){
+                    console.log('error');
+                }
+            })
+        }
+    });
+
     function readURL(input, img_pv) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();

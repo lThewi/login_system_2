@@ -311,10 +311,21 @@ class Language_model extends CI_Model{
     }
 
     public function get_lang_strings_rules(){
+        $language_array['breadcrumb_1'] = 'Admin';
+        $language_array['breadcrumb_2'] = 'Goldene Regeln';
         $language_array['card_header_show'] = 'Goldene Regeln';
+        $language_array['card_header_add'] = 'Regel hinzufügen';
         $language_array['table_number'] = 'Nummer';
         $language_array['table_icon'] = 'Icon';
         $language_array['table_text'] = 'Regel';
+        $language_array['table_options'] = 'Optionen';
+        $language_array['form_label_rule'] = 'Regel';
+        $language_array['form_label_image'] = 'Bild';
+        $language_array['form_button_save'] = 'Speichern';
+        $language_array['table_button_delete'] = 'Löschen';
+        $language_array['create_success'] = '<div class="alert alert-success">Die Regel wurde gespeichert</div>';
+        $language_array['create_error'] = '<div class="alert alert-danger">Beim Eintragen der Regel in die Datenbank ist ein Fehler aufgetreten.</div>';
+        $language_array['rule_field_required'] = '<div class="alert alert-warning">Sie müssen eine Regel eingeben.</div>';
 
         return json_encode($language_array);
     }

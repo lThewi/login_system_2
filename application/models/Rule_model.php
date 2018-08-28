@@ -6,9 +6,7 @@ class Rule_model extends CI_Model{
         $this->load->database();
     }
 
-    public function add_rule(){
-        $text = $this->input->post('text');
-        $icon = $this->add_icon('PLACEHOLDER');
+    public function add_rule($text, $icon){
 
         $db_array = array(
             'text' => $text,
@@ -16,6 +14,8 @@ class Rule_model extends CI_Model{
         );
 
         $query = $this->db->insert('texte_de', $db_array);
+
+        return json_encode($query);
     }
 
     public function get_rules(){
@@ -25,9 +25,9 @@ class Rule_model extends CI_Model{
 
     public function delete_rule($id){
         $this->db->where('id', $id);
-        $data = $this->db->get('golden_rules');
+        $data = $this->db->get('texte_de');
         $rule = $data->result();
-        $this->delete_icon($rule->icon);
+        $this->delete_icon($rule[0]->icon);
         $this->db->where('id', $id);
         $query = $this->db->delete('texte_de');
 
@@ -42,7 +42,7 @@ class Rule_model extends CI_Model{
     }
 
     public function add_icon($name){
-        if(!$this->upload->do_upload($field)){
+        if(!$this->upload->do_upload($name)){
             $error = $this->upload->display_errors();
             $img_name ='default-image.jpg';
         } else {

@@ -46,3 +46,9 @@ th.sorted.descending:after {
     max-width: 40px;
     height: auto;
 }
+
+#result-chart{
+    margin: auto;
+    max-width: 40%;
+    max-height: 40%;
+}

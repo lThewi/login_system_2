@@ -62,7 +62,11 @@
                                 echo $question->time_created;
                                 echo '</td>';
                                 echo '<td>';
-                                echo '<a href="'.base_url().'surveys/show_result/'.$question->id.'" class="btn btn-light">'.$strings->table_button_results.'</a>';
+                                if($question->votes == 0){
+                                    echo '<a href="'.base_url().'surveys/show_result/'.$question->id.'" class="btn btn-light disabled">'.$strings->table_button_results.'</a>';
+                                } else {
+                                    echo '<a href="'.base_url().'surveys/show_result/'.$question->id.'" class="btn btn-light">'.$strings->table_button_results.'</a>';
+                                }
                                 echo '</td>';
                             echo '</tr>';
 
