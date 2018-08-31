@@ -22,6 +22,7 @@ class Language_model extends CI_Model{
         $language_array['news'] = 'News';
         $language_array['news_create'] = 'News erstellen';
         $language_array['news_show'] = 'News anzeigen';
+        $language_array['news_categories'] = 'Kategorien';
         $language_array['pages'] = 'Seiten';
         $language_array['pages_show'] = 'Seiten anzeigen';
         $language_array['pages_create'] = 'Seite erstellen';
@@ -35,6 +36,9 @@ class Language_model extends CI_Model{
         $language_array['surveys_show'] = 'Umfragen Anzeigen';
         $language_array['surveys_results_show'] = 'Ergebnisse Anzeigen';
         $language_array['notifications_send'] = 'Push-Nachricht';
+        $language_array['gefahrenmeldungen'] = 'Gefahrenmeldungen';
+        $language_array['gefahrenmeldungen_contact'] = 'Kontakte';
+        
 
         return json_encode($language_array);
     }
@@ -85,6 +89,7 @@ class Language_model extends CI_Model{
         $language_array['table_options'] = 'Optionen';
         $language_array['del_old_image'] = 'Dieses Bild entfernen';
         $language_array['push_title'] = 'Neuer Beitrag!';
+        $language_array['switch_label'] = 'Push Benachrichtigung senden';
 
         return json_encode($language_array);
     }
@@ -173,6 +178,9 @@ class Language_model extends CI_Model{
     }
 
     public function get_lang_strings_categories(){
+        $language_array['breadcrumb_1'] = 'Admin';
+        $language_array['news_breadcrumb_2'] = 'News';
+        $language_array['news_breadcrumb_3'] = 'Kategorien';
         $language_array['card_header_create'] = 'Kategorie erstellen';
         $language_array['card_header_show'] = 'Kategorien';
         $language_array['table_category'] = 'Kategorie';
@@ -183,6 +191,10 @@ class Language_model extends CI_Model{
         $language_array['form_button_save'] = 'Speichen';
         $language_array['form_button_reset'] = 'Zurücksetzen';
         $language_array['no_entries'] = 'Keine Einträge.';
+        $language_array['create_success'] = '<div class="alert alert-success">Die Kategorie wurde erfolgreich erstellt.</div>';
+        $language_array['create_error'] = '<div class="alert alert-danger">Beim Eintragen der Daten in die Datenbank ist ein Fehler aufgetreten.</div>';
+        $language_array['required'] = '<div class="alert alert-warning">Sie müssen einen Namen für die Kategorie angeben.</div>';
+        $language_array['not_unique'] = '<div class="alert alert-danger">Dieser Name ist bereits vergeben.</div>';
 
         return json_encode($language_array);
     }
@@ -380,6 +392,35 @@ class Language_model extends CI_Model{
         $language_array['send_success'] = '<div class="alert alert-success">Die Nachricht wurde versendet.</div>';
         $language_array['send_error'] = '<div class="alert alert-danger">Beim Senden der Nachricht ist ein Fehler aufgetreten.</div>';
         $language_array[''] = '';
+
+        return json_encode($language_array);
+    }
+
+    public function get_lang_strings_gefahrenmeldung(){
+        $language_array['breadcrumb_1'] = 'Admin';
+        $language_array['breadcrumb_2'] = 'Gefahrenmeldung';
+        $language_array['breadcrumb_3'] = 'Kontaktdaten hinzufügen';
+        $language_array['card_header_add'] = 'Kontaktdaten hinzufügen';
+        $language_array['card_header_show'] = 'Kontaktdaten';
+        $language_array['table_head_email'] = 'Email';
+        $language_array['table_head_tel'] = 'Telefonnummer';
+        $language_array['table_head_options'] = 'Optionen';
+        $language_array['table_button_delete'] = 'Löschen';
+        $language_array['table_button_mod'] = 'Bearbeiten';
+        $language_array['form_label_email'] = 'Email';
+        $language_array['form_label_tel'] = 'Telefonnummer';
+        $language_array['form_button_save'] = 'Speichern';
+        $language_array['form_button_reset'] = 'Zurücksetzen';
+        $language_array['no_entries'] = 'Keine Einträge!';
+        $language_array['email_not_unique'] = '<div class="alert alert-warning">Diese Emailadresse ist bereits vorhanden.</div>';
+        $language_array['email_required'] = '<div class="alert alert-warning">Sie müssen eine Emailadresse angeben</div>';
+        $language_array['tel_required'] = '<div class="alert alert-warning">Sie müssen eine Telefonnummer angeben</div>';
+        $language_array['create_success'] = '<div class="alert alert-success">Die Daten wurden erfolgreich gespeichert.</div>';
+        $language_array['create_error'] = '<div class="alert alert-danger">Beim Eintragen der Daten in die Datenbank ist ein Fehler aufgetreten.</div>';
+        $language_array['update_success'] = '<div class="alert alert-success">Der Eintrag wurde erfolgreich bearbeitet.</div>';
+        $language_array['update_error'] = '<div class="alert alert-danger">Beim Eintragen der Änderungen in die Datenbank ist ein Fehler aufgetreten.</div>';
+
+
 
         return json_encode($language_array);
     }

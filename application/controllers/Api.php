@@ -5,7 +5,7 @@ class Api extends CI_Controller{
     {
         parent::__construct();
 
-        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Origin:*');
         header('Access-Control-Allow-Credentials: true');
         header('Access-Control-Allow-headers: content-type, if-none-match');
         header('Access-Control-Allow--Methods: POST,GET,OPTIONS');
@@ -46,8 +46,9 @@ class Api extends CI_Controller{
     }
 
     public function get_news_items(){
-        $current_id = json_decode($_POST['current_id']);
-        $query = $this->news_model->get_ten_news_items($current_id);
+        $current_id = $_POST['current_id'];
+        $auth = $_POST['user_type_id'];
+        $query = $this->news_model->get_ten_news_items($current_id, $auth);
 
         echo $query;
     }
@@ -62,7 +63,8 @@ class Api extends CI_Controller{
     }
 
     public function get_all_survey_questions(){
-        echo $this->survey_model->get_survey_questions();
+        $auth = $_POST['user_type_id'];
+        echo $this->survey_model->get_survey_questions_by_auth($auth);
     }
 
     public function get_survey_answers_by_qid(){
@@ -81,5 +83,34 @@ class Api extends CI_Controller{
 
             echo $this->survey_model->push_value_to_db($question_id, $answer_id, $value, $user_id);
         }
+    }
+
+    public function get_golden_rules(){
+        echo $this->rule_model->get_rules();
+    }
+
+    public function get_report_contact(){
+        echo $this->gefahrenmeldungs_model->get_contacts();
+    }
+
+    public function get_document_categories(){
+        echo $this->document_model->get_categories();
+    }
+
+    public function get_documents(){
+        echo $this->document_model->get_all_documents();
+    }
+
+    public function get_document_by_id(){
+        $id = $_POST['doc_id'];
+        echo $this->document_model->get_document($id);
+    }
+
+    public function get_faq(){
+        echo $this->Faq_model->get_all_questions();
+    }
+
+    public function get_contact_persons(){
+        echo $this->document_model->get_all_contactpersons();
     }
 }

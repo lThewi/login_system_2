@@ -65,6 +65,7 @@ class News extends CI_Controller{
 
                 $result = $this->news_model->create_news($db_array);
                 if($result){
+                    $this->update_news_order();
                     $this->session->set_flashdata('news_created', $lang->news_create_success);
 
                     $user_types = json_decode($data['user_types_json']);
@@ -74,11 +75,13 @@ class News extends CI_Controller{
                         $input_name = 'check'.$type->id;
                         if($type->id == 1 || $this->input->post($input_name) != null){
                             $this->news_model->add_news_auth($type->id);
-                            $this->notifications_model->push_message_to_topic($type->type_name, $title, $body);
+                            if($this->input->post('push') == 'on'){
+                                $this->notifications_model->push_message_to_topic($type->type_name, $title, $body);
+                            }
                         }
                     }
 
-                    redirect('news/show_news');
+                    redirect('news/show_news'); 
                 } else {
                     $this->session->set_flashdata('news_created_error', $lang->news_create_error);
                     $this->session->set_flashdata('news_validation_error', $lang->news_create_error);
@@ -204,7 +207,6 @@ class News extends CI_Controller{
         if(!$this->upload->do_upload($field)){
             $error = $this->upload->display_errors();
             $img_name = null;
-            //$this->session->set_flashdata('upload_error', 'Bild konnte nicht auf den Server geladen werden.');
         } else {
             $data = $this->upload->data();
             $img_name = $this->upload->data('file_name');
@@ -219,7 +221,14 @@ class News extends CI_Controller{
     }
 
     public function update_news_order(){
-        $order_array = json_decode($this->input->post('string'));
+        if(isset($_POST['string'])){
+            $order_array = json_decode($this->input->post('string'));
+        } else {
+            $result = json_decode($this->news_model->get_all_news());
+            foreach($result as $item){
+                $order_array[] = $item->id;
+            }
+        }
         $order = 10;
         foreach($order_array as $item){
             $db_array = array(
@@ -229,4 +238,6 @@ class News extends CI_Controller{
             $order += 10;
         }
     }
+
+    
 }

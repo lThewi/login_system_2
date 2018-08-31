@@ -67,6 +67,7 @@ class Pages extends CI_Controller{
                 //call model to insert data into db
                 $result = $this->Page_model->create_new_page($db_array);
                 if($result){
+                    $this->update_page_order();
                     $this->session->set_flashdata('page_created', $strings->page_created);
                     redirect('pages/create_page');
                 } else {
@@ -182,7 +183,14 @@ class Pages extends CI_Controller{
     }
 
     public function update_page_order(){
-        $order_array = json_decode($this->input->post('string'));
+        if(isset($_POST['string'])){
+            $order_array = json_decode($this->input->post('string'));
+        } else {
+            $result = json_decode($this->news_model->get_all_news());
+            foreach($result as $item){
+                $order_array[] = $item->id;
+            }
+        }
         $order = 10;
         foreach($order_array as $item){
             $db_array = array(

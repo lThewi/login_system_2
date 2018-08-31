@@ -13,7 +13,7 @@
             </div>
             <div class="card-body">
 
-                <table class="table table-responsive-sm table-hover table-outline">
+                <table class="table table-responsive-sm table-hover table-outline sorted_table" id="survey-table">
                     <thead class="thead-light">
                         <tr>
                             <th><?php echo $strings->table_head_img ?></th>
@@ -31,7 +31,7 @@
 
                         foreach($all_questions as $question) {
 
-                            echo '<tr>';
+                            echo '<tr  id="'.$question->id.'">';
                                 echo '<td>';
                                 if($question->image == null){
                                     echo '<img class="table-image" src="'.base_url().'assets/uploaded_images/default-image.jpg">';
@@ -85,6 +85,7 @@
 <script src="<?php echo base_url(); ?>assets/js/popper.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/coreui.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/sortable.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/javascript.js"></script>
 
 

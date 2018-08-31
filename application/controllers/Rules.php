@@ -29,6 +29,7 @@ class Rules extends CI_Controller{
 
                 $result = json_decode($this->rule_model->add_rule($rule, $icon_name));
                 if($result){
+                    $this->update_rules_order();
                     $this->session->set_flashdata('create_rule', $strings->create_success);
                     redirect('rules/show_rules');
                 } else {
@@ -51,5 +52,24 @@ class Rules extends CI_Controller{
     public function delete_rule($id){
         $result = $this->rule_model->delete_rule($id);
         return $result;
+    }
+
+    public function update_rules_order(){
+        if(isset($_POST['string'])){
+            $order_array = json_decode($this->input->post('string'));
+        } else {
+            $result = json_decode($this->rule_model->get_rules());
+            foreach($result as $item){
+                $order_array[] = $item->id;
+            }
+        }
+        $order = 10;
+        foreach($order_array as $item){
+            $db_array = array(
+                'table_order' => $order
+            );
+            $result = $this->rule_model->update_rule($item, $db_array);
+            $order += 10;
+        }
     }
 }

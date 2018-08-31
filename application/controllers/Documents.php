@@ -91,6 +91,7 @@ class Documents extends CI_Controller{
                 //model call to insert array into DB
                 $result = $this->document_model->create_document($db_array);
                 if($result){
+                    $this->update_documents_order();
                     $this->session->set_flashdata('document_created', $strings->doc_created);
                     redirect('documents/show_documents');
                 } else {
@@ -171,6 +172,7 @@ class Documents extends CI_Controller{
                 );
                 $this->session->set_flashdata('created_category', $strings->cat_created);
                 $result = $this->document_model->create_category($db_array);
+                $this->update_categories_order();
 
                 redirect('documents/create_category');
             }
@@ -198,8 +200,6 @@ class Documents extends CI_Controller{
             $header['strings_json'] = $this->language_model->get_lang_strings_navbar();
             $data['strings_json'] = $this->language_model->get_lang_strings_contacts();
 
-
-
             $this->form_validation->set_rules('name', 'Name', 'required|trim');
             $this->form_validation->set_rules('position', 'Position', 'required|trim');
 
@@ -223,6 +223,7 @@ class Documents extends CI_Controller{
 
                 if($result){
                     $this->session->set_flashdata('contact_created', $strings->contact_created);
+                    $this->update_contactperson_order();
                     redirect('documents/create_contactperson');
                 } else {
                     $this->session->set_flashdata('site_error', $strings->contact_create_error);
@@ -481,7 +482,14 @@ class Documents extends CI_Controller{
     }
 
     public function update_documents_order(){
-        $order_array = json_decode($this->input->post('string'));
+        if(isset($_POST['string'])){
+            $order_array = json_decode($this->input->post('string'));
+        } else {
+            $result = json_decode($this->document_model->get_all_documents());
+            foreach($result as $item){
+                $order_array[] = $item->id;
+            }
+        }
         $order = 10;
         foreach($order_array as $item){
             $db_array = array(
@@ -493,7 +501,14 @@ class Documents extends CI_Controller{
     }
 
     public function update_contactperson_order(){
-        $order_array = json_decode($this->input->post('string'));
+        if(isset($_POST['string'])){
+            $order_array = json_decode($this->input->post('string'));
+        } else {
+            $result = json_decode($this->document_model->get_all_contactpersons());
+            foreach($result as $item){
+                $order_array[] = $item->id;
+            }
+        }
         $order = 10;
         foreach($order_array as $item){
             $db_array = array(
@@ -505,7 +520,14 @@ class Documents extends CI_Controller{
     }
 
     public function update_categories_order(){
-        $order_array = json_decode($this->input->post('string'));
+        if(isset($_POST['string'])){
+            $order_array = json_decode($this->input->post('string'));
+        } else {
+            $result = json_decode($this->document_model->get_categories());
+            foreach($result as $item){
+                $order_array[] = $item->id;
+            }
+        }
         $order = 10;
         foreach($order_array as $item){
             $db_array = array(

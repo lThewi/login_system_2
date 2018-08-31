@@ -55,6 +55,8 @@ class Users extends CI_Controller
             $lang_strings = json_decode($this->language_model->get_lang_strings_email());
             $strings = json_decode($this->language_model->get_lang_strings_users());
 
+            $this->update_pending_order();
+
             //preparing the mailcontent
             $this->email->from('vftestadresse@gmail.com', 'MyName');
             $this->email->to($mail);
@@ -89,6 +91,7 @@ class Users extends CI_Controller
             foreach ($this->input->post('row') as $row => $value) {
                 $type = $this->input->post($value);
                 $user = $this->user_model->add_user($value, $type);
+                $this->update_user_order();
                 $results[$array_idx] = $user;
                 $array_idx++;
             }
@@ -103,6 +106,7 @@ class Users extends CI_Controller
     {
         $temp_user = json_decode($this->get_temp_user_by_id($id));
         $result = $this->user_model->add_user($id, 2);
+        $this->update_user_order();
     }
 
     public function decline_multiple_users()
@@ -119,7 +123,7 @@ class Users extends CI_Controller
             $email = json_decode($this->user_model->get_temp_user_email($value));
 
             if ($this->user_model->update_temp_user($value, $db_array)) {
-
+                $this->update_pending_order();
                 //preparing the mailcontent
                 $this->email->from('vftestadresse@gmail.com', 'MyName');
                 $this->email->to($email[0]->email);
@@ -397,6 +401,7 @@ class Users extends CI_Controller
 
         if ($this->user_model->update_temp_user($id, $db_array)) {
             $lang_strings = json_decode($this->language_model->get_lang_strings_email());
+            $this->update_declined_order();
 
             //preparing the mailcontent
             $this->email->from('vftestadresse@gmail.com', 'MyName');
@@ -433,12 +438,20 @@ class Users extends CI_Controller
         $result_temp = $this->user_model->add_user_to_declined($db_array);
         if ($result_temp) {
             $result_delete = $this->user_model->delete_active_user($id);
+            $this->update_pending_order();
         }
     }
 
     public function update_pending_order()
     {
-        $order_array = json_decode($this->input->post('string'));
+        if(isset($_POST['string'])){
+            $order_array = json_decode($this->input->post('string'));
+        } else {
+            $result = json_decode($this->user_model->get_all_temp_users());
+            foreach($result as $item){
+                $order_array[] = $item->id;
+            }
+        }
         $order = 10;
         foreach ($order_array as $item) {
             $db_array = array('table_order' => $order);
@@ -449,7 +462,17 @@ class Users extends CI_Controller
 
     public function update_user_order()
     {
-        $order_array = json_decode($this->input->post('string'));
+        //change:
+        //if isset post/string false --> get data(id) ordered_by tabe_order ASC und dann die foreach
+        //funktion muss dann jedesmal aufgerufen werden wenn neues objekt erstellt wird
+        if(isset($_POST['string'])){
+            $order_array = json_decode($this->input->post('string'));
+        } else {
+            $result = json_decode($this->user_model->get_users());
+            foreach($result as $item){
+                $order_array[] = $item->id;
+            }
+        }
         $order = 10;
         foreach ($order_array as $item) {
             $db_array = array('table_order' => $order);
@@ -460,7 +483,14 @@ class Users extends CI_Controller
 
     public function update_declined_order()
     {
-        $order_array = json_decode($this->input->post('string'));
+        if(isset($_POST['string'])){
+            $order_array = json_decode($this->input->post('string'));
+        } else {
+            $result = json_decode($this->user_model->get_all_temp_users());
+            foreach($result as $item){
+                $order_array[] = $item->id;
+            }
+        }
         $order = 10;
         foreach ($order_array as $item) {
             $db_array = array('table_order' => $order);

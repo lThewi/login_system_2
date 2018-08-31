@@ -84,6 +84,16 @@
                         <img id="img_pv_3"/>
                     </div>
                 </div>
+
+                 <div class="form-group col-4 pl-0">
+                            <label for="push-rating"><?php echo $strings->switch_label ?></label>
+                            <div>
+                                <label class="switch switch-sm switch-primary m-0">
+                                    <input type="checkbox" class="switch-input" id="push-rating" name="push-rating" checked>
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </div>
+                        </div>
                 <input type="submit" class="btn btn-lg btn-primary" value="<?php echo $strings->form_button_save; ?>">
                 <input type="reset" class="btn btn-lg btn-danger" value="<?php echo $strings->form_button_reset; ?>">
 

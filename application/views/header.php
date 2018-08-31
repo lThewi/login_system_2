@@ -136,6 +136,12 @@
                                 <?php echo $strings->news_show ?>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="<?php echo base_url(); ?>news_categories/create_category" class="nav-link">
+                                <div class="nav-icon cui-globe"></div>
+                                <?php echo $strings->news_categories ?>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item nav-dropdown">
@@ -176,6 +182,18 @@
                                 <?php echo $strings->faq_show ?>
                             </a>
                         </li>
+                    </ul>
+                </li>
+                <li class="nav-item nav-dropdown">
+                    <a href="#" class="nav-link nav-dropdown-toggle">
+                        <div class="nav-icon cui-bell"></div>
+                        <?php echo $strings->gefahrenmeldungen ?>
+                    </a>
+                    <ul class="nav-dropdown-items">
+                        <a href="<?php echo base_url(); ?>gefahrenmeldungen/contact" class="nav-link">
+                            <div class="nav-icon cui-bell"></div>
+                            <?php echo $strings->gefahrenmeldungen_contact ?>
+                        </a>
                     </ul>
                 </li>
                 <li class="nav-title"><?php echo $strings->nav_group_4 ?></li>

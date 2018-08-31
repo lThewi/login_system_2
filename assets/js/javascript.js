@@ -207,6 +207,38 @@ $(document).ready(function() {
         }
     });
 
+    $(".delete-news-category").on('click', function () {
+        var id = $(this).attr('data-id');
+        if(confirm('Sind Sie sicher, dass Sie diese Kategorie löschen wollen?')){
+            $.ajax({
+                url: 'delete_category/'+id,
+                method: 'post',
+                success: function(){
+                    location.reload();
+                },
+                error: function(){
+                    console.log('error');
+                }
+            })
+        }
+    });
+
+    $(".delete-gefahren-kontakt").on('click', function () {
+        var id = $(this).attr('data-id');
+        if(confirm('Sind Sie sicher, dass Sie diesen Kontakt löschen wollen?')){
+            $.ajax({
+                url: 'delete_contact/'+id,
+                method: 'post',
+                success: function(){
+                    location.reload();
+                },
+                error: function(){
+                    console.log('error');
+                }
+            })
+        }
+    });
+
     function readURL(input, img_pv) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -237,6 +269,66 @@ $(document).ready(function() {
 
     //send table order
     var delay = 500;
+    $('table#rules-table').sortable({
+        containerSelector: 'table',
+        itemPath: '> tbody',
+        itemSelector: 'tr',
+        placeholder: '<tr class="placeholder"/>',
+        group: 'rules-table',
+        delay: delay,
+        onDrop: function ($item, container, _super){
+            $item.removeClass(container.group.options.draggedClass).removeAttr("style");
+            $("body").removeClass(container.group.options.bodyClass);
+            var index = 0;
+            var array = [];
+            $('tbody tr').each( function () {
+                array[index] = $(this).attr('id');
+                index++;
+            });
+            var json_string = JSON.stringify(array);
+            $.ajax({
+                method: 'POST',
+                data: {string: json_string},
+                url: 'update_rules_order',
+                success: function(){
+                    console.log('rules');
+                },
+                error: function () {
+                    console.log('Ajax error in rules-table');
+                }
+            });
+        }
+    });
+    $('table#survey-table').sortable({
+        containerSelector: 'table',
+        itemPath: '> tbody',
+        itemSelector: 'tr',
+        placeholder: '<tr class="placeholder"/>',
+        group: 'sorted-table',
+        delay: delay,
+        onDrop: function ($item, container, _super){
+            $item.removeClass(container.group.options.draggedClass).removeAttr("style");
+            $("body").removeClass(container.group.options.bodyClass);
+            var index = 0;
+            var array = [];
+            $('tbody tr').each( function () {
+                array[index] = $(this).attr('id');
+                index++;
+            });
+            var json_string = JSON.stringify(array);
+            $.ajax({
+                method: 'POST',
+                data: {string: json_string},
+                url: 'update_survey_order',
+                success: function(){
+                    console.log('survey');
+                },
+                error: function () {
+                    console.log('Ajax error in survey-table');
+                }
+            });
+        }
+    });
     $('table#cat-table').sortable({
         containerSelector: 'table',
         itemPath: '> tbody',
@@ -398,6 +490,33 @@ $(document).ready(function() {
                 method: 'POST',
                 data: {string: json_string},
                 url: 'update_contactperson_order',
+                error: function () {
+                    console.log('Ajax error in contacts-table');
+                }
+            });
+        }
+    });
+    $('table#news-cat-table').sortable({
+        containerSelector: 'table',
+        itemPath: '> tbody',
+        itemSelector: 'tr',
+        placeholder: '<tr class="placeholder"/>',
+        group: 'news-cat-table',
+        delay: delay,
+        onDrop: function ($item, container, _super){
+            $item.removeClass(container.group.options.draggedClass).removeAttr("style");
+            $("body").removeClass(container.group.options.bodyClass);
+            var index = 0;
+            var array = [];
+            $('tbody tr').each( function () {
+                array[index] = $(this).attr('id');
+                index++;
+            });
+            var json_string = JSON.stringify(array);
+            $.ajax({
+                method: 'POST',
+                data: {string: json_string},
+                url: 'update_news_category_order',
                 error: function () {
                     console.log('Ajax error in contacts-table');
                 }

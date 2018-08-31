@@ -57,6 +57,7 @@ class Surveys extends CI_Controller{
                         redirect('surveys/create_survey');
                     }
                 }
+                $this->update_survey_order();
             }
         } else {
             redirect('users/login');
@@ -102,5 +103,24 @@ class Surveys extends CI_Controller{
         } else {
             echo $this->survey_model->get_avg_by_anwser($answers);
         }        
+    }
+
+    public function update_survey_order(){
+        if(isset($_POST['string'])){
+            $order_array = json_decode($this->input->post('string'));
+        } else {
+            $result = json_decode($this->survey_model->get_survey_questions());
+            foreach($result as $item){
+                $order_array[] = $item->id;
+            }
+        }
+        $order = 10;
+        foreach($order_array as $item){
+            $db_array = array(
+                'table_order' => $order
+            );
+            $result = $this->survey_model->update_survey_question($item, $db_array);
+            $order += 10;
+        }
     }
 }

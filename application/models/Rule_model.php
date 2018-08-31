@@ -19,6 +19,7 @@ class Rule_model extends CI_Model{
     }
 
     public function get_rules(){
+        $this->db->order_by('table_order', 'ASC');
         $result = $this->db->get('texte_de');
         return json_encode($result->result());
     }
@@ -51,5 +52,11 @@ class Rule_model extends CI_Model{
             $this->session->set_flashdata('upload_success', $data);
         }
         return $img_name;
+    }
+
+    public function update_rule($id, $data){
+        $this->db->where('id', $id);
+        $query = $this->db->update('texte_de', $data);
+        return json_encode($query);
     }
 }

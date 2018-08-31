@@ -147,8 +147,17 @@ class Survey_model extends CI_Model{
         $this->db->select('survey_questions.id,survey_questions.question, survey_questions.time_created, survey_questions.survey_type, survey_questions.image, COUNT(survey_results.question_id) as votes');
         $this->db->join('survey_results', 'survey_questions.id = survey_results.question_id', 'left outer');
         $this->db->group_by('survey_questions.id');
+        $this->db->order_by('survey_questions.table_order', 'ASC');
+        $query = $this->db->get('survey_questions');      
+        return json_encode($query->result());
+    }
+
+    public function get_survey_questions_by_auth($auth){
+        $this->db->select('survey_questions.id,survey_questions.question, survey_questions.time_created, survey_questions.survey_type, survey_questions.image');
+        $this->db->join('survey_auth', 'survey_questions.id = survey_auth.question_id');
+        $this->db->where('survey_auth.user_type_id', $auth);
+        $this->db->order_by('survey_questions.table_order', 'ASC');
         $query = $this->db->get('survey_questions');
-        //--> aktuell fehlerhafte daten, da user in der App noch mehrfach abstimmen können (zu testzwecken).        
         return json_encode($query->result());
     }
 
@@ -273,5 +282,11 @@ class Survey_model extends CI_Model{
         } else {
             return json_encode(false);
         }
+    }
+
+    public function update_survey_question($id, $data){
+        $this->db->where('id', $id);
+        $query = $this->db->update('survey_questions', $data);
+        return json_encode($query);
     }
 }
